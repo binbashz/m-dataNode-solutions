@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-1">
+    <div class="container">
+        <div class="hero">
+            <h2>Gestión Integral de Cannabis</h2>
+            <p>Software para optimizar la gestión de cultivos, laboratorios, negocios y más.</p>
+        </div>
+        <div class="banner-container">
+            <a href="{% url 'variedad_create' %}" class="btn btn-primary mb-3 d-block mx-auto custom-button">
+                + Registrar Nueva Variedad
+            </a>
+        </div>
+        <hr>
+<p><strong>Tus variedades registradas</strong></p>
+    <div class="product-grid">
+        {% for variedad in variedades %}
+        <div class="product-card">
+            <div class="product-card-header">
+                <h5 class="product-card-title">{{ variedad.nombre }}</h5>
+                <div class="product-card-actions">
+                    <a href="{% url 'variedad_update' variedad.pk %}" class="btn">Editar</a>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modalEliminarVariedad{{ variedad.pk }}">Eliminar</button>
+                </div>
+            </div>
+            <hr>
+            <p class="product-card-description">{{ variedad.descripcion }}</p>
+            <div class="product-card-actions">
+                <a href="{% url 'condiciones_cultivo_list' variedad.pk %}" class="btn">Condiciones de Cultivo</a>
+                <a href="{% url 'tratamiento_list' variedad.pk %}" class="btn">Tratamientos</a>
+                <a href="{% url 'analisis_list' variedad.pk %}" class="btn">Análisis de Calidad</a>
+            </div>
+        </div>
+        
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modales para eliminar variedad -->
+{% for variedad in variedades %}
+<div class="modal fade" id="modalEliminarVariedad{{ variedad.pk }}" tabindex="-1" aria-labelledby="modalEliminarVariedadLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarVariedadLabel">Eliminar Variedad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar la variedad "{{ variedad.nombre }}"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="post" action="{% url 'variedad_delete' variedad.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

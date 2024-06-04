@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<div class="card">
+    <div class="card-header">
+      Detalles del Análisis
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ analisis.tipo_analisis }}</h5>
+      <p class="card-text">Fecha de Análisis: {{ analisis.fecha_analisis }}</p>
+      <p class="card-text">Resultado:</p>
+      <p class="card-text">{{ analisis.resultado }}</p>
+    </div>
+  </div>
+
+{% endblock %}
+
+

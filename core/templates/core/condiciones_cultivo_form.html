@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- http://127.0.0.1:8000/variedad/2/condiciones/create/ NUEVA CONDICION DE CULTIVO  -->
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<div class="container my-5">
+    <h1 class="text-center mb-4 form-title">{% if object %}Editar{% else %}Nueva{% endif %} Condición de Cultivo</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field, errors in form.errors.items %}
+                <div>
+                    <strong>{{ field }}</strong>
+                    {% for error in errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form method="post" action="{% url 'condiciones_cultivo_create' variedad_id=variedad.pk %}" class="form-container">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {% if field.name == 'registro_fecha' %}
+                    <input type="date" name="{{ field.name }}" class="form-control" required id="{{ field.auto_id }}">
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

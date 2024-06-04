@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<div class="container my-5">
+    <h1 class="text-center mb-4 form-title">{% if object %}Editar{% else %}Crear{% endif %} Variedad</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" class="form-container">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

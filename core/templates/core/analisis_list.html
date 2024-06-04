@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+
+<div class="containeranalisis mt-4 analisis-list-container">
+
+    <div class="row mb-3">
+        <div class="col">
+            <h1 class="analisis-list-title">Análisis de Calidad</h1>
+           
+
+
+            <a href="{% url 'analisis_create' variedad.pk %}" class="btn btn-primary btn-lg analisis-create-btn">Nuevo Análisis</a>
+        </div>
+    </div>
+<hr>
+ <p><strong> Ultimos analisis</strong></p>
+
+    <div class="analisis-card-container">
+        {% for analisis in analisis %}
+        <div class="flip-card-container" style="--hue: {{ analisis.pk|add:200 }}">
+            <div class="flip-card">
+                <div class="card-front">
+                    <figure>
+                        <div class="img-bg"></div>
+                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Análisis">
+                        <figcaption>{{ analisis.tipo_analisis }}</figcaption>
+                    </figure>
+                    <ul class="mi-lista">
+                        <li class="mi-item">Fecha: {{ analisis.fecha_analisis }}</li>
+                        <!-- Agrega más detalles aquí si es necesario -->
+                    </ul>
+                </div>
+                <div class="card-back">
+                    <figure>
+                        <div class="img-bg"></div>
+                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Análisis">
+                    </figure>
+                    <a href="{% url 'analisis_detail' variedad.pk analisis.pk %}" class="btn btn-primary analisis-detail-btn">Ver Detalles</a>
+
+                    <div class="design-container">
+                        <span class="design design--1"></span>
+                        <span class="design design--2"></span>
+                        <span class="design design--3"></span>
+                        <span class="design design--4"></span>
+                        <span class="design design--5"></span>
+                        <span class="design design--6"></span>
+                        <span class="design design--7"></span>
+                        <span class="design design--8"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

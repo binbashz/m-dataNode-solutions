@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<div class="container my-5">
+    <h1 class="text-center mb-4 form-title">{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Análisis de Calidad</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data" class="form-container">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in form.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block">{% if form.instance.pk %}Actualizar{% else %}Crear{% endif %} Análisis</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Eliminar Variedad</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <p>¿Estás seguro de que deseas eliminar la variedad; "{{ variedad.nombre }}"?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'products' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

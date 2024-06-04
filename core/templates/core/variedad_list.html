@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Lista de Variedades</h1>
+    <a href="{% url 'variedad_create' %}" class="btn btn-primary mb-3">Nueva Variedad</a>
+    <div class="card-container">
+        {% for variedad in variedades %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ variedad.nombre }}</h5>
+                <p class="card-text">{{ variedad.descripcion }}</p>
+                <a href="{% url 'variedad_update' variedad.pk %}" class="btn btn-primary">Editar</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarVariedad{{ variedad.pk }}">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modales para eliminar variedad -->
+{% for variedad in variedades %}
+<div class="modal fade" id="modalEliminarVariedad{{ variedad.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalEliminarVariedadLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarVariedadLabel">Eliminar Variedad</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar la variedad; "{{ variedad.nombre }}"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <form method="post" action="{% url 'variedad_delete' variedad.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
