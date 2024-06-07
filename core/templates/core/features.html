@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="hero">
+        <div class="banner-container">
+            <div class="funcionalidades-title"> <h2> Funcionalidades</h2> </div>
+        </div>
+
+        <div class="container-mgm">
+
+            <div class="card-mgm">
+                <h3>Recomendaciones de Cultivo Personalizadas</h3>
+                <p>Recibe recomendaciones de cultivo personalizadas basadas en las condiciones de tu plantación y datos históricos.</p>
+                <a href="{% url 'recomendar_cultivo' %}" class="btn btn-primary">Ver Recomendaciones</a>
+            </div>
+            
+            <div class="card-mgm">
+                <h3>Simulación de Rendimiento</h3>
+                <p>Simula el rendimiento de tus cultivos bajo diferentes condiciones y escenarios para optimizar la producción.</p>
+                <a href="#simulacion_rendimiento" class="btn btn-primary">Simular Rendimiento</a>
+            </div>
+
+            <div class="card-mgm">
+                <h3>Análisis de Costos y Presupuestos</h3>
+                <p>Analiza los costos y presupuestos de tu operación para mejorar la eficiencia y maximizar los beneficios.</p>
+                <a href="#analisis_costos_presupuestos" class="btn btn-primary">Analizar Costos</a>
+            </div>
+
+            <!-- Sección opcional para análisis detallados, si los usuarios tienen acceso a estos datos -->
+            <div class="card-mgm">
+                <h3>Análisis de Componentes Químicos</h3>
+                <p>Realiza análisis detallados de cannabinoides, terpenos, metales pesados y pesticidas en tus muestras de cannabis.</p>
+                <a href="#analisis_componentes_quimicos" class="btn btn-primary">Ver Análisis</a>
+            </div>
+
+            <div class="card-mgm">
+                <h3>Generación de Informes de Análisis</h3>
+                <p>Genera informes detallados de cada análisis realizado, incluyendo resultados, interpretación y conclusiones.</p>
+                <a href="#generacion_informes_analisis" class="btn btn-primary">Generar Informe</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

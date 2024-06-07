@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- obtener recomendacion by datos -->
+
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+
+
+<div class="container">
+    <h2>Recomendaciones de Cultivo Personalizadas</h2>
+    <form method="post" action="{% url 'recomendar_cultivo' %}" class="custom-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Obtener Recomendaciones</button>
+    </form>
+</div>
+
+{% endblock %}

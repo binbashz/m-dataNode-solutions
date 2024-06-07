@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+
+
+        
+
+<h1>Recomendaciones</h1>
+
+<h2>Recomendaciones de Cultivo</h2>
+<ul>
+    {% for recomendacion in recomendaciones %}
+    <li>{{ recomendacion }}</li>
+    {% endfor %}
+</ul>
+
+{% if tipo_suelo_descripcion %}
+<h2>Descripción del Tipo de Suelo</h2>
+<p>{{ tipo_suelo_descripcion }}</p>
+{% endif %}
+
+{% endblock %}
+

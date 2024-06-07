@@ -1,0 +1,58 @@
+<!-- Todas las condiciones de cultivo registradas  -->
+
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="container my-5">
+        <div class="text-center">
+            <h1 class="mb-4 texto-negro">Todas las Condiciones de Cultivo</h1>
+        </div>
+        
+        <div class="card-container">
+            {% for condicion in condiciones %}
+            <div class="card">
+                <div class="card-body">
+                    <p><strong>Variedad:</strong> {{ condicion.variedad.nombre }}</p>
+                    <p><strong>Fecha:</strong> {{ condicion.registro_fecha }}</p>
+                    <p><strong>Temperatura:</strong> {{ condicion.temperatura }} °C</p>
+                    <p><strong>Humedad:</strong> {{ condicion.humedad }} %</p>
+                    <p><strong>Tipo de Suelo:</strong> {{ condicion.tipo_suelo }}</p>
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'condiciones_cultivo_update' condicion.variedad.pk condicion.pk %}" class="btn btn-primary me-2">Editar</a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarCondicion{{ condicion.pk }}">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modales para eliminar condición -->
+    {% for condicion in condiciones %}
+    <div class="modal fade" id="modalEliminarCondicion{{ condicion.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalEliminarCondicionLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEliminarCondicionLabel">Eliminar Condición</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta condición de cultivo?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form method="post" action="{% url 'condiciones_cultivo_delete' condicion.variedad.pk condicion.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
