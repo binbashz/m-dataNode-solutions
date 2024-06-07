@@ -28,7 +28,7 @@
                 <div class="form-group">
                     {{ field.label_tag }}
                     {% if field.name == 'registro_fecha' %}
-                    <input type="date" name="{{ field.name }}" class="form-control" required id="{{ field.auto_id }}">
+                    <input type="text" name="{{ field.name }}" class="form-control" required id="{{ field.auto_id }}" pattern="\d{2}/\d{2}/\d{4}" placeholder="DD/MM/YYYY">
                     {% else %}
                     {{ field }}
                     {% endif %}

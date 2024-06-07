@@ -5,10 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión Integral de Cannabis</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     {% block styles %}
    
     {% endblock %}
+    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     {% block content %}
@@ -17,7 +19,34 @@
             <h1>Gestión Integral de Cannabis</h1>
             <p>Software para optimizar la gestión de cultivos, laboratorios, negocios y más.</p>
         </div>
-    
+        {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
+<div class="all">
+    <div class="lefter">
+        <div class="text">Servicios Avanzados</div>
+    </div>
+    <div class="left">
+        <div class="text">Recomendacion</div>
+    </div>
+    <div class="center">
+        <div class="explainer">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="text"></div>
+    </div>
+    <div class="right">
+        <div class="text">Registrar Variedad</div>
+    </div>
+    <div class="righter">
+        <div class="text">Condiciones Cultivo</div>
+    </div>
+</div>
+{% endif %}
+            <br><br>
+            <br><br>
+            
+         {% endif %}
+
         <div class="productContainer">
             <div class="card">
                 <div class="header" style="height: 17rem;">
@@ -29,18 +58,8 @@
                     </div>
                     <p>Acceso a herramientas para gestionar cultivos, laboratorios y presupuestos.</p>
                 </div>
-                <div class="user-roles">
-                    <div class="role">
-                        <h3>Emprendedores</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard de Emprendedor</a></li>
-                            <li><a href="#"><i class="fas fa-seedling"></i> Gestionar Cultivos (cultivador_cultivos)</a></li>
-                            <li><a href="#"><i class="fas fa-vials"></i> Gestionar Laboratorios (laboratorio_dashboard)</a></li>
-                            <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Gestionar Presupuestos (entrepreneur_presupuestos)</a></li>
-                        </ul>
-                    </div>
                 </div>
-            </div>
+            
     
             <div class="card">
                 <div class="header" style="height: 17rem;">
@@ -50,19 +69,9 @@
                     <div class="title" style="text-align: center; display: inline-block; vertical-align: middle;">
                         <h2>Cultivadores</h2>
                     </div>
-                    <p>Gestiona variedades, registros y análisis de calidad.</p>
-                </div>
-                <div class="user-roles">
-                    <div class="role">
-                        <h3>Cultivadores</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard de Cultivador</a></li>
-                            <li><a href="#"><i class="fas fa-leaf"></i> Gestionar Variedades (cultivador_variedades)</a></li>
-                            <li><a href="#"><i class="fas fa-book"></i> Gestionar Registros (cultivador_registros)</a></li>
-                            <li><a href="#"><i class="fas fa-flask"></i> Ver Análisis de Calidad (cultivador_analisis)</a></li>
-                        </ul>
-                    </div>
-                </div>
+                    <p>Gestiona variedades, registros y análisis de calidad.      
+                    orem impus lorem impis dertej.</p>    </div>
+              
             </div>
     
             <div class="card">
@@ -75,75 +84,109 @@
                     </div>
                     <p>Gestiona muestras, realiza análisis y control de calidad.</p>
                 </div>
-                <div class="user-roles">
-                    <div class="role">
-                        <h3>Laboratorios</h3>
-                        <ul>
-                            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard de Laboratorio</a></li>
-                            <li><a href="#"><i class="fas fa-vial"></i> Gestionar Muestras (laboratorio_muestras)</a></li>
-                            <li><a href="#"><i class="fas fa-microscope"></i> Realizar Analisis (laboratorio_analisis)</a></li>
-                            <li><a href="#"><i class="fas fa-check-circle"></i> Control de Calidad (laboratorio_control_calidad)</a></li>
-                        </ul>
+                </div>
+
+
+                <div class="contenedor-tarjetas">
+                    <div class="tarjetas">
+                        <div class="tarjeta tarjeta1">
+                            <div class="contenedor">
+                               <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                            </div>
+                            <div class="detalles">
+                                <h3>tarjeta 1</h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                            </div>
+                        </div>
+                        <div class="tarjeta tarjeta2">
+                            <div class="contenedor">
+                                <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                            </div>
+                            <div class="detalles">
+                                <h3>tarjeta 2</h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                            </div>
+                        </div>
+                        <div class="tarjeta tarjeta3">
+                            <div class="contenedor">
+                                <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                            </div>
+                            <div class="detalles">
+                                <h3>tarjeta3</h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                  
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Contacto</h5>
+                <p>Dirección: Av. Cannabis, 1234, Montevideo, Uruguay</p>
+                <p>Email: info@cannatech.com</p>
+                <p>Teléfono: +598 1234 5678</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Redes Sociales</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Acerca de</h5>
+                <p>CannaTech es una plataforma para la gestión integral de cultivos de cannabis, laboratorios y negocios relacionados.</p>
             </div>
         </div>
+        <hr>
+        <div class="text-center">
+            <p>&copy; 2024 CannaTech. Todos los derechos reservados.</p>
+            <p><a href="#">Aviso Legal</a> | <a href="#">Política de Privacidad</a></p>
+        </div>
     </div>
+</footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var lefter = document.querySelector('.lefter');
+        var left = document.querySelector('.left');
+        var right = document.querySelector('.right');
+        var righter = document.querySelector('.righter');
+    
+        if (lefter) {
+            lefter.addEventListener('click', function() {
+                window.location.href = '/features/';
+            });
+        }
+    
+        if (left) {
+            left.addEventListener('click', function() {
+                window.location.href = '/recomendar_cultivo/';
+            });
+        }
+    
+        if (righter) {
+            righter.addEventListener('click', function() {
+                window.location.href = '/condiciones/';
+            });
+        }
+
+        if (right) {
+            right.addEventListener('click', function() {
+                window.location.href ='/variedad/create/';
+            });
+        }
+
+    });
+    </script>
     
 
-        <div class="features-container">
-            <!-- Tarjeta 1 - Emprendedores -->
-            <div class="feature-card">
-              <div class="organic-image">
-                <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Icono -->
-                  <path d="M75 30C65 30 57 38 57 48V72H93V48C93 38 85 30 75 30Z" fill="#058655" />
-                  <path d="M75 72V120M75 120C85 120 93 112 93 102C93 92 85 84 75 84C65 84 57 92 57 102C57 112 65 120 75 120Z" stroke="#058655" stroke-width="5" />
-                  <path d="M57 72C57 63 50 57 41 57C32 57 25 63 25 72C25 81 32 87 41 87" stroke="#058655" stroke-width="5" />
-                  <path d="M93 72C93 81 100 87 109 87C118 87 125 81 125 72C125 63 118 57 109 57" stroke="#058655" stroke-width="5" />
-                </svg>
-              </div>
-              <div class="feature-details">
-                <h2>Emprendedores</h2>
-                <p>Acceso a herramientas para gestionar cultivos, laboratorios y presupuestos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <a href="#" class="btn btn-primary">Explorar</a>
-              </div>
-            </div>
-            
-            <!-- Tarjeta 2 - Investigadores -->
-            <div class="feature-card">
-              <div class="organic-image">
-                <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Icono -->
-                  <path d="M75 30C65.0589 30 57 38.0589 57 48V72H93V48C93 38.0589 84.9411 30 75 30Z" fill="#FFA000" />
-                  <path d="M57 90C57 100 65 108 75 108C85 108 93 100 93 90V84H57V90Z" fill="#FFA000" />
-                  <path d="M75 108V130" stroke="#FFA000" stroke-width="5" />
-                </svg>
-              </div>
-              <div class="feature-details">
-                <h2>Investigadores</h2>
-                <p>Acceso a herramientas para investigar cepas, análisis de laboratorio avanzado y colaboración científica. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <a href="#" class="btn btn-primary">Explorar</a>
-              </div>
-            </div>
-            
-            <!-- Tarjeta 3 - Comerciantes -->
-            <div class="feature-card">
-              <div class="organic-image">
-                <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Icono de caja o paquete -->
-                  <rect x="30" y="40" width="90" height="70" rx="10" fill="#9C27B0" />
-                  <path d="M45 70H105" stroke="white" stroke-width="5" />
-                  <path d="M75 110V130" stroke="white" stroke-width="5" />
-                </svg>
-              </div>
-              <div class="feature-details">
-                <h2>Comerciantes</h2>
-                <p>Gestiona inventario, control de calidad y distribución de productos derivados del cannabis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <a href="#" class="btn btn-primary">Explorar</a>
-              </div>
-            </div>
-                 </div>
     {% endblock %}
 </body>
 </html>

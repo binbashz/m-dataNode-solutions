@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from .views import management_view
+from .views import recomendar_cultivo_view
 from django.contrib.auth import views as auth_views
 from .views import (
     VariedadListView,
@@ -19,6 +21,7 @@ urlpatterns = [
     path('variedad/<int:pk>/update/', views.variedad_update, name='variedad_update'),
     path('variedad/<int:pk>/delete/', views.variedad_delete, name='variedad_delete'),
 
+    path('condiciones/', views.todas_condiciones_cultivo, name='todas_condiciones_cultivo'),
     path('variedad/<int:variedad_id>/condiciones/', views.condiciones_cultivo_list, name='condiciones_cultivo_list'),
     path('variedad/<int:variedad_id>/condiciones/create/', views.condiciones_cultivo_create, name='condiciones_cultivo_create'),
     path('variedad/<int:variedad_id>/condiciones/<int:pk>/update/', views.condiciones_cultivo_update, name='condiciones_cultivo_update'),
@@ -44,6 +47,11 @@ urlpatterns = [
 
     path('mi_vista/', views.mi_vista, name='mi_vista'),
     
+    path('features/', management_view, name='management-view'),
+
+    path('recomendar_cultivo/', views.recomendar_cultivo_view, name='recomendar_cultivo'),
+    path('recomendaciones/', views.recomendaciones_view, name='recomendaciones'), 
+        
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),
     path('error/500/', views.error_500, name='error_500'),
