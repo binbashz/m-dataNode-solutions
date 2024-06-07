@@ -28,6 +28,8 @@ class CondicionesCultivo(models.Model):
     temperatura = models.FloatField()
     humedad = models.FloatField()
     tipo_suelo = models.CharField(max_length=100)
+    ph_suelo = models.FloatField(default=7.0) 
+    nutrientes = models.CharField(max_length=100, default='normal')
 
     def __str__(self):
         return f"{self.variedad} - {self.registro_fecha}"

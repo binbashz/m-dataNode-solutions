@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
+from django.urls import reverse
 from .forms import RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm, AnalisisCalidadForm
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad, Variedad
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, HttpResponseServerError
-
 
 
 def home(request):
@@ -125,7 +127,6 @@ def condiciones_cultivo_create(request, variedad_id):
     if request.method == 'POST':
         form = CondicionesCultivoForm(request.POST)
         if form.is_valid():
-            print("Formulario válido") 
             condicion = form.save(commit=False)
             condicion.variedad = variedad
             condicion.save()
@@ -134,8 +135,11 @@ def condiciones_cultivo_create(request, variedad_id):
             print("Formulario inválido") 
             print(form.errors) 
     else:
+        # Asegúrate de que el placeholder tenga el formato correcto para la fecha (DD/MM/YYYY)
         form = CondicionesCultivoForm(initial={'variedad': variedad})
+        form.fields['registro_fecha'].widget.attrs['placeholder'] = 'DD/MM/YYYY'  # Ajuste del placeholder
     return render(request, 'core/condiciones_cultivo_form.html', {'form': form, 'variedad': variedad})
+
 
 @login_required
 def condiciones_cultivo_update(request, variedad_id, pk):
@@ -276,3 +280,94 @@ def error_404(request, exception):
 
 def error_500(request):
     return render(request, 'core/error_page.html', status=500)
+
+
+def management_view(request):
+    context = {
+        'title': 'Functions Panel',
+        'description': 'This is the panel where you can oversee various functions.'
+    }
+    return render(request, 'core/features.html', context)  
+
+# Recomendacion - inserccion de datos para la recomendacion 
+@login_required
+def recomendar_cultivo_view(request):
+    if request.method == 'POST':
+        form = CondicionesCultivoForm(request.POST)
+        if form.is_valid():
+            condiciones_actuales = form.save()
+            tipo_suelo_descripcion = dict(form.fields['tipo_suelo'].choices).get(condiciones_actuales.tipo_suelo)
+            recomendaciones = analizar_datos_y_generar_recomendaciones(condiciones_actuales)
+            
+            user_session_key = f'recomendaciones_{request.user.pk}'
+            request.session[user_session_key] = {
+                'recomendaciones': recomendaciones,
+                'tipo_suelo_descripcion': tipo_suelo_descripcion
+            }
+            
+            return redirect('recomendaciones')
+        else:
+            
+            print(form.errors)
+    else:
+        form = CondicionesCultivoForm()
+    return render(request, 'core/recomendar_cultivo.html', {'form': form})
+
+
+# Recomendacion 
+
+@login_required
+def recomendaciones_view(request):
+    user_session_key = f'recomendaciones_{request.user.pk}'
+    datos_usuario = request.session.get(user_session_key, {})
+    recomendaciones = datos_usuario.get('recomendaciones', [])
+    tipo_suelo_descripcion = datos_usuario.get('tipo_suelo_descripcion', '')
+    return render(request, 'core/recomendaciones.html', {
+        'recomendaciones': recomendaciones,
+        'tipo_suelo_descripcion': tipo_suelo_descripcion
+    })
+
+
+def analizar_datos_y_generar_recomendaciones(condiciones_actuales):
+    recomendaciones = []
+    if condiciones_actuales.humedad < 65:
+        recomendaciones.append("Aumentar la humedad relativa para favorecer el crecimiento de las plantas.")
+    elif condiciones_actuales.humedad > 70:
+        recomendaciones.append("Reducir la humedad relativa para evitar problemas de hongos y enfermedades.")
+    
+    if condiciones_actuales.temperatura < 20:
+        recomendaciones.append("Elevar la temperatura para proporcionar un ambiente más cálido y estimulante.")
+    elif condiciones_actuales.temperatura > 28:
+        recomendaciones.append("Disminuir la temperatura para evitar estrés térmico en las plantas.")
+    
+    if condiciones_actuales.ph_suelo < 6.0:
+        recomendaciones.append("Ajustar el pH del suelo para mantenerlo en un nivel óptimo para el crecimiento de las plantas.")
+    
+    if condiciones_actuales.nutrientes == 'bajo':
+        recomendaciones.append("Agregar fertilizantes para suplir las deficiencias nutricionales y promover un crecimiento saludable.")
+    
+    if not recomendaciones:
+        recomendaciones.append("Las condiciones actuales son óptimas. Continuar con el cuidado actual.")
+    
+    return recomendaciones
+
+
+
+# Listar todas las condiciones de cultivo
+def todas_condiciones_cultivo(request):
+    # Obtener todas las variedades del usuario actual
+    variedades = Variedad.objects.filter(user=request.user)
+    
+    # Obtener todas las condiciones de cultivo asociadas a esas variedades
+    condiciones = CondicionesCultivo.objects.filter(variedad__in=variedades)
+    
+    return render(request, 'core/condiciones_cultivo.html', {'condiciones': condiciones})
+
+
+def your_view(request):
+    management_view_url = reverse('management-view')
+    context = {
+        'management_view_url': management_view_url,
+        # otros contextos aquí
+    }
+    return render(request, 'core/home.html', context)

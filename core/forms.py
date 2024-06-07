@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.conf import settings
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad
 
 
@@ -32,15 +33,44 @@ class VariedadForm(forms.ModelForm):
         model = Variedad
         fields = ['nombre', 'descripcion']
 
+
+
 class CondicionesCultivoForm(forms.ModelForm):
+    # Define tus opciones de tipo de suelo aquí
+    TIPO_SUELO_CHOICES = (
+        ('arcilloso', 'Arcilloso: Alta proporción de arcilla, retiene agua y nutrientes.'),
+        ('arenoso', 'Arenoso: Mucha arena, muy permeable, retiene menos agua y nutrientes.'),
+        ('limoso', 'Limoso: Textura suave, retiene agua y nutrientes.'),
+        ('humifero', 'Humífero: Rico en materia orgánica y nutrientes, muy fértil.'),
+        ('calcareo', 'Calcáreo: Alto contenido de calcio, afecta el pH del suelo.'),
+        ('salino', 'Salino: Concentraciones altas de sales solubles, perjudicial para cultivos.'),
+        ('turba', 'Turba: Suelo orgánico de descomposición vegetal.'),
+    )
+
+    # Define el campo tipo_suelo como ChoiceField y el campo registro_fecha como DateField
+    tipo_suelo = forms.ChoiceField(
+        choices=TIPO_SUELO_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control tipo-suelo-select'})
+    )
+    registro_fecha = forms.DateField(
+    input_formats=settings.DATE_INPUT_FORMATS,
+    widget=forms.DateInput(format='%d/%m/%Y', attrs={
+        'placeholder': 'DD/MM/YYYY',
+        'class': 'form-control'
+    })
+)
+
+
     class Meta:
         model = CondicionesCultivo
-        fields = ['variedad', 'temperatura', 'humedad', 'tipo_suelo', 'registro_fecha']
-
+        fields = ['variedad', 'registro_fecha', 'temperatura', 'humedad', 'tipo_suelo', 'ph_suelo', 'nutrientes']
+        
+        
 class TratamientoFitofarmaceuticoForm(forms.ModelForm):
     class Meta:
         model = TratamientoFitofarmaceutico
         fields = ['variedad', 'tratamiento', 'fecha_aplicacion', 'dosis']
+        
 
 class AnalisisCalidadForm(forms.ModelForm):
     class Meta:
