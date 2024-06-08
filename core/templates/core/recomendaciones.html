@@ -1,29 +1,53 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-
 {% block content %}
 <link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
 
 <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 <br>
 
-
-        
-
 <h1>Recomendaciones</h1>
 
+<h2>Datos Ingresados</h2>
+<ul>
+    <li><strong>Temperatura:</strong> {{ condiciones.temperatura }} °C</li>
+    <li><strong>Humedad:</strong> {{ condiciones.humedad }} %</li>
+    <li><strong>Tipo de Suelo:</strong> {{ tipo_suelo_descripcion }}</li>
+    <li><strong>pH del Suelo:</strong> {{ condiciones.ph_suelo }}</li>
+    <li><strong>Nutrientes:</strong> {{ condiciones.nutrientes }}</li>
+    <li><strong>Iluminación:</strong> {{ condiciones.iluminacion }} lux</li>
+    <li><strong>Temperatura del Suelo:</strong> {{ condiciones.temperatura_suelo }} °C</li>
+    <li><strong>Humedad del Suelo:</strong> {{ condiciones.humedad_suelo }} %</li>
+    <li><strong>Temperatura Ambiente:</strong> {{ condiciones.temperatura_ambiente }} °C</li>
+    <li><strong>Humedad Ambiente:</strong> {{ condiciones.humedad_ambiente }} %</li>
+    <li><strong>Concentración de CO2:</strong> {{ condiciones.concentracion_co2 }} ppm</li>
+    <li><strong>Ventilación:</strong> {{ condiciones.ventilacion }}</li>
+    <li><strong>Oxígeno en el Suelo:</strong> {{ condiciones.oxigeno_suelo }} %</li>
+    <li><strong>Calidad del Agua (pH):</strong> {{ condiciones.calidad_agua_ph }}</li>
+    <li><strong>Calidad del Agua (Cloro):</strong> {{ condiciones.calidad_agua_cloro }} ppm</li>
+</ul>
+
 <h2>Recomendaciones de Cultivo</h2>
+{% if recomendaciones %}
 <ul>
     {% for recomendacion in recomendaciones %}
     <li>{{ recomendacion }}</li>
     {% endfor %}
 </ul>
+{% else %}
+<p>No se encontraron recomendaciones para los datos ingresados.</p>
+{% endif %}
 
 {% if tipo_suelo_descripcion %}
 <h2>Descripción del Tipo de Suelo</h2>
 <p>{{ tipo_suelo_descripcion }}</p>
 {% endif %}
 
-{% endblock %}
+{% if recomendaciones %}
+<h2>Estado del Cultivo</h2>
+<p>El cultivo se encuentra en condiciones {% if "Las condiciones actuales son óptimas. Continuar con el cuidado actual." in recomendaciones %}óptimas{% else %}subóptimas{% endif %}.</p>
+{% endif %}
 
+
+{% endblock %}

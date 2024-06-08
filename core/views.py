@@ -84,12 +84,12 @@ def variedad_delete(request, pk):
         return redirect('products')
     return render(request, 'core/variedad_confirm_delete.html', {'variedad': variedad})
 
-# vista de registro / registarse
+# vista de registro / registrarse - signup
 def signup(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Aquí se hace el hasheo de la contraseña
+            user = form.save()  
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')  # Obtener la contraseña en texto plano
             user = authenticate(username=username, password=password)
@@ -135,9 +135,9 @@ def condiciones_cultivo_create(request, variedad_id):
             print("Formulario inválido") 
             print(form.errors) 
     else:
-        # Asegúrate de que el placeholder tenga el formato correcto para la fecha (DD/MM/YYYY)
+        # placeholder  para la fecha (DD/MM/YYYY)
         form = CondicionesCultivoForm(initial={'variedad': variedad})
-        form.fields['registro_fecha'].widget.attrs['placeholder'] = 'DD/MM/YYYY'  # Ajuste del placeholder
+        form.fields['registro_fecha'].widget.attrs['placeholder'] = 'DD/MM/YYYY' 
     return render(request, 'core/condiciones_cultivo_form.html', {'form': form, 'variedad': variedad})
 
 
@@ -239,14 +239,13 @@ def analisis_detail(request, variedad_id, analisis_id):
 
     # Verificar si la variedad pertenece al usuario actual
     if variedad.user != user:
-        # Aquí puedes manejar la situación donde el usuario no tiene permiso para ver esta variedad
+        
         return render(request, 'core/error_page.html', {'error_message': 'No tiene permiso para ver esta variedad.'})
 
     # Obtener el análisis si pertenece a la variedad del usuario
     analisis = get_object_or_404(AnalisisCalidad, pk=analisis_id, variedad=variedad)
     
     return render(request, 'core/analisis_detail.html', {'analisis': analisis, 'variedad': variedad, 'resultado': analisis.resultado})
-
 
 
 @login_required
@@ -289,7 +288,7 @@ def management_view(request):
     }
     return render(request, 'core/features.html', context)  
 
-# Recomendacion - inserccion de datos para la recomendacion 
+# Recomendacion - Esta función maneja la inserción de datos y redirecciona a la vista de recomendaciones
 @login_required
 def recomendar_cultivo_view(request):
     if request.method == 'POST':
@@ -297,74 +296,181 @@ def recomendar_cultivo_view(request):
         if form.is_valid():
             condiciones_actuales = form.save()
             tipo_suelo_descripcion = dict(form.fields['tipo_suelo'].choices).get(condiciones_actuales.tipo_suelo)
-            recomendaciones = analizar_datos_y_generar_recomendaciones(condiciones_actuales)
+            recomendaciones, estado_cultivo = analizar_datos_y_generar_recomendaciones(condiciones_actuales)
             
             user_session_key = f'recomendaciones_{request.user.pk}'
             request.session[user_session_key] = {
                 'recomendaciones': recomendaciones,
-                'tipo_suelo_descripcion': tipo_suelo_descripcion
+                'estado_cultivo': estado_cultivo,
+                'tipo_suelo_descripcion': tipo_suelo_descripcion,
+                'condiciones': {
+                    'temperatura': condiciones_actuales.temperatura,
+                    'humedad': condiciones_actuales.humedad,
+                    'tipo_suelo': condiciones_actuales.tipo_suelo,
+                    'ph_suelo': condiciones_actuales.ph_suelo,
+                    'nutrientes': condiciones_actuales.nutrientes,
+                    'iluminacion': condiciones_actuales.iluminacion,
+                    'temperatura_suelo': condiciones_actuales.temperatura_suelo,
+                    'humedad_suelo': condiciones_actuales.humedad_suelo,
+                    'temperatura_ambiente': condiciones_actuales.temperatura_ambiente,
+                    'humedad_ambiente': condiciones_actuales.humedad_ambiente,
+                    'concentracion_co2': condiciones_actuales.concentracion_co2,
+                    'ventilacion': condiciones_actuales.ventilacion,
+                    'oxigeno_suelo': condiciones_actuales.oxigeno_suelo,
+                    'calidad_agua_ph': condiciones_actuales.calidad_agua_ph,
+                    'calidad_agua_cloro': condiciones_actuales.calidad_agua_cloro
+                }
             }
             
             return redirect('recomendaciones')
         else:
-            
+            # Puedes agregar mensajes de error o validación aquí
             print(form.errors)
     else:
         form = CondicionesCultivoForm()
+    
     return render(request, 'core/recomendar_cultivo.html', {'form': form})
 
-
-# Recomendacion 
 
 @login_required
 def recomendaciones_view(request):
     user_session_key = f'recomendaciones_{request.user.pk}'
     datos_usuario = request.session.get(user_session_key, {})
     recomendaciones = datos_usuario.get('recomendaciones', [])
+    estado_cultivo = datos_usuario.get('estado_cultivo', 'desconocido')
     tipo_suelo_descripcion = datos_usuario.get('tipo_suelo_descripcion', '')
+    condiciones = datos_usuario.get('condiciones', {})
+    
+    # Limpia la sesión después de usarla, si es necesario
+    del request.session[user_session_key]
+
     return render(request, 'core/recomendaciones.html', {
         'recomendaciones': recomendaciones,
-        'tipo_suelo_descripcion': tipo_suelo_descripcion
+        'estado_cultivo': estado_cultivo,
+        'tipo_suelo_descripcion': tipo_suelo_descripcion,
+        'condiciones': condiciones
     })
 
 
+
+#Esta función maneja la visualización de las recomendaciones almacenadas en la sesión del usuario
+@login_required
+def recomendaciones_view(request):
+    user_session_key = f'recomendaciones_{request.user.pk}'
+    datos_usuario = request.session.get(user_session_key, {})
+    recomendaciones = datos_usuario.get('recomendaciones', [])
+    tipo_suelo_descripcion = datos_usuario.get('tipo_suelo_descripcion', '')
+    condiciones = datos_usuario.get('condiciones', {})
+    return render(request, 'core/recomendaciones.html', {
+        'recomendaciones': recomendaciones,
+        'tipo_suelo_descripcion': tipo_suelo_descripcion,
+        'condiciones': condiciones
+    })
+
+
+#Esta función contiene la lógica para analizar los datos ingresados y generar las recomendaciones correspondientes
 def analizar_datos_y_generar_recomendaciones(condiciones_actuales):
     recomendaciones = []
-    if condiciones_actuales.humedad < 65:
+
+    # Análisis de la humedad
+    if condiciones_actuales.humedad < 60:
         recomendaciones.append("Aumentar la humedad relativa para favorecer el crecimiento de las plantas.")
     elif condiciones_actuales.humedad > 70:
         recomendaciones.append("Reducir la humedad relativa para evitar problemas de hongos y enfermedades.")
-    
-    if condiciones_actuales.temperatura < 20:
-        recomendaciones.append("Elevar la temperatura para proporcionar un ambiente más cálido y estimulante.")
-    elif condiciones_actuales.temperatura > 28:
-        recomendaciones.append("Disminuir la temperatura para evitar estrés térmico en las plantas.")
-    
+    else:
+        recomendaciones.append("La humedad relativa es adecuada.")
+
+    # Análisis de la temperatura
+    if condiciones_actuales.temperatura < 25:
+        recomendaciones.append("Elevar la temperatura durante las horas de luz.")
+    elif condiciones_actuales.temperatura > 30:
+        recomendaciones.append("Disminuir la temperatura durante las horas de luz.")
+    else:
+        recomendaciones.append("La temperatura es adecuada.")
+
+    # Análisis del pH del suelo
     if condiciones_actuales.ph_suelo < 6.0:
-        recomendaciones.append("Ajustar el pH del suelo para mantenerlo en un nivel óptimo para el crecimiento de las plantas.")
+        recomendaciones.append("Ajustar el pH del suelo para mantenerlo en un nivel óptimo.")
+    elif condiciones_actuales.ph_suelo > 7.5:
+        recomendaciones.append("Reducir el pH del suelo para mantenerlo en un nivel óptimo.")
+    else:
+        recomendaciones.append("El pH del suelo es adecuado.")
     
+    # Análisis de nutrientes
     if condiciones_actuales.nutrientes == 'bajo':
-        recomendaciones.append("Agregar fertilizantes para suplir las deficiencias nutricionales y promover un crecimiento saludable.")
+        recomendaciones.append("Agregar fertilizantes para suplir las deficiencias nutricionales.")
+    else:
+        recomendaciones.append("Los niveles de nutrientes son adecuados.")
+
+    # Análisis de iluminación
+    if 5000 <= condiciones_actuales.iluminacion < 10000:
+        recomendaciones.append("La iluminación actual es adecuada para plantas jóvenes y esquejes.")
+    elif 10000 <= condiciones_actuales.iluminacion < 15000:
+        recomendaciones.append("Aumentar la iluminación para favorecer el desarrollo en plantas jóvenes y esquejes.")
+    elif 15000 <= condiciones_actuales.iluminacion < 50000:
+        recomendaciones.append("La iluminación actual es adecuada para la fase de crecimiento de las plantas.")
+    elif 50000 <= condiciones_actuales.iluminacion < 75000:
+        recomendaciones.append("La iluminación actual es adecuada para la fase de floración de las plantas.")
+    elif condiciones_actuales.iluminacion >= 75000:
+        recomendaciones.append("Reducir la iluminación para evitar posibles daños por exceso de luz.")
+    else:
+        recomendaciones.append("La iluminación es adecuada.")
+
+    # Análisis de temperatura del suelo
+    if condiciones_actuales.temperatura_suelo < 15:
+        recomendaciones.append("Aumentar la temperatura del suelo para un crecimiento óptimo.")
+    elif condiciones_actuales.temperatura_suelo > 25:
+        recomendaciones.append("Disminuir la temperatura del suelo para evitar el estrés térmico.")
+    else:
+        recomendaciones.append("La temperatura del suelo es adecuada.")
+
+    # Análisis de humedad del suelo
+    if condiciones_actuales.humedad_suelo < 50:
+        recomendaciones.append("Aumentar la humedad del suelo para mejorar la disponibilidad de agua.")
+    elif condiciones_actuales.humedad_suelo > 70:
+        recomendaciones.append("Reducir la humedad del suelo para evitar problemas de pudrición de raíces.")
+    else:
+        recomendaciones.append("La humedad del suelo es adecuada.")
+
+    # Análisis de CO2
+    if condiciones_actuales.concentracion_co2 < 400:
+        recomendaciones.append("Aumentar la concentración de CO2 para mejorar la fotosíntesis.")
+    else:
+        recomendaciones.append("La concentración de CO2 es adecuada.")
     
+    # Análisis de oxígeno en el suelo
+    if condiciones_actuales.oxigeno_suelo < 10:
+        recomendaciones.append("Mejorar la aireación del suelo para aumentar la concentración de oxígeno.")
+    else:
+        recomendaciones.append("La concentración de oxígeno en el suelo es adecuada.")
+
+    # Análisis de calidad del agua
+    if condiciones_actuales.calidad_agua_ph < 6:
+        recomendaciones.append("Ajustar el pH del agua de riego.")
+    if condiciones_actuales.calidad_agua_cloro > 0:
+        recomendaciones.append("Reducir las concentraciones de cloro en el agua de riego.")
+    else:
+        recomendaciones.append("La calidad del agua es adecuada.")
+
+    # Si no hay recomendaciones específicas, agregar un mensaje general
     if not recomendaciones:
         recomendaciones.append("Las condiciones actuales son óptimas. Continuar con el cuidado actual.")
-    
-    return recomendaciones
+
+    estado_cultivo = "óptimo" if recomendaciones == ["Las condiciones actuales son óptimas. Continuar con el cuidado actual."] else "subóptimo"
+    return recomendaciones, estado_cultivo
 
 
 
-# Listar todas las condiciones de cultivo
+
+@login_required
 def todas_condiciones_cultivo(request):
-    # Obtener todas las variedades del usuario actual
     variedades = Variedad.objects.filter(user=request.user)
-    
-    # Obtener todas las condiciones de cultivo asociadas a esas variedades
     condiciones = CondicionesCultivo.objects.filter(variedad__in=variedades)
     
     return render(request, 'core/condiciones_cultivo.html', {'condiciones': condiciones})
 
 
-def your_view(request):
+def home_view_facts(request):
     management_view_url = reverse('management-view')
     context = {
         'management_view_url': management_view_url,
@@ -375,17 +481,17 @@ def your_view(request):
 
 def condiciones_cultivo_view(request):
     condiciones = CondicionesCultivo.objects.all().order_by('variedad__nombre', 'registro_fecha')
-    return render(request, 'tu_template.html', {'condiciones': condiciones})
+    return render(request, 'core/home.html', {'condiciones': condiciones})
 
 
-def home(request):
+def home_datos_usuario(request):
     if request.user.is_authenticated:
         # Obtener todas las variedades asociadas al usuario actual
         variedades = Variedad.objects.filter(user=request.user)
-        # Aquí puedes obtener más datos relacionados con el usuario
+        # Obtener más datos relacionados con el usuario
         context = {
             'variedades': variedades,
-            # Agrega otros contextos según lo que necesites mostrar
+            # Agregar otros contextos según lo que se necesites mostrar...
         }
         return render(request, 'core/home.html', context)
     else:

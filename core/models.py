@@ -27,9 +27,27 @@ class CondicionesCultivo(models.Model):
     registro_fecha = models.DateField()
     temperatura = models.FloatField()
     humedad = models.FloatField()
-    tipo_suelo = models.CharField(max_length=100)
-    ph_suelo = models.FloatField(default=7.0) 
+    tipo_suelo = models.CharField(max_length=100, choices=[
+        ('arcilloso', 'Arcilloso: Alta proporción de arcilla, retiene agua y nutrientes.'),
+        ('arenoso', 'Arenoso: Mucha arena, muy permeable, retiene menos agua y nutrientes.'),
+        ('limoso', 'Limoso: Textura suave, retiene agua y nutrientes.'),
+        ('humifero', 'Humífero: Rico en materia orgánica y nutrientes, muy fértil.'),
+        ('calcareo', 'Calcáreo: Alto contenido de calcio, afecta el pH del suelo.'),
+        ('salino', 'Salino: Concentraciones altas de sales solubles, perjudicial para cultivos.'),
+        ('turba', 'Turba: Suelo orgánico de descomposición vegetal.'),
+    ])
+    ph_suelo = models.FloatField(default=7.0)
     nutrientes = models.CharField(max_length=100, default='normal')
+    iluminacion = models.FloatField(default=0.0)
+    temperatura_suelo = models.FloatField(default=0.0)
+    humedad_suelo = models.FloatField(default=0.0)
+    temperatura_ambiente = models.FloatField(default=0.0)
+    humedad_ambiente = models.FloatField(default=0.0)
+    concentracion_co2 = models.FloatField(default=400.0)
+    ventilacion = models.CharField(max_length=100, default='normal')
+    oxigeno_suelo = models.FloatField(default=0.0)
+    calidad_agua_ph = models.FloatField(default=6.0)
+    calidad_agua_cloro = models.FloatField(default=0.0)
 
     def __str__(self):
         return f"{self.variedad} - {self.registro_fecha}"

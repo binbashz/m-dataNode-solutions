@@ -105,8 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
 
+TIME_ZONE = 'UTC'
 
 
 USE_TZ = True
@@ -124,7 +124,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core', 'static')]
 AUTH_USER_MODEL = 'auth.User'
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d', '%d-%m-%Y')
-
 
 
 
