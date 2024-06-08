@@ -371,3 +371,22 @@ def your_view(request):
         # otros contextos aquí
     }
     return render(request, 'core/home.html', context)
+
+
+def condiciones_cultivo_view(request):
+    condiciones = CondicionesCultivo.objects.all().order_by('variedad__nombre', 'registro_fecha')
+    return render(request, 'tu_template.html', {'condiciones': condiciones})
+
+
+def home(request):
+    if request.user.is_authenticated:
+        # Obtener todas las variedades asociadas al usuario actual
+        variedades = Variedad.objects.filter(user=request.user)
+        # Aquí puedes obtener más datos relacionados con el usuario
+        context = {
+            'variedades': variedades,
+            # Agrega otros contextos según lo que necesites mostrar
+        }
+        return render(request, 'core/home.html', context)
+    else:
+        return render(request, 'core/home.html')

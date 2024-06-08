@@ -1,5 +1,3 @@
-<!-- Todas las condiciones de cultivo registradas  -->
-
 {% extends 'core/base.html' %}
 {% load static %}
 {% block content %}
@@ -9,25 +7,32 @@
             <h1 class="mb-4 texto-negro">Todas las Condiciones de Cultivo</h1>
         </div>
         
-        <div class="card-container">
-            {% for condicion in condiciones %}
-            <div class="card">
-                <div class="card-body">
-                    <p><strong>Variedad:</strong> {{ condicion.variedad.nombre }}</p>
-                    <p><strong>Fecha:</strong> {{ condicion.registro_fecha }}</p>
-                    <p><strong>Temperatura:</strong> {{ condicion.temperatura }} °C</p>
-                    <p><strong>Humedad:</strong> {{ condicion.humedad }} %</p>
-                    <p><strong>Tipo de Suelo:</strong> {{ condicion.tipo_suelo }}</p>
-                    <div class="d-flex justify-content-end">
-                        <a href="{% url 'condiciones_cultivo_update' condicion.variedad.pk condicion.pk %}" class="btn btn-primary me-2">Editar</a>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarCondicion{{ condicion.pk }}">
-                            Eliminar
-                        </button>
+        {% regroup condiciones by variedad as grouped_condiciones %}
+        
+        {% for group in grouped_condiciones %}
+        <div class="variedad-group">
+            <h2 class="variedad-nombre">{{ group.grouper.nombre }}</h2>
+            <div class="card-cont">
+                {% for condicion in group.list %}
+                <div class="card cultivo-card">
+                    <div class="card-body">
+                        <p><strong>Variedad:</strong> {{ condicion.variedad.nombre }}</p>
+                        <p><strong>Fecha:</strong> {{ condicion.registro_fecha }}</p>
+                        <p><strong>Temperatura:</strong> {{ condicion.temperatura }} °C</p>
+                        <p><strong>Humedad:</strong> {{ condicion.humedad }} %</p>
+                        <p><strong>Tipo de Suelo:</strong> {{ condicion.tipo_suelo }}</p>
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'condiciones_cultivo_update' condicion.variedad.pk condicion.pk %}" class="btn btn-primary me-2">Editar</a>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarCondicion{{ condicion.pk }}">
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 
     <!-- Modales para eliminar condición -->

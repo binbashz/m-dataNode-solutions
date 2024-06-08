@@ -15,14 +15,13 @@ body {
   color: #333; 
 }
 
-
+/* Estilos para el tema oscuro */
 
 .dark-theme {
   background-color: #000;
   color: #fff;
 }
 
-/* Estilos para el tema oscuro */
 
 /* Estilos para el botón de cambio de modo */
 .modo-oscuro .switch .base {
@@ -54,6 +53,10 @@ body {
   transform: translateX(24px);
 }
 
+
+.header .header {
+  color: white;
+}
 
 .container {
   background-color: transparent;
@@ -354,9 +357,6 @@ body {
   font-weight: 600;
   color: #058655; /* Ajusta el color según sea necesario */
 }
-
-
-
 
 
 .transparent-navbar {
@@ -766,11 +766,11 @@ nav.active ul li a:hover span {
 }
 
 .navbar {
-  background-color: #1a221d; 
+  background-color: #ffffff; 
 }
 
 .navbar .nav-link {
-  color: white; 
+  color: #058655;
 }
 
 .navbar .nav-link:hover {
@@ -931,10 +931,12 @@ nav.active ul li a:hover span {
   color: #fff;
 }
 
-/* Contenedor de tarjetas ---------2----- */
-
+/* Contenedor de tarjetas  home*/
+/* Contenedor de tarjetas */
 .contenedor-tarjetas {
+  display: flex;
   overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Indica el desplazamiento horizontal obligatorio */
   -webkit-overflow-scrolling: touch; /* Desplazamiento suave en móviles */
   overflow-y: hidden;
   white-space: nowrap; /* Prevenir el wrap de tarjetas */
@@ -951,14 +953,40 @@ nav.active ul li a:hover span {
 .tarjeta {
   display: inline-block;
   background-color: #ffffff;
-  width: 17rem; /* Ancho  */
-  height: 26rem; /* alto */
+  width: 17rem; 
+  height: auto; /* Cambiar de altura fija a auto */
   margin: 0 auto;
   margin-bottom: 9rem; 
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(21, 39, 21, 0.18);
-  overflow: hidden;
   transition: transform 0.3s ease;
+  vertical-align: top; /* Asegura que las tarjetas se alineen correctamente */
+  overflow: hidden; /* Evitar que el contenido se salga de la tarjeta */
+  scroll-snap-align: start; /* Define cómo se alinea la tarjeta en el desplazamiento */
+}
+
+/* Ajuste de contenido */
+.detalles {
+  padding: 20px 10px;
+  text-align: center; /* Centrar el texto */
+}
+
+.detalles > h3 {
+  color: #000000da;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 10px 0 15px 0;
+  white-space: normal; /* Permitir que el texto se ajuste */
+}
+
+.detalles > p {
+  color: #022b0c;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 400;
+  max-height: none; /* Eliminar límite de altura */
+  overflow: visible; /* Permitir que el texto se muestre completo */
+  white-space: normal; /* Permitir que el texto se ajuste */
 }
 
 /* Contenedor de imagen */
@@ -1011,24 +1039,6 @@ nav.active ul li a:hover span {
   opacity: 1;
 }
 
-.detalles {
-  padding: 20px 10px;
-}
-
-.detalles > h3 {
-  color: #000000da;
-  font-weight: 600;
-  font-size: 18px;
-  margin: 10px 0 15px 0;
-}
-
-.detalles > p {
-  color: #022b0c;
-  font-size: 15px;
-  line-height: 30px;
-  font-weight: 400;
-}
-
 .contenedor:after {
   content: "";
   height: 100%;
@@ -1053,6 +1063,47 @@ nav.active ul li a:hover span {
 }
 
 
+/* Estilos para dispositivos con pantalla ancha */
+@media (min-width: 768px) {
+  .contenedor-tarjetas {
+    overflow-x: auto;
+    justify-content: center;
+    margin-top: 5%;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 20px 0;
+  }
+
+  .tarjetas {
+    display: flex;
+    justify-content: center; 
+    gap: 20px;
+  }
+}
+
+
+/* Estilos para dispositivos con pantalla pequeña */
+@media (max-width: 767px) {
+  .contenedor-tarjetas {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 20px 0;
+  }
+
+  .tarjetas {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .tarjeta {
+    scroll-snap-align: start;
+  }
+}
 
 
 
@@ -1958,7 +2009,7 @@ transform: translateY(-10px);
     left: 5px;
     position: absolute;
     will-change: transform;
-    color: #02200c; /* color texto items*/
+    color: #0da03e; /* color texto items*/
     text-shadow: 0 0 5px rgba(43, 146, 95, 0.6)
   }
   .lefter {
@@ -1966,20 +2017,27 @@ transform: translateY(-10px);
     background-image: url(https://cdn3.iconfinder.com/data/icons/other-icons/48/organization-512.png);
   }
   .left {
+    opacity: 100;
     transform: translateX(-30px) translateZ(-25px) rotateY(-5deg);
     background-image: url(https://cdn3.iconfinder.com/data/icons/other-icons/48/creative_draw-512.png);
+    filter: hue-rotate(68deg)
   }
   .center {
     opacity: 1;
     background-image: url(https://cdn3.iconfinder.com/data/icons/other-icons/48/app_window-512.png);
   }
+
   .right {
     transform: translateX(30px) translateZ(-25px) rotateY(5deg);
-    background-image: url(https://cdn3.iconfinder.com/data/icons/other-icons/48/cloud_weather-512.png);
+    background-image: url('https://cdn3.iconfinder.com/data/icons/ionicons/512/icon-ios7-cloud-upload-outline-512.png');
+    filter: hue-rotate(18deg); 
   }
+
   .righter {
+    
     transform: translateX(60px) translateZ(-50px) rotateY(10deg);
     background-image: url(https://cdn3.iconfinder.com/data/icons/other-icons/48/search-512.png);
+    
   }
   .explainer {
     font-weight: 300;
@@ -2008,8 +2066,128 @@ transform: translateY(-10px);
     right: 10px;
     color: #ffffff;
     text-decoration: none;
-    text-shadow: 0 0 3px rgba(0, 0, 0, .4);
+    text-shadow: 0 0 3px rgba(3, 83, 27, 0.4);
     &::first-letter {
       font-size: 12px;
     }
   }
+
+
+
+  /*  todas las condiciones de cultivo  */
+
+/* Card Container en Display Grid */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+
+
+
+/* Card Container en Display Grid */
+
+
+.card-cont {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.cultivo-card {
+  max-width: 100%;
+  aspect-ratio: 1 / 1; /* Mantiene la relación de aspecto cuadrada */
+}
+
+.texto-negro {
+    color: #000;
+}
+
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Condiciones de Cultivo para { variedad tal }*/
+.card {
+  max-width: 100%;
+  aspect-ratio: 1 / 1; /* Mantiene la relación de aspecto cuadrada */
+}
+
+
+/* tarjetas home no logueado */
+
+/* Estilos para las tarjetas */
+
+.tarjetacontainer {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.tarjetin {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  width: 300px;
+}
+
+.tarjetin:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cabecera img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.pie {
+  padding: 20px;
+}
+
+.titulo h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.pie p {
+  color: #666;
+  line-height: 1.6;
+}
+
+
+
+@media (min-width: 600px) {
+  .tarjetin {
+      width: 45%; /* Dos tarjetas por fila en pantallas de al menos 600px de ancho */
+  }
+}
+
+@media (min-width: 900px) {
+  .tarjetin {
+      width: 30%; /* Tres tarjetas por fila en pantallas de al menos 900px de ancho */
+  }
+}
+
+
+

@@ -1,192 +1,188 @@
-{% extends "core/base.html" %} 
-{% load static %} 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestión Integral de Cannabis</title>
-    
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block styles %}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    {% block styles %}
-   
-    {% endblock %}
-    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
-</head>
-<body>
-    {% block content %}
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="hero">
             <h1>Gestión Integral de Cannabis</h1>
             <p>Software para optimizar la gestión de cultivos, laboratorios, negocios y más.</p>
         </div>
         {% if user.is_authenticated %}
-        {% if user.is_authenticated %}
-<div class="all">
-    <div class="lefter">
-        <div class="text">Servicios Avanzados</div>
-    </div>
-    <div class="left">
-        <div class="text">Recomendacion</div>
-    </div>
-    <div class="center">
-        <div class="explainer">
-            <i class="fas fa-bars"></i>
-        </div>
-        <div class="text"></div>
-    </div>
-    <div class="right">
-        <div class="text">Registrar Variedad</div>
-    </div>
-    <div class="righter">
-        <div class="text">Condiciones Cultivo</div>
-    </div>
-</div>
-{% endif %}
-            <br><br>
-            <br><br>
-            
-         {% endif %}
-
-        <div class="productContainer">
-            <div class="card">
-                <div class="header" style="height: 17rem;">
-                    <img src="{% static 'core/images/entre.PNG' %}" alt="entrepreneur_presupuestos">
+            <div class="all">
+                <div class="lefter">
+                    <div class="text">Servicios Avanzados</div>
                 </div>
-                <div class="footer">
-                    <div class="title" style="text-align: center; display: inline-block; vertical-align: middle;">
-                        <h2>Emprendedores</h2>
+                <div class="left">
+                    <div class="text">Recomendación</div>
+                </div>
+                <div class="center">
+                    <div class="explainer">
+                        <i class="fas fa-bars"></i>
                     </div>
-                    <p>Acceso a herramientas para gestionar cultivos, laboratorios y presupuestos.</p>
+                    <div class="text"></div>
                 </div>
+                <div class="right">
+                    <div class="text">Registrar Variedad</div>
                 </div>
-            
-    
-            <div class="card">
-                <div class="header" style="height: 17rem;">
-                    <img src="{% static 'core/images/cul.PNG' %}" alt="cultivador_cultivos">
+                <div class="righter">
+                    <div class="text">Condiciones Cultivo</div>
                 </div>
-                <div class="footer">
-                    <div class="title" style="text-align: center; display: inline-block; vertical-align: middle;">
-                        <h2>Cultivadores</h2>
-                    </div>
-                    <p>Gestiona variedades, registros y análisis de calidad.      
-                    orem impus lorem impis dertej.</p>    </div>
-              
             </div>
-    
-            <div class="card">
-                <div class="header" style="height: 17rem;">
-                    <img src="{% static 'core/images/labo.jpg' %}" alt="laboratorio_analisis">
-                </div>
-                <div class="footer">
-                    <div class="title" style="text-align: center; display: inline-block; vertical-align: middle;">
-                        <h2>Laboratorios</h2>
+        {% else %}
+            <!-- Si no está logueado, mostrar tarjetas con fotos para emprendedores, cultivadores y laboratorios -->
+            <div class="tarjetacontainer">
+                <div class="tarjetin">
+                    <div class="cabecera">
+                        <img src="{% static 'core/images/entre.PNG' %}" alt="entrepreneur_presupuestos">
                     </div>
-                    <p>Gestiona muestras, realiza análisis y control de calidad.</p>
-                </div>
-                </div>
-
-
-                <div class="contenedor-tarjetas">
-                    <div class="tarjetas">
-                        <div class="tarjeta tarjeta1">
-                            <div class="contenedor">
-                               <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                            </div>
-                            <div class="detalles">
-                                <h3>tarjeta 1</h3>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
-                            </div>
+                    <div class="pie">
+                        <div class="titulo">
+                            <h2>Emprendedores</h2>
                         </div>
-                        <div class="tarjeta tarjeta2">
-                            <div class="contenedor">
-                                <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                            </div>
-                            <div class="detalles">
-                                <h3>tarjeta 2</h3>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
-                            </div>
-                        </div>
-                        <div class="tarjeta tarjeta3">
-                            <div class="contenedor">
-                                <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                            </div>
-                            <div class="detalles">
-                                <h3>tarjeta3</h3>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
-                            </div>
-                        </div>
+                        <p>Acceso a herramientas para gestionar cultivos, laboratorios y presupuestos.</p>
                     </div>
                 </div>
-                  
- <!-- Footer -->
- <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>Contacto</h5>
-                <p>Dirección: Av. Cannabis, 1234, Montevideo, Uruguay</p>
-                <p>Email: info@cannatech.com</p>
-                <p>Teléfono: +598 1234 5678</p>
+                <div class="tarjetin">
+                    <div class="cabecera">
+                        <img src="{% static 'core/images/cul.PNG' %}" alt="cultivador_cultivos">
+                    </div>
+                    <div class="pie">
+                        <div class="titulo">
+                            <h2>Cultivadores</h2>
+                        </div>
+                        <p>Gestiona variedades, registros y análisis de calidad.</p>
+                    </div>
+                </div>
+                <div class="tarjetin">
+                    <div class="cabecera">
+                        <img src="{% static 'core/images/labo.jpg' %}" alt="laboratorio_analisis">
+                    </div>
+                    <div class="pie">
+                        <div class="titulo">
+                            <h2>Laboratorios</h2>
+                        </div>
+                        <p>Gestiona muestras, realiza análisis y control de calidad.</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <h5>Redes Sociales</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">LinkedIn</a></li>
-                </ul>
+        {% endif %}
+
+                    
+
+
+
+
+        <div class="contenedor-tarjetas">
+            <div class="tarjetas">
+              <div class="tarjeta tarjeta1">
+                <div class="contenedor">
+                  <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                </div>
+                <div class="detalles">
+                  <h3>Tarjeta 1</h3>
+                  <p>Lorem ipsum dolor sapepisci exercitationem.</p>
+                </div>
+              </div>
+              <div class="tarjeta tarjeta2">
+                <div class="contenedor">
+                  <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                </div>
+                <div class="detalles">
+                  <h3>Tarjeta 2</h3>
+                  <p>Lorem ipsum doloPraesentium di exercitationem.</p>
+                </div>
+              </div>
+              <div class="tarjeta tarjeta3">
+                <div class="contenedor">
+                  <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                </div>
+                <div class="detalles">
+                  <h3>Tarjeta 3</h3>
+                  <p>Lorem. Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Eos iure ratione corporis odio quibusdam repudiandae totam 
+                    accusamus minus nihil esse sequi voluptatibus, eius eum expedita 
+                    molestiae obcaecati doloremque alias facilis.</p>
+                </div>
+              </div>
             </div>
-            <div class="col-md-4">
-                <h5>Acerca de</h5>
-                <p>CannaTech es una plataforma para la gestión integral de cultivos de cannabis, laboratorios y negocios relacionados.</p>
+          </div>
+          
+
+
+
+
+
+
+        
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Contacto</h5>
+                        <p>Dirección: Av. Cannabis, 1234, Montevideo, Uruguay</p>
+                        <p>Email: info@cannatech.com</p>
+                        <p>Teléfono: +598 1234 5678</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Redes Sociales</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Acerca de</h5>
+                        <p>CannaTe negocios reionados.</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <p>&copy; 2024 CannaTech. Todos los derechos reservados.</p>
+                    <p><a href="#">Aviso Legal</a> | <a href="#">Política de Privacidad</a></p>
+                </div>
             </div>
-        </div>
-        <hr>
-        <div class="text-center">
-            <p>&copy; 2024 CannaTech. Todos los derechos reservados.</p>
-            <p><a href="#">Aviso Legal</a> | <a href="#">Política de Privacidad</a></p>
-        </div>
+        </footer>
     </div>
-</footer>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var lefter = document.querySelector('.lefter');
-        var left = document.querySelector('.left');
-        var right = document.querySelector('.right');
-        var righter = document.querySelector('.righter');
-    
-        if (lefter) {
-            lefter.addEventListener('click', function() {
-                window.location.href = '/features/';
-            });
-        }
-    
-        if (left) {
-            left.addEventListener('click', function() {
-                window.location.href = '/recomendar_cultivo/';
-            });
-        }
-    
-        if (righter) {
-            righter.addEventListener('click', function() {
-                window.location.href = '/condiciones/';
-            });
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var lefter = document.querySelector('.lefter');
+            var left = document.querySelector('.left');
+            var right = document.querySelector('.right');
+            var righter = document.querySelector('.righter');
 
-        if (right) {
-            right.addEventListener('click', function() {
-                window.location.href ='/variedad/create/';
-            });
-        }
+            if (lefter) {
+                lefter.addEventListener('click', function() {
+                    window.location.href = '/features/';
+                });
+            }
 
-    });
+            if (left) {
+                left.addEventListener('click', function() {
+                    window.location.href = '/recomendar_cultivo/';
+                });
+            }
+
+            if (righter) {
+                righter.addEventListener('click', function() {
+                    window.location.href = '/condiciones/';
+                });
+            }
+
+            if (right) {
+                right.addEventListener('click', function() {
+                    window.location.href = '/variedad/create/';
+                });
+            }
+        });
     </script>
-    
-
-    {% endblock %}
-</body>
-</html>
+{% endblock %}
