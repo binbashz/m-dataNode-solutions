@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .views import management_view
+from .views import generar_pdf_recomendaciones
 from .views import recomendar_cultivo_view
 from django.contrib.auth import views as auth_views
 from .views import (
@@ -51,6 +52,8 @@ urlpatterns = [
 
     path('recomendar_cultivo/', views.recomendar_cultivo_view, name='recomendar_cultivo'),
     path('recomendaciones/', views.recomendaciones_view, name='recomendaciones'), 
+    
+    path('generar_pdf_recomendaciones/', generar_pdf_recomendaciones, name='generar_pdf_recomendaciones'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),

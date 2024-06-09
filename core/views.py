@@ -5,10 +5,13 @@ from django.urls import reverse
 from .forms import RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm, AnalisisCalidadForm
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad, Variedad
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
-
+from io import BytesIO
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
 
 
 def home(request):
@@ -460,14 +463,82 @@ def analizar_datos_y_generar_recomendaciones(condiciones_actuales):
     return recomendaciones, estado_cultivo
 
 
-
-
 @login_required
 def todas_condiciones_cultivo(request):
     variedades = Variedad.objects.filter(user=request.user)
     condiciones = CondicionesCultivo.objects.filter(variedad__in=variedades)
     
     return render(request, 'core/condiciones_cultivo.html', {'condiciones': condiciones})
+
+#--- PDF --------- 
+@login_required
+def generar_pdf_recomendaciones(request):
+    user_session_key = f'recomendaciones_{request.user.pk}'
+    datos_usuario = request.session.get(user_session_key, {})
+    recomendaciones = datos_usuario.get('recomendaciones', [])
+    condiciones = datos_usuario.get('condiciones', {})
+    tipo_suelo_descripcion = datos_usuario.get('tipo_suelo_descripcion', '')
+    estado_cultivo = datos_usuario.get('estado_cultivo', '')
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="recomendaciones.pdf"'
+
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+
+    # Agregar contenido al PDF
+    contenido = []
+
+    # Cabecera
+    cabecera = Paragraph("Recomendaciones de Cultivo", styles['Heading1'])
+    contenido.append(cabecera)
+    contenido.append(Spacer(1, 12))
+
+    # Datos Ingresados
+    contenido.append(Paragraph("Datos Ingresados:", styles['Heading2']))
+    contenido.append(Spacer(1, 6))
+    contenido.append(Paragraph(f"Temperatura: {condiciones.get('temperatura')} °C", styles['Normal']))
+    contenido.append(Paragraph(f"Humedad: {condiciones.get('humedad')} %", styles['Normal']))
+    contenido.append(Paragraph(f"Tipo de Suelo: {condiciones.get('tipo_suelo')} ({tipo_suelo_descripcion})", styles['Normal']))
+    contenido.append(Paragraph(f"pH del Suelo: {condiciones.get('ph_suelo')}", styles['Normal']))
+    contenido.append(Paragraph(f"Nutrientes: {condiciones.get('nutrientes')}", styles['Normal']))
+    contenido.append(Paragraph(f"Iluminación: {condiciones.get('iluminacion')} lux", styles['Normal']))
+    contenido.append(Paragraph(f"Temperatura del Suelo: {condiciones.get('temperatura_suelo')} °C", styles['Normal']))
+    contenido.append(Paragraph(f"Humedad del Suelo: {condiciones.get('humedad_suelo')} %", styles['Normal']))
+    contenido.append(Paragraph(f"Temperatura Ambiente: {condiciones.get('temperatura_ambiente')} °C", styles['Normal']))
+    contenido.append(Paragraph(f"Humedad Ambiente: {condiciones.get('humedad_ambiente')} %", styles['Normal']))
+    contenido.append(Paragraph(f"Concentración de CO2: {condiciones.get('concentracion_co2')} ppm", styles['Normal']))
+    contenido.append(Paragraph(f"Ventilación: {condiciones.get('ventilacion')}", styles['Normal']))
+    contenido.append(Paragraph(f"Oxígeno en el Suelo: {condiciones.get('oxigeno_suelo')} %", styles['Normal']))
+    contenido.append(Paragraph(f"Calidad del Agua (pH): {condiciones.get('calidad_agua_ph')}", styles['Normal']))
+    contenido.append(Paragraph(f"Calidad del Agua (Cloro): {condiciones.get('calidad_agua_cloro')} ppm", styles['Normal']))
+    contenido.append(Spacer(1, 12))
+
+    # Recomendaciones
+    contenido.append(Paragraph(" CannaTech - Recomendaciones de Cultivo:", styles['Heading2']))
+    contenido.append(Spacer(1, 6))
+    for recomendacion in recomendaciones:
+        contenido.append(Paragraph(recomendacion, styles['Normal']))
+    contenido.append(Spacer(1, 12))
+
+    # Descripción del Tipo de Suelo
+    contenido.append(Paragraph("Descripción del Tipo de Suelo:", styles['Heading2']))
+    contenido.append(Spacer(1, 6))
+    contenido.append(Paragraph(tipo_suelo_descripcion, styles['Normal']))
+    contenido.append(Spacer(1, 12))
+
+    # Estado del Cultivo
+    contenido.append(Paragraph("Estado del Cultivo:", styles['Heading2']))
+    contenido.append(Spacer(1, 6))
+    contenido.append(Paragraph(estado_cultivo, styles['Normal']))
+    contenido.append(Spacer(1, 12))
+
+    pdf.build(contenido)
+    
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
 
 
 def home_view_facts(request):
