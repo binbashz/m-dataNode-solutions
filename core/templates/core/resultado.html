@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h2>Resultado de la Simulación</h2>
+            <p>El rendimiento estimado es: {{ rendimiento }} gramos</p>
+            <p>Detalles del Cultivo:</p>
+            <ul>
+                <li>Variedad: {{ cultivo.variedad.nombre }}</li>
+                <li>Cantidad de Plantas: {{ cultivo.cantidad_plantas }}</li>
+                <li>Área de Cultivo: {{ cultivo.area_cultivo }} m²</li>
+                <li>Intensidad de Luz: {{ cultivo.luz_intensidad }} lúmenes</li>
+                <li>Horas de Luz: {{ cultivo.luz_horas }} horas/día</li>
+                <li>Temperatura (Día): {{ cultivo.temperatura_dia }} °C</li>
+                <li>Humedad: {{ cultivo.humedad }} %</li>
+                <li>pH del Suelo: {{ cultivo.ph }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

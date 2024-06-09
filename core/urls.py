@@ -54,6 +54,10 @@ urlpatterns = [
     path('recomendaciones/', views.recomendaciones_view, name='recomendaciones'), 
     
     path('generar_pdf_recomendaciones/', generar_pdf_recomendaciones, name='generar_pdf_recomendaciones'),
+    
+    path('simulacion/', views.simular_rendimiento, name='simulacion_rendimiento'),
+    
+    path('analizar-costos-presupuestos/', views.analizar_costos_presupuestos, name='analizar_costos_presupuestos'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),

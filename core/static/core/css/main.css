@@ -2216,3 +2216,78 @@ transform: translateY(-10px);
 #myBtn:hover {
   background-color: rgba(51, 148, 27, 0.788); 
 }
+
+
+/* /simulacion rendimiento  y estilos para otros contendeores */ 
+
+.customfor form {
+  display: flex;
+  flex-direction: column;
+  max-width: auto; /* Ajusta el ancho máximo del formulario según tu diseño */
+  margin: 0 auto; /* Centra el formulario horizontalmente */
+}
+
+.customfor form label {
+  margin-bottom: 0.25rem; /* Reducido el espacio entre etiquetas y campos */
+}
+
+.customfor form input[type="text"],
+.customfor form input[type="number"],
+.customfor form textarea {
+  width: 100%;
+  padding: 0.25rem; /* Reducido el padding de los campos */
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem; /* Reducido el espacio entre campos */
+}
+
+.customfor form button {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+
+.customfor {
+
+  background: linear-gradient(rgb(158, 255, 202), rgba(72, 255, 0, 0.6));
+  padding: 2rem; 
+  border-radius: 0.9rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.customfor-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+
+
+/* analsis presupiesto */
+.leadp {
+  font-size: 1.25rem; 
+  color: #011606; 
+  margin-bottom: 1.5rem; 
+  margin-top: 2px;
+  border-radius: 24px; 
+  background-color: #c5f8edef ;
+  padding: 15px;
+}
+
+/* Estilos para pantallas más pequeñas (ejemplo: teléfonos móviles) */
+@media (max-width: 768px) {
+  .leadp {
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+  }
+}
+
+
+
+  

@@ -2,7 +2,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
+from .models import Cultivo
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad
+from .models import AnalisisCostos
 
 
 class RegisterForm(UserCreationForm):
@@ -82,6 +84,30 @@ class CondicionesCultivoForm(forms.ModelForm):
             'oxigeno_suelo': forms.NumberInput(attrs={'class': 'form-control'}),
             'calidad_agua_ph': forms.NumberInput(attrs={'class': 'form-control'}),
             'calidad_agua_cloro': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+        
+             
+class CultivoForm(forms.ModelForm):
+    class Meta:
+        model = Cultivo
+        fields = ['variedad', 'cantidad_plantas', 'area_cultivo', 'luz_intensidad', 'luz_horas', 'temperatura_dia', 'humedad', 'ph']     
+    
+    
+class AnalisisCostosForm(forms.ModelForm):
+    class Meta:
+        model = AnalisisCostos
+        fields = [
+            'costo_semilla', 'costo_sustrato', 'costo_energia',
+            'costo_agua', 'costo_manobra', 'produccion_gramos', 'presupuesto'
+        ]
+        widgets = {
+            'costo_semilla': forms.NumberInput(attrs={'placeholder': '  Costo de Semilla'}),
+            'costo_sustrato': forms.NumberInput(attrs={'placeholder': ' Tierra, Compost, Fibra'}),
+            'costo_energia': forms.NumberInput(attrs={'placeholder': ' Costo de Energía'}),
+            'costo_agua': forms.NumberInput(attrs={'placeholder': ' Costo de Agua'}),
+            'costo_manobra': forms.NumberInput(attrs={'placeholder': ' Costo Mano de Obra'}),
+            'produccion_gramos': forms.NumberInput(attrs={'placeholder': ' Gramos Producidos'}),
+            'presupuesto': forms.NumberInput(attrs={'placeholder': ' Presupuesto'}),
         }
         
 class TratamientoFitofarmaceuticoForm(forms.ModelForm):

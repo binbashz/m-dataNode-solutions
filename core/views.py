@@ -12,7 +12,10 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
-
+from .forms import CultivoForm
+from .simulacion import calcular_rendimiento
+from .forms import AnalisisCostosForm
+from .models import AnalisisCostos
 
 def home(request):
     return render(request, 'core/home.html')
@@ -567,3 +570,33 @@ def home_datos_usuario(request):
         return render(request, 'core/home.html', context)
     else:
         return render(request, 'core/home.html')
+
+
+
+# simulacion rendimentos funcion
+def simular_rendimiento(request):
+    if request.method == 'POST':
+        form = CultivoForm(request.POST)
+        if form.is_valid():
+            cultivo = form.save()
+            rendimiento = calcular_rendimiento(cultivo)
+            return render(request, 'core/resultado.html', {'rendimiento': rendimiento, 'cultivo': cultivo})
+    else:
+        form = CultivoForm()
+    return render(request, 'core/simulacion.html', {'form': form})
+
+
+def analizar_costos_presupuestos(request):
+    form = AnalisisCostosForm(request.POST or None)
+    if form.is_valid():
+        analisis = form.save(commit=False)
+        analisis.costo_total = (
+            analisis.costo_semilla + analisis.costo_sustrato +
+            analisis.costo_energia + analisis.costo_agua +
+            analisis.costo_manobra
+        )
+        analisis.diferencia = analisis.presupuesto - analisis.costo_total
+        analisis.costo_por_gramo = analisis.costo_total / analisis.produccion_gramos if analisis.produccion_gramos else None
+        analisis.save()
+        return render(request, 'core/resultados_analisis_costos_presupuestos.html', {'resultados': analisis})
+    return render(request, 'core/formulario_costos_presupuestos.html', {'form': form})

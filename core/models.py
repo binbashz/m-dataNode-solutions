@@ -53,6 +53,33 @@ class CondicionesCultivo(models.Model):
         return f"{self.variedad} - {self.registro_fecha}"
 
 
+class Cultivo(models.Model):
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE)
+    cantidad_plantas = models.IntegerField()
+    area_cultivo = models.FloatField(help_text="Área de cultivo en m²")
+    luz_intensidad = models.FloatField(help_text="Intensidad de luz en lúmenes")
+    luz_horas = models.FloatField(help_text="Horas de luz por día")
+    temperatura_dia = models.FloatField(help_text="Temperatura durante el día en °C")
+    humedad = models.FloatField(help_text="Humedad relativa en %")
+    ph = models.FloatField(help_text="Nivel de pH del suelo")
+
+    def __str__(self):
+        return f"Cultivo de {self.variedad} con {self.cantidad_plantas} plantas"
+
+
+class AnalisisCostos(models.Model):
+    costo_semilla = models.FloatField()
+    costo_sustrato = models.FloatField()
+    costo_energia = models.FloatField()
+    costo_agua = models.FloatField()
+    costo_manobra = models.FloatField()
+    presupuesto = models.FloatField()
+    produccion_gramos = models.FloatField(blank=True, null=True)  
+
+    def __str__(self):
+        return f"Análisis de Costos {self.id}"
+
+
 class TratamientoFitofarmaceutico(models.Model):
     variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, related_name='tratamientos_fitofarmaceuticos')
     tratamiento = models.CharField(max_length=200)

@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+
+<h2 class="section-title">Resultados del Análisis de Costos y Presupuestos</h2>
+<p class="section-description">
+    Aquí tienes un análisis detallado basado en los datos ingresados.<br> 
+    Utiliza esta información para optimizar tus operaciones y maximizar tus beneficios.
+</p>
+<hr>
+
+<div class="analysis-results">
+    <p><strong>Costo Total:</strong> $ {{ resultados.costo_total }}</p>
+    <p><strong>Diferencia con el Presupuesto:</strong> $ {{ resultados.diferencia }}</p>
+    <p><strong>Costo por Gramo:</strong> $ {{ resultados.costo_por_gramo }}</p>
+</div>
+
+{% endblock %}

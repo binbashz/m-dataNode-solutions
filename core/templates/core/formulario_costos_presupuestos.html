@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+
+<div class="headercostos">
+<h2 class="section-title">Análisis de Costos y Presupuestos</h2>
+<p class="section-description">
+   <strong> Ingresa los siguientes datos para obtener un análisis detallado de los costos y el presupuesto de tu operación.</strong><br>
+    Esta información te ayudará a mejorar la eficiencia y maximizar los beneficios de tu cultivo de cannabis.
+</p>
+</div>
+
+<form method="post" class="customfor">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Realizar Análisis</button>
+</form>
+
+{% endblock %}
