@@ -68,21 +68,15 @@ body {
   gap: 2rem;
 }
 
-.product-card {
-  background: linear-gradient(to bottom right, #058655, #5d4037, #aed581);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
 
 
 .product-card {
   max-width: 18rem; 
-  background: linear-gradient(to bottom right, #058655, #5d4037, #aed581);
+  background: -webkit-linear-gradient(123deg, #e3d0ac,#c8dd7c,#56f179);
+  background: linear-gradient(123deg, #e3d0ac,#c8dd7c,#56f179);
   border-radius: 0.5rem;
   padding: 1.5rem; 
-  color: #fff;
+  color: #044713;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -1150,7 +1144,6 @@ nav.active ul li a:hover span {
 /* analisis style */
 
 
-
 .containeranalisis {
   max-width: 1200px;
   margin: 0 auto;
@@ -1366,7 +1359,7 @@ figcaption {
   --border-width: 0.125em;
   --curve-size: 0.5em;
   --blur: 30px;
-  --bg: #003a22;
+  --bg: #03553a;
   --color: #afffff;
   color: var(--color);
   cursor: pointer;
@@ -2255,7 +2248,8 @@ transform: translateY(-10px);
 
 .customfor {
 
-  background: linear-gradient(rgb(158, 255, 202), rgba(72, 255, 0, 0.6));
+  background: -webkit-linear-gradient(90deg, #dacf4f,#29a46e,#173e2e);
+  background: linear-gradient(90deg, #dacf4f,#29a46e,#367c5f);
   padding: 2rem; 
   border-radius: 0.9rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
@@ -2268,7 +2262,7 @@ transform: translateY(-10px);
 
 
 
-/* analsis presupiesto */
+/* analsis presupuesto */
 .leadp {
   font-size: 1.25rem; 
   color: #011606; 
@@ -2290,4 +2284,43 @@ transform: translateY(-10px);
 
 
 
-  
+/* forms para gestion clientes, registro resultados */
+
+.customfor2 form {
+  display: flex;
+  flex-direction: column;
+  max-width: auto; /* Ajusta el ancho máximo del formulario según tu diseño */
+  margin: 0 auto; /* Centra el formulario horizontalmente */
+}
+
+.customfor2 form label {
+  margin-bottom: 0.25rem; /* Reducido el espacio entre etiquetas y campos */
+}
+
+.customfor2 form input[type="text"],
+.customfor2 form input[type="number"],
+.customfor2 form textarea {
+  width: 100%;
+  padding: 0.25rem; /* Reducido el padding de los campos */
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem; /* Reducido el espacio entre campos */
+}
+
+.customfor2 form button {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #197ba8;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.customfor2 {
+  background: -webkit-linear-gradient(90deg, #1eda77,#45a8e7,#a1daf7);
+  background: linear-gradient(90deg, #1eda77,#45a8e7,#a1daf7);
+  padding: 2rem;
+  border-radius: 0.9rem;
+}

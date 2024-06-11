@@ -15,7 +15,13 @@ from reportlab.lib.styles import getSampleStyleSheet
 from .forms import CultivoForm
 from .simulacion import calcular_rendimiento
 from .forms import AnalisisCostosForm
-from .models import AnalisisCostos
+from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
+from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
+from django.db.models import Count
+from django.contrib import messages
+
+
+
 
 def home(request):
     return render(request, 'core/home.html')
@@ -600,3 +606,71 @@ def analizar_costos_presupuestos(request):
         analisis.save()
         return render(request, 'core/resultados_analisis_costos_presupuestos.html', {'resultados': analisis})
     return render(request, 'core/formulario_costos_presupuestos.html', {'form': form})
+
+
+#Analisis
+
+def clientes(request):
+    clientes = Cliente.objects.all()
+    return render(request, 'core/clientes.html', {'clientes': clientes})
+
+def cliente_nuevo(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente creado exitosamente.')
+            return redirect('clientes')
+    else:
+        form = ClienteForm()
+    return render(request, 'core/cliente_nuevo.html', {'form': form})
+
+def recepcion_muestra(request):
+    if request.method == 'POST':
+        form = MuestraForm(request.POST)
+        if form.is_valid():
+            muestra = form.save()
+            messages.success(request, f'Muestra {muestra.codigo} registrada exitosamente.')
+            return redirect('programar_analisis')
+    else:
+        form = MuestraForm()
+    return render(request, 'core/recepcion_muestra.html', {'form': form})
+
+def programar_analisis(request):
+    muestras_pendientes = Muestra.objects.filter(analisisprogramado__isnull=True)
+    if request.method == 'POST':
+        form = AnalisisProgramadoForm(request.POST)
+        if form.is_valid():
+            analisis_programado = form.save()
+            messages.success(request, f'Análisis {analisis_programado.tipo_analisis} programado para la muestra {analisis_programado.muestra.codigo}.')
+            return redirect('registro_resultados')
+    else:
+        form = AnalisisProgramadoForm()
+    return render(request, 'core/programar_analisis.html', {'form': form, 'muestras_pendientes': muestras_pendientes})
+
+def registro_resultados(request):
+    analisis_pendientes = AnalisisProgramado.objects.filter(resultadoanalisis__isnull=True)
+    if request.method == 'POST':
+        form = ResultadoAnalisisForm(request.POST)
+        if form.is_valid():
+            resultado_analisis = form.save()
+            messages.success(request, f'Resultados registrados para el análisis {resultado_analisis.analisis_programado.tipo_analisis} de la muestra {resultado_analisis.analisis_programado.muestra.codigo}.')
+            return redirect('ver_informes')
+    else:
+        form = ResultadoAnalisisForm()
+    return render(request, 'core/registro_resultados.html', {'form': form, 'analisis_pendientes': analisis_pendientes})
+
+
+def ver_informes(request):
+    resultados = ResultadoAnalisis.objects.all()
+
+    # Obtener el conteo de análisis por tipo de análisis
+    analisis_por_tipo = resultados.values('analisis_programado__tipo_analisis__nombre').annotate(conteo=Count('id'))
+
+    # Preparar los datos para el informe
+    informe_datos = {
+        'total_analisis': resultados.count(),
+        'analisis_por_tipo': analisis_por_tipo
+    }
+
+    return render(request, 'core/ver_informes.html', {'informe_datos': informe_datos})

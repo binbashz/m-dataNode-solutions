@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="customfor2">
+    <div class="row mt-2">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h1>Programar Análisis</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Programar Análisis</button>
+            </form>
+            <h2>Muestras pendientes de programar análisis</h2>
+            <ul>
+                {% for muestra in muestras %}
+                    <li>{{ muestra.codigo }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

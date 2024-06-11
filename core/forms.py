@@ -5,7 +5,8 @@ from django.conf import settings
 from .models import Cultivo
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad
 from .models import AnalisisCostos
-
+from .models import Muestra, AnalisisProgramado, ResultadoAnalisis
+from .models import Cliente
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(label="Email")
@@ -131,3 +132,23 @@ class AnalisisCalidadForm(forms.ModelForm):
         })
 
     
+# Analisis
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['nombre', 'direccion', 'telefono', 'email']
+
+class MuestraForm(forms.ModelForm):
+    class Meta:
+        model = Muestra
+        fields = ['codigo', 'cliente', 'tipo', 'fecha_recepcion', 'observaciones']
+
+class AnalisisProgramadoForm(forms.ModelForm):
+    class Meta:
+        model = AnalisisProgramado
+        fields = ['muestra', 'tipo_analisis', 'fecha_programada', 'prioridad']
+
+class ResultadoAnalisisForm(forms.ModelForm):
+    class Meta:
+        model = ResultadoAnalisis
+        fields = ['analisis_programado', 'fecha_analisis', 'resultados', 'observaciones']

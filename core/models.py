@@ -101,3 +101,41 @@ class AnalisisCalidad(models.Model):
 
     def details(self):
         return f"Análisis de {self.tipo_analisis} para {self.variedad.nombre}, Resultado: {self.resultado}, Fecha: {self.fecha_analisis}"
+
+
+# Analisis
+from django.db import models
+
+class Cliente(models.Model):
+    nombre = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
+    telefono = models.CharField(max_length=20)
+    email = models.EmailField()
+
+class TipoMuestra(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+
+class Muestra(models.Model):
+    codigo = models.CharField(max_length=20, unique=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    tipo = models.ForeignKey(TipoMuestra, on_delete=models.CASCADE)
+    fecha_recepcion = models.DateField()
+    observaciones = models.TextField(blank=True, null=True)
+
+class TipoAnalisis(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    metodo = models.CharField(max_length=100)
+
+class AnalisisProgramado(models.Model):
+    muestra = models.ForeignKey(Muestra, on_delete=models.CASCADE)
+    tipo_analisis = models.ForeignKey(TipoAnalisis, on_delete=models.CASCADE)
+    fecha_programada = models.DateTimeField()
+    prioridad = models.IntegerField(choices=[(1, 'Baja'), (2, 'Media'), (3, 'Alta')])
+
+class ResultadoAnalisis(models.Model):
+    analisis_programado = models.ForeignKey(AnalisisProgramado, on_delete=models.CASCADE)
+    fecha_analisis = models.DateTimeField()
+    resultados = models.JSONField()
+    observaciones = models.TextField(blank=True, null=True)

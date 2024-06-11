@@ -9,7 +9,6 @@
         </div>
 
         <div class="container-mgm">
-
             <div class="card-mgm">
                 <h3>Recomendaciones de Cultivo Personalizadas</h3>
                 <p>Recibe recomendaciones de cultivo personalizadas basadas en las condiciones de tu plantación y datos históricos.</p>
@@ -28,19 +27,30 @@
                 <a href="{% url 'analizar_costos_presupuestos' %}" class="btn btn-primary">Analizar Costos</a>
             </div>
 
-            <!-- Sección opcional para análisis detallados, si los usuarios tienen acceso a estos datos -->
             <div class="card-mgm">
-                <h3>Análisis de Componentes Químicos</h3>
-                <p>Realiza análisis detallados de cannabinoides, terpenos, metales pesados y pesticidas en tus muestras de cannabis.</p>
-                <a href="#analisis_componentes_quimicos" class="btn btn-primary">Ver Análisis</a>
+                <h3>Gestión de Clientes y Muestras</h3>
+                <p>Registra nuevos clientes, recibe muestras y programa análisis.</p>
+                <div>
+                    <a href="{% url 'clientes' %}" class="btn btn-primary">Gestionar Clientes</a>
+                </div><br>
+                <div>
+                    <a href="{% url 'recepcion_muestra' %}" class="btn btn-primary">Recepción de Muestra</a>
+                </div><br>
+                <div>
+                    <a href="{% url 'programar_analisis' %}" class="btn btn-primary">Programar Análisis</a>
+                </div><br>
             </div>
-
+            
             <div class="card-mgm">
-                <h3>Generación de Informes de Análisis</h3>
-                <p>Genera informes detallados de cada análisis realizado, incluyendo resultados, interpretación y conclusiones.</p>
-                <a href="#generacion_informes_analisis" class="btn btn-primary">Generar Informe</a>
-            </div>
-
+                <h3>Registro de Resultados y Generación de Informes</h3>
+                <p>Registra los resultados de los análisis y genera informes detallados.</p>
+                <div>
+                    <a href="{% url 'registro_resultados' %}" class="btn btn-primary">Registro de Resultados</a>
+                </div><br>
+                <div>
+                    <a href="{% url 'ver_informes' %}" class="btn btn-primary">Informes</a>
+                </div><br>
+            </div>    
         </div>
     </div>
 </div>
