@@ -66,7 +66,9 @@ urlpatterns = [
     path('registro-resultados/', views.registro_resultados, name='registro_resultados'),
     path('ver-informes/', views.ver_informes, name='ver_informes'),
     
+    path('barcodes/', views.barcodes_view, name='barcodes'),
     path('barcode/', views.barcode_form, name='barcode_form'),
+    path('barcode2/', views.barcode_form2, name='barcode_form2'),
     path('decode_barcode/', views.decode_barcode_view, name='decode_barcode'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),

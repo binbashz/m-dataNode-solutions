@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cus">
+    <div class="row mt-5 mb-5">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h1>Generador de Códigos de Barra</h1>
+            <h5>partir de los datos ingresados, 
+                facilitando la decodificación completa de la información al escanearlo</h5>
+
+            <div class="col-md-8 offset-md-2">
+                <details>
+                    <summary>¿Cómo usar este formulario?</summary>
+                    <p>Para generar un código de barras, completa los siguientes campos:</p>
+                    <ul>
+                        <li><strong>Nombre del Producto:</strong> Ingresa el nombre del producto.</li>
+                        <li><strong>Código del Producto:</strong> Ingresa un código único para el producto.</li>
+                    </ul>
+                    <p>Una vez completados los campos, presiona el botón "Generar Código de Barras" para obtener tu código.</p>
+                </details>
+                <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_product_name">Nombre del Producto:</label>
+                    {{ form.product_name }}
+                    <small class="form-text text-muted">{{ form.product_name.help_text }}</small>
+                </div>
+                <div class="form-group">
+                    <label for="id_product_code">Código del Producto:</label>
+                    {{ form.product_code }}
+                    <small class="form-text text-muted">{{ form.product_code.help_text }}</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Generar Código de Barra </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

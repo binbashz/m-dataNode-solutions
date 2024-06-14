@@ -2324,3 +2324,60 @@ transform: translateY(-10px);
   padding: 2rem;
   border-radius: 0.9rem;
 }
+
+
+/* estilo codigos barra menu */
+.cus {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.row.mt-5.mb-5 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+
+.codigo-barra-container {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.codigo-barra-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.codigo-barra-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.codigo-barra-item {
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.codigo-barra-item p {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #058655;
+}
+
+.codigo-barra-item small {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #033b0c;
+}
+
