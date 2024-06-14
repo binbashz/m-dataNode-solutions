@@ -22,6 +22,7 @@ from django.contrib import messages
 import barcode
 from barcode.writer import ImageWriter
 import base64
+from barcode import Code128
 from PIL import Image, ImageDraw, ImageFont
 from .forms import BarcodeForm
 
@@ -582,6 +583,7 @@ def home_datos_usuario(request):
 
 
 # simulacion rendimentos funcion
+@login_required
 def simular_rendimiento(request):
     if request.method == 'POST':
         form = CultivoForm(request.POST)
@@ -593,7 +595,7 @@ def simular_rendimiento(request):
         form = CultivoForm()
     return render(request, 'core/simulacion.html', {'form': form})
 
-
+@login_required
 def analizar_costos_presupuestos(request):
     form = AnalisisCostosForm(request.POST or None)
     if form.is_valid():
@@ -676,6 +678,8 @@ def ver_informes(request):
 
     return render(request, 'core/ver_informes.html', {'informe_datos': informe_datos})
 
+from django.http import HttpResponseBadRequest
+import os
 
 # Bar code
 @login_required
@@ -687,27 +691,42 @@ def barcode_form(request):
             product_code = form.cleaned_data['product_code']
             barcode_type = 'code128'
 
-            # Combinar datos en un solo string delimitado por "|"
-            barcode_data = f"{product_name}|{product_code}"
-
-            # Generar código de barras
-            BarcodeClass = barcode.get_barcode_class(barcode_type)
-            barcode_instance = BarcodeClass(barcode_data, writer=ImageWriter())
-            barcode_image = barcode_instance.render()
-
-            # Crear una nueva imagen vacía para combinar el código de barras y el código del producto
-            combined_image = Image.new('RGB', (barcode_image.width, barcode_image.height + 30), (255, 255, 255))
-            combined_image.paste(barcode_image, (0, 0))
-
-            # Agregar solo el código del producto debajo del código de barras
-            draw = ImageDraw.Draw(combined_image)
-            font = ImageFont.load_default()
-            text_width, text_height = draw.textbbox((0, 0), product_code, font=font)[2:]
-            draw.text(((combined_image.width - text_width) / 2, barcode_image.height), product_code, font=font, fill=(0, 0, 0))
-
-            # Convertir la imagen combinada a base64
+            # Generar código de barras y guardarlo en un BytesIO
             buffer = BytesIO()
-            combined_image.save(buffer, format='PNG')
+            BarcodeClass = barcode.get_barcode_class(barcode_type)
+            barcode_instance = BarcodeClass(product_code, writer=ImageWriter())
+            barcode_instance.write(buffer)
+            buffer.seek(0)
+
+            # Convertir la imagen a un objeto PIL
+            barcode_image = Image.open(buffer)
+
+            # Crear una nueva imagen con espacio para el texto
+            width, height = barcode_image.size
+            font_size = 20  
+            total_height = height + font_size + 10  # Ajusta el tamaño para dar espacio al texto
+            new_image = Image.new('RGB', (width, total_height), 'white')
+            draw = ImageDraw.Draw(new_image)
+
+            # Cargar la fuente TrueType
+            try:
+                font_path = os.path.join('fonts', 'arial.ttf')  
+                font = ImageFont.truetype(font_path, font_size)
+            except IOError:
+                font = ImageFont.load_default()  # Fallback a la fuente predeterminada si falla
+
+            # Añadir el nombre del producto arriba del código de barras
+            text_width = draw.textlength(product_name, font=font)
+            text_x = (width - text_width) / 2
+            draw.text((text_x, 10), product_name, fill="black", font=font)
+
+            # Pegar el código de barras en la nueva imagen
+            new_image.paste(barcode_image, (0, font_size + 10))
+
+            # Convertir la imagen a base64
+            buffer = BytesIO()
+            new_image.save(buffer, format='PNG')
+            buffer.seek(0)  # Asegurarse de mover el puntero al inicio del buffer
             barcode_img = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
             context = {
@@ -720,7 +739,9 @@ def barcode_form(request):
         form = BarcodeForm()
     return render(request, 'core/barcode_form.html', {'form': form})
 
+
 # Función para decodificar el código de barras
+@login_required
 def decode_barcode(barcode_data):
     barcode_format = barcode.get_barcode_class('code128')
     barcode_object = barcode_format(barcode_data)
@@ -728,4 +749,19 @@ def decode_barcode(barcode_data):
     product_name, product_code = decoded_data.split('|')
     return product_name, product_code
 
-
+@login_required
+def decode_barcode_view(request):
+    if request.method == 'GET':
+        barcode_img = request.GET.get('barcode_img')
+        if barcode_img:
+            # Decodificar la imagen del código de barras
+            product_name, product_code = decode_barcode(barcode_img)
+            context = {
+                'product_name': product_name,
+                'product_code': product_code,
+            }
+            return render(request, 'core/barcode_decoded.html', context)
+        else:
+            return HttpResponseBadRequest('No se proporcionó una imagen de código de barras')
+    else:
+        return HttpResponseBadRequest('Método no permitido')

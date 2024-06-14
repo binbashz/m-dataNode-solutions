@@ -139,3 +139,13 @@ class ResultadoAnalisis(models.Model):
     fecha_analisis = models.DateTimeField()
     resultados = models.JSONField()
     observaciones = models.TextField(blank=True, null=True)
+    
+    
+    # barcode model
+class Product(models.Model):
+    name = models.CharField(max_length=36)
+    code = models.CharField(max_length=15, unique=True)
+
+    def __str__(self):
+        return self.name
+

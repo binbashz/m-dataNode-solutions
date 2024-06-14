@@ -67,6 +67,7 @@ urlpatterns = [
     path('ver-informes/', views.ver_informes, name='ver_informes'),
     
     path('barcode/', views.barcode_form, name='barcode_form'),
+    path('decode_barcode/', views.decode_barcode_view, name='decode_barcode'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),

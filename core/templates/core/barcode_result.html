@@ -9,7 +9,7 @@
             <h1>Resultado del Código de Barra</h1>
             <h2>Producto: {{ product_name }}</h2>
             <h3>Código: {{ product_code }}</h3>
-            <p>Descripción: {{ description }}</p>
+
             <img src="data:image/png;base64,{{ barcode_img }}" alt="Código de Barra" class="img-fluid">
             <br><br>
             <a href="{% url 'barcode_form' %}" class="btn btn-primary">Generar otro código de barra</a>
