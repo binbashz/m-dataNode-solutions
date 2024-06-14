@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cus">
+    <div class="row mt-5 mb-5">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h1>Resultado del Código de Barra</h1>
+            <h2>Producto: {{ product_name }}</h2>
+            <h3>Código: {{ product_code }}</h3>
+            <p>Descripción: {{ description }}</p>
+            <img src="data:image/png;base64,{{ barcode_img }}" alt="Código de Barra" class="img-fluid">
+            <br><br>
+            <a href="{% url 'barcode_form' %}" class="btn btn-primary">Generar otro código de barra</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -19,9 +19,11 @@ from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
 from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
 from django.db.models import Count
 from django.contrib import messages
-
-
-
+import barcode
+from barcode.writer import ImageWriter
+import base64
+from PIL import Image, ImageDraw, ImageFont
+from .forms import BarcodeForm
 
 def home(request):
     return render(request, 'core/home.html')
@@ -609,7 +611,6 @@ def analizar_costos_presupuestos(request):
 
 
 #Analisis
-
 def clientes(request):
     clientes = Cliente.objects.all()
     return render(request, 'core/clientes.html', {'clientes': clientes})
@@ -674,3 +675,57 @@ def ver_informes(request):
     }
 
     return render(request, 'core/ver_informes.html', {'informe_datos': informe_datos})
+
+
+# Bar code
+@login_required
+def barcode_form(request):
+    if request.method == 'POST':
+        form = BarcodeForm(request.POST)
+        if form.is_valid():
+            product_name = form.cleaned_data['product_name']
+            product_code = form.cleaned_data['product_code']
+            barcode_type = 'code128'
+
+            # Combinar datos en un solo string delimitado por "|"
+            barcode_data = f"{product_name}|{product_code}"
+
+            # Generar código de barras
+            BarcodeClass = barcode.get_barcode_class(barcode_type)
+            barcode_instance = BarcodeClass(barcode_data, writer=ImageWriter())
+            barcode_image = barcode_instance.render()
+
+            # Crear una nueva imagen vacía para combinar el código de barras y el código del producto
+            combined_image = Image.new('RGB', (barcode_image.width, barcode_image.height + 30), (255, 255, 255))
+            combined_image.paste(barcode_image, (0, 0))
+
+            # Agregar solo el código del producto debajo del código de barras
+            draw = ImageDraw.Draw(combined_image)
+            font = ImageFont.load_default()
+            text_width, text_height = draw.textbbox((0, 0), product_code, font=font)[2:]
+            draw.text(((combined_image.width - text_width) / 2, barcode_image.height), product_code, font=font, fill=(0, 0, 0))
+
+            # Convertir la imagen combinada a base64
+            buffer = BytesIO()
+            combined_image.save(buffer, format='PNG')
+            barcode_img = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+            context = {
+                'product_name': product_name,
+                'product_code': product_code,
+                'barcode_img': barcode_img,
+            }
+            return render(request, 'core/barcode_result.html', context)
+    else:
+        form = BarcodeForm()
+    return render(request, 'core/barcode_form.html', {'form': form})
+
+# Función para decodificar el código de barras
+def decode_barcode(barcode_data):
+    barcode_format = barcode.get_barcode_class('code128')
+    barcode_object = barcode_format(barcode_data)
+    decoded_data = barcode_object.get_fullcode()
+    product_name, product_code = decoded_data.split('|')
+    return product_name, product_code
+
+

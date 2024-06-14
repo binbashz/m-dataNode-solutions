@@ -152,3 +152,9 @@ class ResultadoAnalisisForm(forms.ModelForm):
     class Meta:
         model = ResultadoAnalisis
         fields = ['analisis_programado', 'fecha_analisis', 'resultados', 'observaciones']
+        
+        
+# Bar code generator 
+class BarcodeForm(forms.Form):
+    product_name = forms.CharField(label='Nombre del Producto', max_length=40, help_text='Máximo 40 caracteres')
+    product_code = forms.CharField(label='Código del Producto', max_length=20, help_text='Máximo 20 caracteres')

@@ -65,6 +65,8 @@ urlpatterns = [
     path('programar-analisis/', views.programar_analisis, name='programar_analisis'),
     path('registro-resultados/', views.registro_resultados, name='registro_resultados'),
     path('ver-informes/', views.ver_informes, name='ver_informes'),
+    
+    path('barcode/', views.barcode_form, name='barcode_form'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),
