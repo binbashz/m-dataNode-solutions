@@ -33,7 +33,16 @@
                     {{ form.product_code }}
                     <small class="form-text text-muted">{{ form.product_code.help_text }}</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Generar Código de Barra </button>
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="checkbox" id="id_is_favorite" name="is_favorite" class="star-checkbox">
+                        <label for="id_is_favorite" class="star-label">
+                            <i class="far fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>Marcar como favorito</span>
+                        </label>
+                    </div>
+                <button type="submit" class="btn btn-primary">Generar Código de Barra</button>
             </form>
         </div>
     </div>

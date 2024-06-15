@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cus">
+    <div class="row mt-5 mb-5">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h1>Mis Códigos de Barras Favoritos</h1>
+            {% if favorites %}
+                <ul class="list-group">
+                {% for product in favorites %}
+                    <li class="list-group-item">
+                        <h4>{{ product.name }}</h4>
+                        <p>Código: {{ product.code }}</p>
+                        <!--  agregar un enlace para ver o regenerar el código de barras -->
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tienes códigos de barras favoritos.</p>
+            {% endif %}
+            <br>
+            <a href="{% url 'barcode_form' %}" class="btn btn-primary">Generar nuevo código de barras</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

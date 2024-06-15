@@ -10,6 +10,7 @@
 
             <div class="codigo-barra-container">
                 <h1>Generador de códigos de barras</h1>
+                <hr>
                 <ul class="codigo-barra-list">
                     <li class="codigo-barra-item">
                         <p>Genera un código de barras con número de producto.</p>
@@ -22,6 +23,9 @@
                         <strong><a href="{% url 'barcode_form2' %}" class="btn btn-primary">Generar código de barras</a></strong>
                     </li>
                 </ul>
+                
+                <a href="{% url 'favorite_barcodes' %}" class="btncode btn-primary">Mis Favoritos</a>
+
             </div>
         </div>
     </div>

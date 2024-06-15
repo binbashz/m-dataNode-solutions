@@ -70,6 +70,7 @@ urlpatterns = [
     path('barcode/', views.barcode_form, name='barcode_form'),
     path('barcode2/', views.barcode_form2, name='barcode_form2'),
     path('decode_barcode/', views.decode_barcode_view, name='decode_barcode'),
+    path('favorite-barcodes/', views.favorite_barcodes, name='favorite_barcodes'),
     
     path('search/', views.search_results, name='search_results'),
         

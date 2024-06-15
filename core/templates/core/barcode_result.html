@@ -7,13 +7,15 @@
             <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
             <br>
             <h1>Resultado del Código de Barra</h1>
-            <h2>Producto: {{ product_name }}</h2>
-            <h3>Código: {{ product_code }}</h3>
+            <h2>Producto: {{ product.name }}</h2>
+            <h3>Código: {{ product.code }}</h3>
+            {% if product.is_favorite %}
+                <p><i class="fas fa-star"></i> Este producto está en tus favoritos</p>
+            {% endif %}
 
             <img src="data:image/png;base64,{{ barcode_img }}" alt="Código de Barra" class="img-fluid">
             <br><br>
             <a href="{% url 'barcode_form' %}" class="btn btn-primary">Generar otro código de barra</a>
-        </div>
-    </div>
-</div>
-{% endblock %}
+            <a href="{% url 'favorite_barcodes' %}" class="btn btn-secondary">Ver mis favoritos</a>
+        
+            {% endblock %}

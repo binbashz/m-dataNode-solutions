@@ -691,6 +691,18 @@ def barcodes_view(request):
     return render(request, 'core/barcodes.html')
 
 # Bar code
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
+from .forms import BarcodeForm
+from .models import Product
+from io import BytesIO
+import barcode
+from barcode.writer import ImageWriter
+from PIL import Image, ImageDraw, ImageFont
+import os
+import base64
+
 @login_required
 def barcode_form(request):
     if request.method == 'POST':
@@ -698,7 +710,16 @@ def barcode_form(request):
         if form.is_valid():
             product_name = form.cleaned_data['product_name']
             product_code = form.cleaned_data['product_code']
+            is_favorite = form.cleaned_data.get('is_favorite', False)
             barcode_type = 'code128'
+
+            # Crear o actualizar el producto
+            product, created = Product.objects.get_or_create(
+                code=product_code,
+                defaults={'name': product_name, 'user': request.user}
+            )
+            product.is_favorite = is_favorite
+            product.save()
 
             # Generar código de barras y guardarlo en un BytesIO
             buffer = BytesIO()
@@ -713,7 +734,7 @@ def barcode_form(request):
             # Crear una nueva imagen con espacio para el texto
             width, height = barcode_image.size
             font_size = 20  
-            total_height = height + font_size + 10  # Ajusta el tamaño para dar espacio al texto
+            total_height = height + font_size + 10
             new_image = Image.new('RGB', (width, total_height), 'white')
             draw = ImageDraw.Draw(new_image)
 
@@ -722,7 +743,7 @@ def barcode_form(request):
                 font_path = os.path.join('fonts', 'arial.ttf')  
                 font = ImageFont.truetype(font_path, font_size)
             except IOError:
-                font = ImageFont.load_default()  # Fallback a la fuente predeterminada si falla
+                font = ImageFont.load_default()
 
             # Añadir el nombre del producto arriba del código de barras
             text_width = draw.textlength(product_name, font=font)
@@ -735,12 +756,11 @@ def barcode_form(request):
             # Convertir la imagen a base64
             buffer = BytesIO()
             new_image.save(buffer, format='PNG')
-            buffer.seek(0)  # Asegurarse de mover el puntero al inicio del buffer
+            buffer.seek(0)
             barcode_img = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
             context = {
-                'product_name': product_name,
-                'product_code': product_code,
+                'product': product,
                 'barcode_img': barcode_img,
             }
             return render(request, 'core/barcode_result.html', context)
@@ -748,34 +768,6 @@ def barcode_form(request):
         form = BarcodeForm()
     return render(request, 'core/barcode_form.html', {'form': form})
 
-
-# Función para decodificar el código de barras
-@login_required
-def decode_barcode(barcode_data):
-    barcode_format = barcode.get_barcode_class('code128')
-    barcode_object = barcode_format(barcode_data)
-    decoded_data = barcode_object.get_fullcode()
-    product_name, product_code = decoded_data.split('|')
-    return product_name, product_code
-
-@login_required
-def decode_barcode_view(request):
-    if request.method == 'GET':
-        barcode_img = request.GET.get('barcode_img')
-        if barcode_img:
-            # Decodificar la imagen del código de barras
-            product_name, product_code = decode_barcode(barcode_img)
-            context = {
-                'product_name': product_name,
-                'product_code': product_code,
-            }
-            return render(request, 'core/barcode_decoded.html', context)
-        else:
-            return HttpResponseBadRequest('No se proporcionó una imagen de código de barras')
-    else:
-        return HttpResponseBadRequest('Método no permitido')
-    
- # Bar code 2    
 @login_required
 def barcode_form2(request):
     if request.method == 'POST':
@@ -783,7 +775,16 @@ def barcode_form2(request):
         if form.is_valid():
             product_name = form.cleaned_data['product_name']
             product_code = form.cleaned_data['product_code']
+            is_favorite = form.cleaned_data.get('is_favorite', False)
             barcode_type = 'code128'
+
+            # Crear o actualizar el producto
+            product, created = Product.objects.get_or_create(
+                code=product_code,
+                defaults={'name': product_name, 'user': request.user}
+            )
+            product.is_favorite = is_favorite
+            product.save()
 
             # Combinar datos en un solo string delimitado por "|"
             barcode_data = f"{product_name}|{product_code}"
@@ -809,8 +810,7 @@ def barcode_form2(request):
             barcode_img = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
             context = {
-                'product_name': product_name,
-                'product_code': product_code,
+                'product': product,
                 'barcode_img': barcode_img,
             }
             return render(request, 'core/barcode_result2.html', context)
@@ -818,7 +818,28 @@ def barcode_form2(request):
         form = BarcodeForm()
     return render(request, 'core/barcode_form2.html', {'form': form})
 
-# Función para decodificar el código de barras
+@login_required
+def decode_barcode_view(request):
+    if request.method == 'GET':
+        barcode_img = request.GET.get('barcode_img')
+        if barcode_img:
+            product_name, product_code = decode_barcode(barcode_img)
+            context = {
+                'product_name': product_name,
+                'product_code': product_code,
+            }
+            return render(request, 'core/barcode_decoded.html', context)
+        else:
+            return HttpResponseBadRequest('No se proporcionó una imagen de código de barras')
+    else:
+        return HttpResponseBadRequest('Método no permitido')
+    
+
+@login_required
+def favorite_barcodes(request):
+    favorites = Product.objects.filter(user=request.user, is_favorite=True)
+    return render(request, 'core/favorite_barcodes.html', {'favorites': favorites})
+
 def decode_barcode(barcode_data):
     barcode_format = barcode.get_barcode_class('code128')
     barcode_object = barcode_format(barcode_data)

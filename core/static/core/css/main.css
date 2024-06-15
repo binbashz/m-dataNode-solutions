@@ -2381,6 +2381,145 @@ transform: translateY(-10px);
   color: #033b0c;
 }
 
+.form-check-input{
+  color: #033b0c;
+}
+
+/* codigo de barra agregar a favorito */
+/* Oculta el checkbox real */
+.star-checkbox {
+  display: none;
+}
+
+/* Estilo para la etiqueta del checkbox */
+.star-label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Estilo para los íconos de estrella */
+.star-label .fa-star {
+  color: #217a26;
+  font-size: 24px;
+  transition: color 0.2s ease-in-out;
+}
+
+.star-label .fas.fa-star {
+  display: none;
+  color: #ffc107;
+}
+
+/* Muestra la estrella llena cuando el checkbox está marcado */
+.star-checkbox:checked + .star-label .far.fa-star {
+  display: none;
+}
+
+.star-checkbox:checked + .star-label .fas.fa-star {
+  display: inline-block;
+}
+
+/* Estilo para el texto "Marcar como favorito" */
+.star-label span {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
+.btncode {
+  --border-color: linear-gradient(-45deg, #ff0000, #17aa03, #00ff88);
+  --border-width: 0.125em;
+  --curve-size: 0.5em;
+  --blur: 30px;
+  --bg: #96fc89;
+  --color: #2b8f27;
+  color: var(--color);
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  place-content: center;
+  padding: 0.5em 1.5em;
+  font-size: 13px;
+  border: 0;
+  box-shadow: 10px 10px 20px rgba(9, 209, 52, 0.6);
+  clip-path: polygon(
+    /* Top-left */ 0% var(--curve-size),
+    var(--curve-size) 0,
+    /* top-right */ 100% 0,
+    100% calc(100% - var(--curve-size)),
+    /* bottom-right 1 */ calc(100% - var(--curve-size)) 100%,
+    /* bottom-right 2 */ 0 100%
+  );
+  transition: color 250ms;
+}
+
+.btncode::after,
+.btncode::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.btncode::before {
+  background: var(--border-color);
+  background-size: 300% 300%;
+  animation: move-bg7234 5s ease infinite;
+  z-index: -2;
+}
+
+@keyframes move-bg7234 {
+  0% {
+    background-position: 31% 0%;
+  }
+
+  50% {
+    background-position: 70% 100%;
+  }
+
+  100% {
+    background-position: 31% 0%;
+  }
+}
+
+.btncode::after {
+  background: var(--bg);
+  z-index: -1;
+  clip-path: polygon(
+    /* Top-left */ var(--border-width)
+      calc(var(--curve-size) + var(--border-width) * 0.5),
+    calc(var(--curve-size) + var(--border-width) * 0.5) var(--border-width),
+    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
+    calc(100% - var(--border-width))
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+    /* bottom-right 1 */
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+      calc(100% - var(--border-width)),
+    /* bottom-right 2 */ var(--border-width) calc(100% - var(--border-width))
+  );
+  transition: clip-path 500ms;
+}
+
+.btncode:where(:hover, :focus)::after {
+  clip-path: polygon(
+    /* Top-left */ calc(100% - var(--border-width))
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+    calc(100% - var(--border-width)) var(--border-width),
+    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
+    calc(100% - var(--border-width))
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+    /* bottom-right 1 */
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+      calc(100% - var(--border-width)),
+    /* bottom-right 2 */
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
+      calc(100% - var(--border-width))
+  );
+  transition: 200ms;
+}
+
+.btncode:where(:hover, :focus) {
+  color: #ffffff;
+}
 
 
 /* Estilos para la barra de búsqueda */
@@ -2405,3 +2544,5 @@ transform: translateY(-10px);
 .search-outline {
   color: rgb(4, 58, 25);
 }
+
+

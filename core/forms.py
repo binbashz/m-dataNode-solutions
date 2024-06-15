@@ -158,3 +158,4 @@ class ResultadoAnalisisForm(forms.ModelForm):
 class BarcodeForm(forms.Form):
     product_name = forms.CharField(label='Nombre del Producto', max_length=36, help_text='Máximo 36 caracteres')
     product_code = forms.CharField(label='Código del Producto', max_length=15, help_text='Máximo 15 caracteres')
+    is_favorite = forms.BooleanField(label='Marcar como favorito', required=False)
