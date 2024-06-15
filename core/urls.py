@@ -70,6 +70,8 @@ urlpatterns = [
     path('barcode/', views.barcode_form, name='barcode_form'),
     path('barcode2/', views.barcode_form2, name='barcode_form2'),
     path('decode_barcode/', views.decode_barcode_view, name='decode_barcode'),
+    
+    path('search/', views.search_results, name='search_results'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),

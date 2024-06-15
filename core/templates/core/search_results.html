@@ -1,0 +1,128 @@
+<!-- search_results.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Resultados de búsqueda para "{{ query }}"</h2>
+
+{% if results.variedades %}
+    <h3>Variedades</h3>
+    <ul>
+    {% for result in results.variedades %}
+        <li>{{ result.nombre }} - {{ result.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.condiciones_cultivo %}
+    <h3>Condiciones de Cultivo</h3>
+    <ul>
+    {% for result in results.condiciones_cultivo %}
+        <li>{{ result.variedad.nombre }} - {{ result.tipo_suelo }} - {{ result.nutrientes }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.cultivos %}
+    <h3>Cultivos</h3>
+    <ul>
+    {% for result in results.cultivos %}
+        <li>{{ result.variedad.nombre }} - {{ result.cantidad_plantas }} plantas</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.analisis_costos %}
+    <h3>Análisis de Costos</h3>
+    <ul>
+    {% for result in results.analisis_costos %}
+        <li>Costo Semilla: {{ result.costo_semilla }} - Costo Sustrato: {{ result.costo_sustrato }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.tratamientos_fitofarmaceuticos %}
+    <h3>Tratamientos Fitofarmacéuticos</h3>
+    <ul>
+    {% for result in results.tratamientos_fitofarmaceuticos %}
+        <li>{{ result.variedad.nombre }} - {{ result.tratamiento }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.analisis_calidad %}
+    <h3>Análisis de Calidad</h3>
+    <ul>
+    {% for result in results.analisis_calidad %}
+        <li>{{ result.tipo_analisis }} - {{ result.variedad.nombre }} - {{ result.resultado }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.clientes %}
+    <h3>Clientes</h3>
+    <ul>
+    {% for result in results.clientes %}
+        <li>{{ result.nombre }} - {{ result.direccion }} - {{ result.telefono }} - {{ result.email }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.tipo_muestras %}
+    <h3>Tipos de Muestra</h3>
+    <ul>
+    {% for result in results.tipo_muestras %}
+        <li>{{ result.nombre }} - {{ result.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.muestras %}
+    <h3>Muestras</h3>
+    <ul>
+    {% for result in results.muestras %}
+        <li>{{ result.codigo }} - {{ result.cliente.nombre }} - {{ result.tipo.nombre }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.tipo_analisis %}
+    <h3>Tipos de Análisis</h3>
+    <ul>
+    {% for result in results.tipo_analisis %}
+        <li>{{ result.nombre }} - {{ result.descripcion }} - {{ result.metodo }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.analisis_programado %}
+    <h3>Análisis Programados</h3>
+    <ul>
+    {% for result in results.analisis_programado %}
+        <li>{{ result.muestra.codigo }} - {{ result.tipo_analisis.nombre }} - Prioridad: {{ result.prioridad }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.resultado_analisis %}
+    <h3>Resultados de Análisis</h3>
+    <ul>
+    {% for result in results.resultado_analisis %}
+        <li>{{ result.analisis_programado.muestra.codigo }} - {{ result.resultados }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.productos %}
+    <h3>Productos</h3>
+    <ul>
+    {% for result in results.productos %}
+        <li>{{ result.name }} - {{ result.code }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if not results %}
+    <p>No se encontraron resultados.</p>
+{% endif %}
+
+{% endblock %}

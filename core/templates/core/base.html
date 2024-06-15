@@ -45,30 +45,42 @@
                         </div>
                             </div>
                 <nav class="navegacion">
-                <!--  --> <li>
-                            <a id="home" href="{% url 'home' %}">
-                                <ion-icon name="home-outline"></ion-icon>
-                                <span class="text-color">Inicio</span>
-                            </a>
-                        <li>
-                            <a id="products" href="{% url 'products' %}">
-                                <ion-icon name="leaf-outline"></ion-icon>
-                                <span>Gestion Cultivos</span>
-                            </a>
-                        </li>
-                        <a id="funcionalidades" href="{% url 'management-view' %}"> 
-                                <ion-icon name="rocket-outline"></ion-icon>
-                                <span>Servicios<br>Avanzados</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="funcionalidades" href="{% url 'barcodes' %}">
-                                <ion-icon name="barcode-outline"></ion-icon>
-                                <span>Generar Código</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <!--  -->                   <li>
+    <a id="home" href="{% url 'home' %}">
+        <ion-icon name="home-outline"></ion-icon>
+        <span class="text-color">Inicio</span>
+    </a>
+</li>
+<li>
+    <div>
+        <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
+            <ion-icon name="search-outline" class="search-outline"></ion-icon>
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
+           
+            <button type="submit" class="btn-search"></button>
+        </form>
+    </div>
+</li>
+<li>
+    <a id="products" href="{% url 'products' %}">
+        <ion-icon name="leaf-outline"></ion-icon>
+        <span>Gestion Cultivos</span>
+    </a>
+</li>
+<li>
+    <a id="funcionalidades" href="{% url 'management-view' %}">
+        <ion-icon name="rocket-outline"></ion-icon>
+        <span>Servicios<br>Avanzados</span>
+    </a>
+</li>
+    <li>
+             <a id="funcionalidades" href="{% url 'barcodes' %}">
+                <ion-icon name="barcode-outline"></ion-icon>
+             <span>Generar Código</span>
+                </a>
+                    </li>
+                 </ul>
+            </nav>
         
                 <div>
                     <div class="linea"></div>

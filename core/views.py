@@ -27,7 +27,13 @@ from PIL import Image, ImageDraw, ImageFont
 from .forms import BarcodeForm
 from django.http import HttpResponseBadRequest
 import os
-
+from django.db.models import Q
+from .models import (
+    Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
+    TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
+    TipoMuestra, Muestra, TipoAnalisis, AnalisisProgramado, 
+    ResultadoAnalisis, Product
+)
 
 def home(request):
     return render(request, 'core/home.html')
@@ -65,7 +71,6 @@ class VariedadDeleteView(DeleteView):
     model = Variedad
     template_name = 'core/variedad_confirm_delete.html'
     success_url = reverse_lazy('variedad_list')
-
 
 
 @login_required
@@ -770,9 +775,7 @@ def decode_barcode_view(request):
     else:
         return HttpResponseBadRequest('Método no permitido')
     
-    
-    # Bar code 2
-    
+ # Bar code 2    
 @login_required
 def barcode_form2(request):
     if request.method == 'POST':
@@ -822,3 +825,54 @@ def decode_barcode(barcode_data):
     decoded_data = barcode_object.get_fullcode()
     product_name, product_code = decoded_data.split('|')
     return product_name, product_code
+
+
+# Barra de Busqueda
+def search_results(request):
+    query = request.GET.get('q')
+    results = {}
+
+    if query:
+        results['variedades'] = Variedad.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(user__username__icontains=query)
+        )
+        results['condiciones_cultivo'] = CondicionesCultivo.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tipo_suelo__icontains=query) | Q(nutrientes__icontains=query)
+        )
+        results['cultivos'] = Cultivo.objects.filter(
+            Q(variedad__nombre__icontains=query)
+        )
+        results['analisis_costos'] = AnalisisCostos.objects.filter(
+            Q(costo_semilla__icontains=query) | Q(costo_sustrato__icontains=query)
+        )
+        results['tratamientos_fitofarmaceuticos'] = TratamientoFitofarmaceutico.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tratamiento__icontains=query)
+        )
+        results['analisis_calidad'] = AnalisisCalidad.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tipo_analisis__icontains=query) | Q(resultado__icontains=query)
+        )
+        results['clientes'] = Cliente.objects.filter(
+            Q(nombre__icontains=query) | Q(direccion__icontains=query) | Q(telefono__icontains=query) | Q(email__icontains=query)
+        )
+        results['tipo_muestras'] = TipoMuestra.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query)
+        )
+        results['muestras'] = Muestra.objects.filter(
+            Q(codigo__icontains=query) | Q(cliente__nombre__icontains=query) | Q(tipo__nombre__icontains=query)
+        )
+        results['tipo_analisis'] = TipoAnalisis.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(metodo__icontains=query)
+        )
+        results['analisis_programado'] = AnalisisProgramado.objects.filter(
+            Q(muestra__codigo__icontains=query) | Q(tipo_analisis__nombre__icontains=query)
+        )
+        results['resultado_analisis'] = ResultadoAnalisis.objects.filter(
+            Q(analisis_programado__muestra__codigo__icontains=query) | Q(resultados__icontains=query)
+        )
+        results['productos'] = Product.objects.filter(
+            Q(name__icontains=query) | Q(code__icontains=query)
+        )
+    else:
+        results = {}
+
+    return render(request, 'core/search_results.html', {'results': results, 'query': query})
