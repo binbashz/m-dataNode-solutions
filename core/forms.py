@@ -5,8 +5,10 @@ from django.conf import settings
 from .models import Cultivo
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad
 from .models import AnalisisCostos
-from .models import Muestra, AnalisisProgramado, ResultadoAnalisis
+from .models import Muestra, AnalisisProgramado, ResultadoAnalisis, TipoAnalisis
 from .models import Cliente
+
+
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(label="Email")
@@ -139,20 +141,48 @@ class ClienteForm(forms.ModelForm):
         fields = ['nombre', 'direccion', 'telefono', 'email']
 
 class MuestraForm(forms.ModelForm):
+    tipo = forms.CharField(label='Tipo', required=False)
+    fecha_recepcion = forms.DateField(
+        label='Fecha de Recepción',
+        input_formats=['%d %m %Y'],
+        widget=forms.DateInput(attrs={
+            'placeholder': 'DD MM AAAA',
+            'format': '%d %m %Y',
+        }),
+    )
+
     class Meta:
         model = Muestra
         fields = ['codigo', 'cliente', 'tipo', 'fecha_recepcion', 'observaciones']
 
+
 class AnalisisProgramadoForm(forms.ModelForm):
+    tipo_analisis = forms.ModelChoiceField(queryset=TipoAnalisis.objects.all(), label='Tipo de Análisis')
+    fecha_programada = forms.DateField(
+    input_formats=['%d %m %Y'],  # Formato de entrada DD MM AAAA
+    widget=forms.DateInput(attrs={'placeholder': 'DD MM AAAA'}),
+    label='Fecha Programada'
+    )
+
     class Meta:
         model = AnalisisProgramado
-        fields = ['muestra', 'tipo_analisis', 'fecha_programada', 'prioridad']
+        fields = ['tipo_analisis', 'fecha_programada', 'prioridad']  
+        
 
 class ResultadoAnalisisForm(forms.ModelForm):
+    fecha_analisis = forms.DateField(
+        input_formats=['%d %m %Y'], 
+        widget=forms.DateInput(attrs={'placeholder': 'DD MM AAAA'}),
+        label='Fecha de Análisis'
+    )
+    resultados = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'Ingrese los resultados aquí'}),
+        label='Resultados'
+    )
+
     class Meta:
         model = ResultadoAnalisis
         fields = ['analisis_programado', 'fecha_analisis', 'resultados', 'observaciones']
-        
         
 # Bar code generator 
 class BarcodeForm(forms.Form):

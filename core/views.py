@@ -20,18 +20,21 @@ from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAn
 from django.db.models import Count
 from django.contrib import messages
 import barcode
+from django.utils.timezone import make_aware, get_current_timezone
+from django.utils import timezone
 from barcode.writer import ImageWriter
 import base64
-from barcode import Code128
-from PIL import Image, ImageDraw, ImageFont
-from .forms import BarcodeForm
 from django.http import HttpResponseBadRequest
+from .forms import BarcodeForm
+from .models import Product
+from PIL import Image, ImageDraw, ImageFont
 import os
+from barcode import Code128
 from django.db.models import Q
 from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
-    TipoMuestra, Muestra, TipoAnalisis, AnalisisProgramado, 
+    Muestra, TipoAnalisis, AnalisisProgramado, 
     ResultadoAnalisis, Product
 )
 
@@ -636,39 +639,76 @@ def cliente_nuevo(request):
         form = ClienteForm()
     return render(request, 'core/cliente_nuevo.html', {'form': form})
 
+def eliminar_cliente(request, cliente_id):
+    cliente = get_object_or_404(Cliente, id=cliente_id)
+    cliente.delete()
+    messages.success(request, 'Cliente eliminado exitosamente.')
+    return redirect('clientes')
+
 def recepcion_muestra(request):
     if request.method == 'POST':
         form = MuestraForm(request.POST)
         if form.is_valid():
-            muestra = form.save()
+            tipo_texto = form.cleaned_data.get('tipo')
+            if tipo_texto:
+                tipo_analisis, created = TipoAnalisis.objects.get_or_create(nombre=tipo_texto)
+            else:
+                tipo_analisis = None
+            muestra = form.save(commit=False)
+            muestra.tipo_analisis = tipo_analisis
+            muestra.save()
             messages.success(request, f'Muestra {muestra.codigo} registrada exitosamente.')
-            return redirect('programar_analisis')
+            return redirect('programar_analisis', muestra.id)
     else:
         form = MuestraForm()
     return render(request, 'core/recepcion_muestra.html', {'form': form})
 
-def programar_analisis(request):
+
+
+def programar_analisis(request, muestra_id=None):
     muestras_pendientes = Muestra.objects.filter(analisisprogramado__isnull=True)
     if request.method == 'POST':
         form = AnalisisProgramadoForm(request.POST)
         if form.is_valid():
-            analisis_programado = form.save()
+            # Guarda el análisis programado asociado a la muestra_id
+            analisis_programado = form.save(commit=False)
+            if muestra_id is not None:
+                analisis_programado.muestra_id = muestra_id
+            analisis_programado.save()
+            
             messages.success(request, f'Análisis {analisis_programado.tipo_analisis} programado para la muestra {analisis_programado.muestra.codigo}.')
             return redirect('registro_resultados')
     else:
         form = AnalisisProgramadoForm()
-    return render(request, 'core/programar_analisis.html', {'form': form, 'muestras_pendientes': muestras_pendientes})
+    
+    # Pasa muestra_id al contexto del renderizado
+    return render(request, 'core/programar_analisis.html', {'form': form, 'muestras_pendientes': muestras_pendientes, 'muestra_id': muestra_id})
+
 
 def registro_resultados(request):
     analisis_pendientes = AnalisisProgramado.objects.filter(resultadoanalisis__isnull=True)
     if request.method == 'POST':
         form = ResultadoAnalisisForm(request.POST)
         if form.is_valid():
-            resultado_analisis = form.save()
-            messages.success(request, f'Resultados registrados para el análisis {resultado_analisis.analisis_programado.tipo_analisis} de la muestra {resultado_analisis.analisis_programado.muestra.codigo}.')
-            return redirect('ver_informes')
+            try:
+                resultado_analisis = form.save(commit=False)
+                
+                # Convertir la fecha a una fecha consciente de la zona horaria 
+                fecha_analisis = resultado_analisis.fecha_analisis
+                if timezone.is_naive(fecha_analisis):
+                    fecha_analisis = timezone.make_aware(fecha_analisis, timezone=timezone.get_current_timezone())
+                resultado_analisis.fecha_analisis = fecha_analisis
+
+                resultado_analisis.save()
+                messages.success(request, f'Resultados registrados para el análisis {resultado_analisis.analisis_programado.tipo_analisis} de la muestra {resultado_analisis.analisis_programado.muestra.codigo}.')
+                return redirect('ver_informes')
+            except Exception as e:
+                messages.error(request, f'Error al registrar los resultados: {e}')
+        else:
+            messages.error(request, 'Hubo un error en la validación del formulario. Verifique los datos ingresados.')
     else:
         form = ResultadoAnalisisForm()
+    
     return render(request, 'core/registro_resultados.html', {'form': form, 'analisis_pendientes': analisis_pendientes})
 
 
@@ -691,17 +731,6 @@ def barcodes_view(request):
     return render(request, 'core/barcodes.html')
 
 # Bar code
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
-from .forms import BarcodeForm
-from .models import Product
-from io import BytesIO
-import barcode
-from barcode.writer import ImageWriter
-from PIL import Image, ImageDraw, ImageFont
-import os
-import base64
 
 @login_required
 def barcode_form(request):
@@ -854,46 +883,64 @@ def search_results(request):
     results = {}
 
     if query:
-        results['variedades'] = Variedad.objects.filter(
-            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(user__username__icontains=query)
-        )
-        results['condiciones_cultivo'] = CondicionesCultivo.objects.filter(
-            Q(variedad__nombre__icontains=query) | Q(tipo_suelo__icontains=query) | Q(nutrientes__icontains=query)
-        )
-        results['cultivos'] = Cultivo.objects.filter(
-            Q(variedad__nombre__icontains=query)
-        )
-        results['analisis_costos'] = AnalisisCostos.objects.filter(
-            Q(costo_semilla__icontains=query) | Q(costo_sustrato__icontains=query)
-        )
-        results['tratamientos_fitofarmaceuticos'] = TratamientoFitofarmaceutico.objects.filter(
-            Q(variedad__nombre__icontains=query) | Q(tratamiento__icontains=query)
-        )
-        results['analisis_calidad'] = AnalisisCalidad.objects.filter(
-            Q(variedad__nombre__icontains=query) | Q(tipo_analisis__icontains=query) | Q(resultado__icontains=query)
-        )
-        results['clientes'] = Cliente.objects.filter(
-            Q(nombre__icontains=query) | Q(direccion__icontains=query) | Q(telefono__icontains=query) | Q(email__icontains=query)
-        )
-        results['tipo_muestras'] = TipoMuestra.objects.filter(
+        variedades = Variedad.objects.filter(
             Q(nombre__icontains=query) | Q(descripcion__icontains=query)
         )
-        results['muestras'] = Muestra.objects.filter(
-            Q(codigo__icontains=query) | Q(cliente__nombre__icontains=query) | Q(tipo__nombre__icontains=query)
-        )
-        results['tipo_analisis'] = TipoAnalisis.objects.filter(
+        results['variedades'] = variedades
+
+        tipos_analisis = TipoAnalisis.objects.filter(
             Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(metodo__icontains=query)
         )
-        results['analisis_programado'] = AnalisisProgramado.objects.filter(
-            Q(muestra__codigo__icontains=query) | Q(tipo_analisis__nombre__icontains=query)
+        results['tipos_analisis'] = tipos_analisis
+
+        condiciones_cultivo = CondicionesCultivo.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tipo_suelo__icontains=query)
         )
-        results['resultado_analisis'] = ResultadoAnalisis.objects.filter(
-            Q(analisis_programado__muestra__codigo__icontains=query) | Q(resultados__icontains=query)
+        results['condiciones_cultivo'] = condiciones_cultivo
+
+        cultivos = Cultivo.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(cantidad_plantas__icontains=query)
         )
-        results['productos'] = Product.objects.filter(
+        results['cultivos'] = cultivos
+
+        analisis_costos = AnalisisCostos.objects.filter(
+            Q(id__icontains=query) | Q(costo_semilla__icontains=query)
+        )
+        results['analisis_costos'] = analisis_costos
+
+        tratamientos_fitofarmaceuticos = TratamientoFitofarmaceutico.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tratamiento__icontains=query)
+        )
+        results['tratamientos_fitofarmaceuticos'] = tratamientos_fitofarmaceuticos
+
+        analisis_calidad = AnalisisCalidad.objects.filter(
+            Q(variedad__nombre__icontains=query) | Q(tipo_analisis__icontains=query) | Q(resultado__icontains=query)
+        )
+        results['analisis_calidad'] = analisis_calidad
+
+        clientes = Cliente.objects.filter(
+            Q(nombre__icontains=query) | Q(direccion__icontains=query) | Q(telefono__icontains=query) | Q(email__icontains=query)
+        )
+        results['clientes'] = clientes
+
+        muestras = Muestra.objects.filter(
+            Q(codigo__icontains=query) | Q(cliente__nombre__icontains=query)
+        )
+        results['muestras'] = muestras
+
+        analisis_programados = AnalisisProgramado.objects.filter(
+            Q(tipo_analisis__nombre__icontains=query) | Q(prioridad__icontains=query)
+        )
+        results['analisis_programados'] = analisis_programados
+
+        resultados_analisis = ResultadoAnalisis.objects.filter(
+            Q(analisis_programado__tipo_analisis__nombre__icontains=query) | Q(observaciones__icontains=query)
+        )
+        results['resultados_analisis'] = resultados_analisis
+
+        productos = Product.objects.filter(
             Q(name__icontains=query) | Q(code__icontains=query)
         )
-    else:
-        results = {}
-
-    return render(request, 'core/search_results.html', {'results': results, 'query': query})
+        results['productos'] = productos
+        
+        return render(request, 'core/search_results.html', {'query': query, 'results': results})

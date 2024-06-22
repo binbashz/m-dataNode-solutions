@@ -1,6 +1,4 @@
 from django.utils import timezone
-
-
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -104,29 +102,33 @@ class AnalisisCalidad(models.Model):
 
 
 # Analisis
-from django.db import models
-
 class Cliente(models.Model):
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=200)
     telefono = models.CharField(max_length=20)
     email = models.EmailField()
 
-class TipoMuestra(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-
-class Muestra(models.Model):
-    codigo = models.CharField(max_length=20, unique=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    tipo = models.ForeignKey(TipoMuestra, on_delete=models.CASCADE)
-    fecha_recepcion = models.DateField()
-    observaciones = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return self.nombre
 
 class TipoAnalisis(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     metodo = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+class Muestra(models.Model):
+    codigo = models.CharField(max_length=100)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    tipo_analisis = models.ForeignKey(TipoAnalisis, on_delete=models.CASCADE, null=True, blank=True)
+    fecha_recepcion = models.DateField()
+    observaciones = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.codigo
+
 
 class AnalisisProgramado(models.Model):
     muestra = models.ForeignKey(Muestra, on_delete=models.CASCADE)
@@ -134,13 +136,15 @@ class AnalisisProgramado(models.Model):
     fecha_programada = models.DateTimeField()
     prioridad = models.IntegerField(choices=[(1, 'Baja'), (2, 'Media'), (3, 'Alta')])
 
+    def __str__(self):
+        return f"{self.tipo_analisis.nombre} - {self.muestra.codigo}"
+
 class ResultadoAnalisis(models.Model):
     analisis_programado = models.ForeignKey(AnalisisProgramado, on_delete=models.CASCADE)
     fecha_analisis = models.DateTimeField()
-    resultados = models.JSONField()
+    resultados = models.TextField() 
     observaciones = models.TextField(blank=True, null=True)
-    
-    
+
     # barcode model - codigo barras
 class Product(models.Model):
     name = models.CharField(max_length=36)

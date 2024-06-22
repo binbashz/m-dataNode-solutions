@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="customfor2">
+    <div class="row mt-2">
+        <div class="col-md-8 offset-md-2">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <br>
+            <h2>Lista de Tipos de Muestra</h2>
+            <ul>
+                {% for tipo in tipos_muestra %}
+                    <li>{{ tipo.nombre }}: {{ tipo.descripcion }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'tipo_muestra_nuevo' %}">Crear Nuevo Tipo de Muestra</a>
+{% endblock %}

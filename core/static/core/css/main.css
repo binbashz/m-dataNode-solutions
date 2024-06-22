@@ -54,9 +54,7 @@ body {
 }
 
 
-.header .header {
-  color: white;
-}
+
 
 .container {
   background-color: transparent;
@@ -226,6 +224,9 @@ body {
   background-color: #FFA000;
 }
 
+
+
+
 .navbar {
   padding: 1rem;
   display: flex;
@@ -341,15 +342,15 @@ body {
 }
 
 .nombre-pagina .logo {
-  width: 50px; /* Ajusta el tamaño según sea necesario */
+  width: 50px; 
   height: auto;
   margin-right: 10px;
 }
 
 .nombre-pagina .nombre {
-  font-size: 1.5rem; /* Ajusta el tamaño de la fuente según sea necesario */
+  font-size: 1.5rem; 
   font-weight: 600;
-  color: #058655; /* Ajusta el color según sea necesario */
+  color: #058655; 
 }
 
 
@@ -952,11 +953,50 @@ nav.active ul li a:hover span {
   margin: 0 auto;
   margin-bottom: 9rem; 
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(21, 39, 21, 0.18);
+  box-shadow: 0 0 10px rgba(170, 241, 212, 0.5);
   transition: transform 0.3s ease;
-  vertical-align: top; /* Asegura que las tarjetas se alineen correctamente */
-  overflow: hidden; /* Evitar que el contenido se salga de la tarjeta */
+  vertical-align: top; 
+  overflow: hidden; 
   scroll-snap-align: start; /* Define cómo se alinea la tarjeta en el desplazamiento */
+}
+
+
+
+/* Animación de entrada para tarjetas */
+  /* Animación de entrada para tarjetas */
+  @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicar animación a las tarjetas */
+.tarjeta.animate__animated.animate__fadeInUp {
+    animation-name: fadeInUp;
+    animation-duration: 1s;
+}
+
+  /* Animación de entrada para tarjetas */
+  @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicar animación a las tarjetas cultivador emprendero laborat home cards 1 */
+.tarjetin.animate__animated.animate__fadeInUp {
+    animation-name: fadeInUp;
+    animation-duration: 1.6s;
 }
 
 /* Ajuste de contenido */
@@ -1526,6 +1566,44 @@ figcaption {
   }
 }
 
+/* mensaje error base.html */
+#message-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  z-index: 1050;
+}
+
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.messages li {
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.messages .success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.messages .error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.messages .warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
 
 
 /* tarjetas en /prodcuts */
@@ -1944,6 +2022,25 @@ transform: translateY(-10px);
 }
 
 
+/* login y signup */
+.custombodyhome2 {
+  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #58f0e3 90%, #0da03e 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* home fondo body */
+
+.custombodyhome {
+  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #ff6b58 90%, #ff5e62 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
 /* home nav */
 
   .all {
@@ -2129,13 +2226,15 @@ transform: translateY(-10px);
 .tarjetacontainer {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
   flex-wrap: wrap;
   gap: 20px;
 }
 
 .tarjetin {
-  background-color: #f9f9f9;
-  border-radius: 10px;
+  background-color: rgba(249, 249, 249, 0.5); 
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   transition: all 0.3s ease-in-out;
@@ -2144,13 +2243,15 @@ transform: translateY(-10px);
 
 .tarjetin:hover {
   transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cabecera img {
   width: 100%;
+  border-radius: 8px;
   height: 200px;
   object-fit: cover;
+  
 }
 
 .pie {
@@ -2180,6 +2281,64 @@ transform: translateY(-10px);
   .tarjetin {
       width: 30%; /* Tres tarjetas por fila en pantallas de al menos 900px de ancho */
   }
+}
+
+
+
+/* banner home */
+
+
+.bannerhome {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-image: linear-gradient(120deg, rgba(212, 252, 121, 0.6) 15%, rgba(150, 230, 161, 0.6) 50%, rgba(11, 223, 152, 0.6) 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.bannerhome-content {
+  max-width: 50%;
+}
+
+.bannerhome h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.bannerhome p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.bannerhome-features {
+  display: flex;
+  gap: 20px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #555;
+}
+
+.feature i {
+  margin-right: 10px;
+  color: #009688;
+}
+
+.bannerhome-image img {
+  max-width: 100%;
+  border-radius: 16px;
+  z-index: 4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -2325,6 +2484,13 @@ transform: translateY(-10px);
   border-radius: 0.9rem;
 }
 
+/* boton eliminar cliente */ 
+.btn-smaller {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+
 
 /* estilo codigos barra menu */
 .cus {
@@ -2430,7 +2596,7 @@ transform: translateY(-10px);
   --border-width: 0.125em;
   --curve-size: 0.5em;
   --blur: 30px;
-  --bg: #96fc89;
+  --bg: #ebfff2;
   --color: #2b8f27;
   color: var(--color);
   cursor: pointer;
@@ -2522,12 +2688,16 @@ transform: translateY(-10px);
 }
 
 
-/* Estilos para la barra de búsqueda */
+/* Estilos para la barra de busqueda - search */
 .form-inline {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   width: 100%; 
+}
+
+.alert.alert-success.mt-9 {
+  margin-bottom: 1px; 
 }
 
 .form-control {
@@ -2543,6 +2713,11 @@ transform: translateY(-10px);
 
 .search-outline {
   color: rgb(4, 58, 25);
+  margin-right: 9px;
+ 
 }
+
+
+
 
 

@@ -7,18 +7,78 @@
             <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
             <br>
             <h1>Programar Análisis</h1>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-success">Programar Análisis</button>
-            </form>
-            <h2>Muestras pendientes de programar análisis</h2>
-            <ul>
-                {% for muestra in muestras %}
-                    <li>{{ muestra.codigo }}</li>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
+            {% endif %}
+
+            {% if muestra %}
+            <p>Programando análisis para la muestra: <strong>{{ muestra.codigo }}</strong></p>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Por favor, corrige los siguientes errores:
+                    {{ form.errors }}
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    {{ form.tipo_analisis.label_tag }}
+                    {{ form.tipo_analisis }}
+                    {% if form.tipo_analisis.errors %}
+                    <small class="text-danger">{{ form.tipo_analisis.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.fecha_programada.label_tag }}
+                    {{ form.fecha_programada }}
+                    {% if form.fecha_programada.errors %}
+                    <small class="text-danger">{{ form.fecha_programada.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.prioridad.label_tag }}
+                    {{ form.prioridad }}
+                    {% if form.prioridad.errors %}
+                    <small class="text-danger">{{ form.prioridad.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-success">Programar Análisis</button>
+            </form>
+
+            {% if muestras_pendientes %}
+            <h5 class="mt-4">Muestras pendientes de programar análisis</h5>
+            <ul>
+                {% for muestra in muestras_pendientes %}
+                <li>
+                    {{ muestra.codigo }}
+                    <a href="{% url 'programar_analisis' muestra.id %}" class="btn btn-sm btn-primary">Programar</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="mt-4">No hay muestras pendientes de programar análisis.</p>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    var submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Procesando...';
+});
+</script>
 {% endblock %}

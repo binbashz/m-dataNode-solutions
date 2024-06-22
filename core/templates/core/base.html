@@ -40,62 +40,54 @@
                         <p class="nombre">CannaTech</p>
                     </div>
                     
-                           <div class="alert alert-success mt-3">
+                           <div class="alert alert-success mt-1 mb-1">
                         ¡Bienvenido,<br> {{ request.user.get_username }}!
-                        </div>
+                        <hr>
+                        
+                                <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
+                                   <strong> <ion-icon name="search-outline" class="search-outline"></ion-icon> </strong>
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
+                                   
+                                    <button type="submit" class="btn-search"></button>
+                                </form>
+                            </div>
+                        
                             </div>
                 <nav class="navegacion">
-                <!--  -->                   <li>
-    <a id="home" href="{% url 'home' %}">
-        <ion-icon name="home-outline"></ion-icon>
-        <span class="text-color">Inicio</span>
-    </a>
-</li>
-<li>
-    <div>
-        <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
-            <ion-icon name="search-outline" class="search-outline"></ion-icon>
-            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
-           
-            <button type="submit" class="btn-search"></button>
-        </form>
-    </div>
-</li>
-<li>
-    <a id="products" href="{% url 'products' %}">
-        <ion-icon name="leaf-outline"></ion-icon>
-        <span>Gestion Cultivos</span>
-    </a>
-</li>
-<li>
+                <!--  -->                   
+            <li>
+            <a id="home" href="{% url 'home' %}">
+                <ion-icon name="home-outline"></ion-icon>
+                <span class="text-color">Inicio</span>
+            </a>
+        </li>
+
+                <li>
+                    <a id="products" href="{% url 'products' %}">
+                        <ion-icon name="leaf-outline"></ion-icon>
+                        <span>Gestion Cultivos</span>
+                    </a>
+                </li>
+
+    <li>
+        <a id="funcionalidades" href="{% url 'barcodes' %}">
+        <ion-icon name="barcode-outline"></ion-icon>
+        <span>Gestion Códigos</span>
+        </a>
+            </li>
+            </ul>
+    <li>
     <a id="funcionalidades" href="{% url 'management-view' %}">
         <ion-icon name="rocket-outline"></ion-icon>
         <span>Servicios<br>Avanzados</span>
     </a>
 </li>
-    <li>
-             <a id="funcionalidades" href="{% url 'barcodes' %}">
-                <ion-icon name="barcode-outline"></ion-icon>
-             <span>Generar Código</span>
-                </a>
-                    </li>
-                 </ul>
             </nav>
         
                 <div>
                     <div class="linea"></div>
         
-                    <div class="modo-oscuro">
-                        <div class="info">
-                            <ion-icon name="moon-outline"></ion-icon>
-                            <span>Dark Mode</span>
-                        </div>
-                        <div class="switch">
-                            <div class="base">
-                                <div class="circulo"></div>
-                            </div>
-                        </div>
-                    </div>
+
             </div>
 
             <li>
@@ -111,7 +103,7 @@
             <div class="col">
                 {% if not user.is_authenticated %}
                 <header class="header">
-                    <nav class="navbar navbar-expand-lg ">
+                    <nav class="navbar navbar-expand-lg bg-transparent ">
                         <div class="container-fluid">
                             <a class="navbar-brand" href="{% url 'home' %}">
                                 <img src="{% static 'core/images/logo.png' %}" alt="CannaTech Logo">
@@ -144,8 +136,13 @@
                 <button onclick="topFunction()" id="myBtn" title="Go to top">
                     <i class="ionicons ion-chevron-up"></i>
                   </button>
-                  
-                  
+                  {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                {% endif %}  
                   <!-- contenido -->
                 <main class="{% if user.is_authenticated %}authenticated-main{% else %}unauthenticated-main{% endif %}">
                     {% block content %}
