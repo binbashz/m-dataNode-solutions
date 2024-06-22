@@ -4,6 +4,8 @@
 {% block styles %}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -71,7 +73,7 @@
                         <p>Gestiona muestras, realiza análisis y control de calidad.</p>
                     </div>
                 </div>
-            </div>
+            </div><br>
             
               <div class="bannerhome">
                 <div class="bannerhome-content">
@@ -100,6 +102,42 @@
               
             
         {% endif %}
+       
+        <div class="tarjetas-grid-container">
+            <div class="locks">
+              <div class="img"></div>
+              <div class="textBox">
+                <div class="textContent">
+                  <p class="h1">my titlele la</p>
+                  <span class="span">12 min ago</span>
+                </div>
+                <p class="p">wawawd dkeke aak daco compter da</p>
+              </div>
+            </div>
+            <!-- Otras dos tarjetas similares aquí -->
+            <div class="locks">
+                <div class="img"></div>
+                <div class="textBox">
+                  <div class="textContent">
+                    <p class="h1">Textuli title</p>
+                    <span class="span">12 min ago</span>
+                  </div>
+                  <p class="p">Lorem ipsum dolor sit amet consectetur  Quia porro laborum </p>
+                </div>
+              </div>
+              <div class="locks">
+                <div class="img"></div>
+                <div class="textBox">
+                  <div class="textContent">
+                    <p class="h1">Textos</p>
+                    <span class="span">12 min ago</span>
+                  </div>
+                  <p class="p">Lorem impus dolre sl base!</p>
+                </div>
+              </div>
+          </div>
+          
+
                     <!--  -->
 
                     <div class="contenedor-tarjetas">
@@ -138,6 +176,7 @@
         
         <!-- Footer -->
         <footer class="footer">
+            <hr>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
@@ -157,7 +196,7 @@
                     </div>
                     <div class="col-md-4">
                         <h5>Acerca de</h5>
-                        <p>CannaTe negocios reionados.</p>
+                        <p>CannaTech Software administrativo contable.</p>
                     </div>
                 </div>
                 <hr>
@@ -168,9 +207,11 @@
             </div>
         </footer>
     </div>
-</body>
 
-    <script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    
+<!-- menu clickable is logg-->
+    <script> 
         document.addEventListener('DOMContentLoaded', function() {
             var lefter = document.querySelector('.lefter');
             var left = document.querySelector('.left');
@@ -202,4 +243,6 @@
             }
         });
     </script>
+
+</body>
 {% endblock %}

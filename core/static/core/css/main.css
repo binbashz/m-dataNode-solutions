@@ -643,10 +643,13 @@ nav.active ul li a:hover span {
 
 .hero h1, 
 .hero h2   {
-  background: linear-gradient(to bottom right, #058655, #5d4037, #aed581);
+  background: 
+  linear-gradient(to bottom right, white, #3c0288 30%, #0e6e94 36%, #61e081 50%),
+  linear-gradient(to left, #7ae061, #1b8a1b); 
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  font-weight: 600;
 }
 
 
@@ -791,6 +794,10 @@ nav.active ul li a:hover span {
  background: linear-gradient(white, rgba(72, 255, 0, 0.6));
  padding: 1rem;
  border-radius: 0.5rem;
+}
+
+.form-signin {
+  margin-bottom: 5rem;
 }
 
 .custom-form-input {
@@ -1095,6 +1102,89 @@ nav.active ul li a:hover span {
 .tarjeta3 > .contenedor:after {
   background-image: linear-gradient(135deg, #ffab1d, #ffffff);
 }
+
+
+/* tarjetines lock home*/
+.tarjetas-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .tarjetas-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .locks {
+    scroll-snap-align: start;
+  }
+}
+
+.locks {
+  width: 100%;
+  max-width: 290px;
+  margin: 3rem;
+  height: 70px;
+  background: linear-gradient(45deg, rgba(193, 161, 245, 0.6) 24%, rgba(105, 223, 121, 0.6));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  backdrop-filter: blur(10px);
+  transition: 0.5s ease-in-out;
+}
+
+.locks:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.img {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 10px;
+  background: linear-gradient(#b2f763, #166881);
+}
+
+.locks:hover > .img {
+  transition: 0.5s ease-in-out;
+  background: linear-gradient(#01b36f, #ffffff);
+}
+
+.textBox {
+  width: calc(100% - 90px);
+  margin-left: 10px;
+  color: white;
+  font-family: 'Poppins' sans-serif;
+}
+
+.textContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.span {
+  font-size: 10px;
+}
+
+.h1 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 7px;
+}
+
+.p {
+  font-size: 12px;
+  font-weight: lighter;
+}
+
 
 
 /* Estilos para dispositivos con pantalla ancha */
@@ -2024,7 +2114,7 @@ transform: translateY(-10px);
 
 /* login y signup */
 .custombodyhome2 {
-  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #58f0e3 90%, #0da03e 100%);
+  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #58fff1 90%, #0da03e 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -2034,7 +2124,7 @@ transform: translateY(-10px);
 /* home fondo body */
 
 .custombodyhome {
-  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #ff6b58 90%, #ff5e62 100%);
+  background: linear-gradient(135deg, white 25%, #d3cce3 50%, #e9e4f0 60%, #a8d5ba 80%, #7ae061 90%, #8130eb 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -2234,7 +2324,7 @@ transform: translateY(-10px);
 
 .tarjetin {
   background-color: rgba(249, 249, 249, 0.5); 
-  border-radius: 8px;
+  border-radius: 18px 73px 114px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   transition: all 0.3s ease-in-out;
@@ -2296,7 +2386,7 @@ transform: translateY(-10px);
   width: 100%;
   padding: 20px;
   background-image: linear-gradient(120deg, rgba(212, 252, 121, 0.6) 15%, rgba(150, 230, 161, 0.6) 50%, rgba(11, 223, 152, 0.6) 100%);
-  border-radius: 16px;
+  border-radius: 30px 73px 14px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
@@ -2336,9 +2426,14 @@ transform: translateY(-10px);
 
 .bannerhome-image img {
   max-width: 100%;
-  border-radius: 16px;
+  border-radius: 30px 63px 111px;
   z-index: 4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: filter 0.3s ease-in-out;
+}
+
+.bannerhome-image img:hover {
+  filter: brightness(140%);
 }
 
 
@@ -2718,6 +2813,10 @@ transform: translateY(-10px);
 }
 
 
-
-
+/* footer */
+.footer a {
+  margin-top: 5rem;
+  color: #2a6b3a;
+  text-decoration: none;
+}
 
