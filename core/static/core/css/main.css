@@ -1104,36 +1104,31 @@ nav.active ul li a:hover span {
 }
 
 
-/* tarjetines lock home*/
+/* ----- tarjetines lock home ----------------  */
+
+/* tarjetines lock home */
+/* Estilos para las tarjetas y contenedor */
 .tarjetas-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  display: flex;
   gap: 20px;
-}
-
-@media only screen and (max-width: 768px) {
-  .tarjetas-grid-container {
-    grid-template-columns: repeat(3, 1fr);
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .locks {
-    scroll-snap-align: start;
-  }
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
 }
 
 .locks {
-  width: 100%;
-  max-width: 290px;
-  margin: 3rem;
-  height: 70px;
+  flex: 0 0 auto;
+  width: 290px;
+  height: auto;
+  min-height: 100px;
   background: linear-gradient(45deg, rgba(193, 161, 245, 0.6) 24%, rgba(105, 223, 121, 0.6));
   border-radius: 20px;
+  margin: 2rem 20px 2rem 0;
   display: flex;
   align-items: center;
-  justify-content: left;
+  padding: 10px;
+  box-sizing: border-box;
   backdrop-filter: blur(10px);
   transition: 0.5s ease-in-out;
 }
@@ -1146,7 +1141,6 @@ nav.active ul li a:hover span {
 .img {
   width: 50px;
   height: 50px;
-  margin-left: 10px;
   border-radius: 10px;
   background: linear-gradient(#b2f763, #166881);
 }
@@ -1157,32 +1151,43 @@ nav.active ul li a:hover span {
 }
 
 .textBox {
-  width: calc(100% - 90px);
+  width: calc(100% - 60px);
   margin-left: 10px;
   color: white;
-  font-family: 'Poppins' sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .textContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .span {
   font-size: 10px;
 }
 
-.h1 {
+.card-title {
   font-size: 14px;
   font-weight: bold;
-  margin: 7px;
+  margin: 0;
 }
 
 .p {
   font-size: 12px;
   font-weight: lighter;
+  margin: 0;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+@media (max-width: 768px) {
+  .locks {
+    width: 250px;
+    margin: 1rem 15px 1rem 0;
+  }
 }
 
 
@@ -2383,6 +2388,7 @@ transform: translateY(-10px);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 2.5rem;
   width: 100%;
   padding: 20px;
   background-image: linear-gradient(120deg, rgba(212, 252, 121, 0.6) 15%, rgba(150, 230, 161, 0.6) 50%, rgba(11, 223, 152, 0.6) 100%);
