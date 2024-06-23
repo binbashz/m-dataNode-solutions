@@ -17,6 +17,8 @@
             <p>Software para optimizar la gestión de cultivos, laboratorios, negocios y más.</p>
         </div>
         {% if user.is_authenticated %}
+
+        <!-- float menu -->
             <div class="all">
                 <div class="lefter">
                     <div class="text">Servicios Avanzados</div>
@@ -36,7 +38,9 @@
                 <div class="righter">
                     <div class="text">Condiciones Cultivo</div>
                 </div>
-            </div>
+            </div><br>
+
+  
         {% else %}
             <!-- if not logged show  -->
             <div class="tarjetacontainer">
@@ -77,201 +81,179 @@
             
               <div class="bannerhome">
                 <div class="bannerhome-content">
-                  <h1>Revoluciona tu Cultivo de Cannabis</h1>
-                  <p>Gestión integral, análisis precisos y optimización de costos en una sola plataforma</p>
+                    <div class="hero2">
+                    <h1>Revoluciona tu <br> Cultivo de Cannabis</h1> 
+                </div>
+                  <p> con nuestra plataforma integral. Gestiona variedades, tratamientos, análisis y costos de manera eficiente. Optimiza tu producción y descubre el potencial de tus cultivos de forma fácil y efectiva.</p>
                   <div class="bannerhome-features">
-                    <div class="feature">
-                      <i class="fas fa-leaf"></i>
-                      <span>Control de Variedades</span>
-                    </div>
-                    <div class="feature">
-                      <i class="fas fa-flask"></i>
-                      <span>Análisis de Calidad</span>
-                    </div>
-                    <div class="feature">
-                      <i class="fas fa-chart-line"></i>
-                      <span>Optimización de Costos</span>
-                    </div>
+                    
                   </div>
                 </div>
                 <div class="bannerhome-image">
                   <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Tecnología en cultivo de cannabis">
                 </div>
                 <div class="ring"></div>
-              </div>
-              
+              </div>       
             
         {% endif %}
        
+        <!--  cards carrusel -->
         <div class="tarjetas-grid-container">
             <!-- Tarjeta 1: Registro de Variedades -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Registrar Variedades</h2>
-                  <time class="span">jeje</time>
+            <div class="locks" id="card-1">
+                <div class="img"><i class="fas fa-seedling"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Registrar Variedades</h2>
+                    </div>
+                    <p class="p">Registra todas las variedades de cultivo disponibles.</p>
                 </div>
-                <p class="p">Registra todas las variedades de cultivo disponibles.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 2: Condiciones de Cultivo -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Condiciones de Cultivo</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-2">
+                <div class="img"><i class="fas fa-leaf"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Condiciones de Cultivo</h2>
+                    </div>
+                    <p class="p">Define y crea las condiciones de cultivo necesarias.</p>
                 </div>
-                <p class="p">Define y crea las condiciones de cultivo necesarias.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 3: Tratamientos Fitofarmacéuticos -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Tratamiento Fitofarmacéutico</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-3">
+                <div class="img"><i class="fas fa-prescription-bottle-alt"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Tratamiento Fitofarmacéutico</h2>
+                    </div>
+                    <p class="p">Registra la información sobre tratamientos fitofarmacéuticos aplicados.</p>
                 </div>
-                <p class="p">Registra la información sobre tratamientos fitofarmacéuticos aplicados.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 4: Información de Análisis -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Información de Análisis</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-4">
+                <div class="img"><i class="fas fa-chart-bar"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Información de Análisis</h2>
+                    </div>
+                    <p class="p">Introduce los datos de análisis realizados.</p>
                 </div>
-                <p class="p">Introduce los datos de análisis realizados.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 5: Recomendaciones de Cultivo -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Recomendaciones de Cultivo</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-5">
+                <div class="img"><i class="fas fa-cogs"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Recomendaciones de Cultivo</h2>
+                    </div>
+                    <p class="p">Recibe sugerencias y recomendaciones de cultivo personalizadas basadas en los datos ingresados.</p>
                 </div>
-                <p class="p">Recibe sugerencias y recomendaciones de cultivo personalizadas basadas en los datos ingresados.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 6: Información en PDF -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Información en PDF</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-6">
+                <div class="img"><i class="far fa-file-pdf"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Información en PDF</h2>
+                    </div>
+                    <p class="p">Genera y descarga reportes e información en formato PDF.</p>
                 </div>
-                <p class="p">Genera y descarga reportes e información en formato PDF.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 7: Simulación de Rendimiento -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Simulación de Rendimiento</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-7">
+                <div class="img"><i class="fas fa-chart-line"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Simulación de Rendimiento</h2>
+                    </div>
+                    <p class="p">Simula y predice el rendimiento de tu cosecha basado en los datos ingresados.</p>
                 </div>
-                <p class="p">Simula y predice el rendimiento de tu cosecha basado en los datos ingresados.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 8: Análisis de Costos -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Análisis de Costos</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-8">
+                <div class="img"><i class="fas fa-calculator"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Análisis de Costos</h2>
+                    </div>
+                    <p class="p">Calcula y analiza los costos asociados por gramo y el costo total.</p>
                 </div>
-                <p class="p">Calcula y analiza los costos asociados por gramo y el costo total.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 9: Registro de Clientes -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Registro de Clientes</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-9">
+                <div class="img"><i class="fas fa-user"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Registro de Clientes</h2>
+                    </div>
+                    <p class="p">Mantén un registro detallado de la información de tus clientes.</p>
                 </div>
-                <p class="p">Mantén un registro detallado de la información de tus clientes.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 10: Clientes Relacionados con Análisis -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Clientes y Análisis</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-10">
+                <div class="img"><i class="fas fa-users"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Clientes y Análisis</h2>
+                    </div>
+                    <p class="p">Asocia clientes específicos con los análisis realizados.</p>
                 </div>
-                <p class="p">Asocia clientes específicos con los análisis realizados.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 11: Recepción de Muestras -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Recepción de Muestras</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-11">
+                <div class="img"><i class="fas fa-flask"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Recepción de Muestras</h2>
+                    </div>
+                    <p class="p">Lleva un control de las muestras recibidas.</p>
                 </div>
-                <p class="p">Lleva un control de las muestras recibidas.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 12: Resultados y Observaciones -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Resultados y Observaciones</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-12">
+                <div class="img"><i class="far fa-eye"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Resultados y Observaciones</h2>
+                    </div>
+                    <p class="p">Introduce y guarda los resultados o cualquier observación relevante.</p>
                 </div>
-                <p class="p">Introduce y guarda los resultados o cualquier observación relevante.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 13: Códigos de Barra -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Códigos de Barra</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-13">
+                <div class="img"><i class="fas fa-barcode"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Códigos de Barra</h2>
+                    </div>
+                    <p class="p">Genera códigos de barra personalizados para tus etiquetas, con decodificación estándar o total.</p>
                 </div>
-                <p class="p">Genera códigos de barra personalizados para tus etiquetas, con decodificación estándar o total.</p>
-              </div>
             </div>
             
             <!-- Tarjeta 14: Favoritos -->
-            <div class="locks">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <h2 class="card-title">Favoritos</h2>
-                  <time class="span">x</time>
+            <div class="locks" id="card-14">
+                <div class="img"><i class="fas fa-star"></i></div>
+                <div class="textBox">
+                    <div class="textContent">
+                        <h2 class="card-title">Favoritos</h2>
+                    </div>
+                    <p class="p">Marca y guarda elementos importantes como favoritos para un acceso rápido.</p>
                 </div>
-                <p class="p">Marca y guarda elementos importantes como favoritos para un acceso rápido.</p>
-              </div>
             </div>
-          </div>
+        </div>
+        
           
                     <!--  -->
 
@@ -330,9 +312,10 @@
                         </ul>
                     </div>
                     <div class="col-md-4">
-                        <h5>Acerca de</h5>
-                        <p>CannaTech Software administrativo contable.</p>
+                        <h5>Sobre CannaTech</h5>
+                        <p>Brindamos soluciones eficientes para la gestión de cultivos y laboratorios de cannabis. Nuestro software está diseñado para simplificar tus procesos y optimizar tu producción de manera efectiva.</p>
                     </div>
+                    
                 </div>
                 <hr>
                 <div class="text-center">
@@ -345,6 +328,35 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <script type="text/javascript" src="{% static 'core/js/locks.js' %}"></script>
+
+<script>
+    // Definir variables necesarias para lockslogg.js
+    window.isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+    window.cardUrls = [
+        "{% url 'variedad_create' %}",
+        "{% url 'todas_condiciones_cultivo' %}",
+        "{% url 'tratamiento_list' variedad_id=1 %}",
+        "{% url 'analisis_list' variedad_id=1 %}",
+        "{% url 'recomendaciones' %}",
+        "{% url 'generar_pdf_recomendaciones' %}",
+        "{% url 'simulacion_rendimiento' %}",
+        "{% url 'analizar_costos_presupuestos' %}",
+        "{% url 'clientes' %}",
+        "{% url 'programar_analisis' %}",
+        "{% url 'recepcion_muestra' %}",
+        "{% url 'registro_resultados' %}",
+        "{% url 'barcodes' %}",
+        "#" 
+    ];
+</script>
+
+<script type="text/javascript" src="{% static 'core/js/lockslogg.js' %}"></script>
+
+
+<script type="text/javascript" src="{% static 'core/js/lockslogg.js' %}"></script>
+
+
+<script type="text/javascript" src="{% static 'core/js/lockslogg.js' %}"></script>
 
     
 <!-- menu clickable is logg-->
@@ -380,6 +392,7 @@
             }
         });
     </script>
+
 
 </body>
 {% endblock %}
