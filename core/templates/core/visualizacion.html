@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+<h1>Visualización de Condiciones de Cultivo</h1>
+
+<!-- Ejemplo de uso de librería para gráficos (puedes usar la que prefieras) -->
+<div class="row">
+    <div class="col-lg-6">
+        <canvas id="bar_chart"></canvas>
+    </div>
+    <div class="col-lg-6">
+        <canvas id="pie_chart"></canvas>
+    </div>
+</div>
+
+<!-- Ejemplo de iteración sobre los datos en la plantilla -->
+<h2>Datos Detallados</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Variedad</th>
+            <th>Temperatura</th>
+            <th>Humedad</th>
+            <th>Altura</th>
+            <th>Fecha de Registro</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for condicion in condiciones %}
+        <tr>
+            <td>{{ condicion.variedad.nombre }}</td>
+            <td>{{ condicion.temperatura }}</td>
+            <td>{{ condicion.humedad }}</td>
+            <td>{{ condicion.altura }}</td>
+            <td>{{ condicion.fecha_registro }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var barCtx = document.getElementById('bar_chart').getContext('2d');
+        var pieCtx = document.getElementById('pie_chart').getContext('2d');
+        
+        var labels = [{% for condicion in condiciones %}"{{ condicion.variedad.nombre }}", {% endfor %}];
+        var temperatureData = [{% for condicion in condiciones %}{{ condicion.temperatura }}, {% endfor %}];
+        var humidityData = [{% for condicion in condiciones %}{{ condicion.humedad }}, {% endfor %}];
+
+        console.log("Labels:", labels);
+        console.log("Temperature Data:", temperatureData);
+        console.log("Humidity Data:", humidityData);
+
+        var barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperatura',
+                    data: temperatureData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },{
+                    label: 'Humedad',
+                    data: humidityData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperatura',
+                    data: temperatureData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% endblock %}

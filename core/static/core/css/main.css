@@ -2882,6 +2882,50 @@ transform: translateY(-10px);
   margin-right: 9px;
  
 }
+/* dashboar dtarjetas */
+
+ /* Estilos para el contenedor personalizado */
+ .custom-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilos para los títulos personalizados */
+.custom-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Estilos para las listas personalizadas */
+.custom-list-group {
+  margin-bottom: 20px;
+}
+
+.custom-list-item {
+  border: none;
+}
+
+/* Estilos para los formularios personalizados */
+.custom-form {
+  margin-bottom: 20px;
+}
+
+/* Estilos para los botones personalizados */
+.custom-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #0056b3;
+}
+
 
 
 /* footer */

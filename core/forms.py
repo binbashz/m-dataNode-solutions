@@ -189,3 +189,33 @@ class BarcodeForm(forms.Form):
     product_name = forms.CharField(label='Nombre del Producto', max_length=36, help_text='Máximo 36 caracteres')
     product_code = forms.CharField(label='Código del Producto', max_length=15, help_text='Máximo 15 caracteres')
     is_favorite = forms.BooleanField(label='Marcar como favorito', required=False)
+    
+    
+
+from .models import GastoOperativo, Venta, Pedido
+
+
+class GastoOperativoForm(forms.ModelForm):
+    class Meta:
+        model = GastoOperativo
+        fields = ['tipo_gasto', 'descripcion', 'monto', 'fecha', 'variedad']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+        }
+
+class VentaForm(forms.ModelForm):
+    class Meta:
+        model = Venta
+        fields = ['producto', 'cantidad', 'precio_unitario', 'fecha', 'variedad']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+        }
+
+class PedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['producto', 'cantidad', 'fecha_pedido', 'fecha_entrega', 'variedad']
+        widgets = {
+            'fecha_pedido': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+            'fecha_entrega': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+        }

@@ -154,3 +154,48 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+
+
+class GastoOperativo(models.Model):
+    TIPOS_GASTO = (
+        ('Mantenimiento', 'Mantenimiento'),
+        ('Suministros', 'Suministros'),
+        ('Personal', 'Personal'),
+        ('Otros', 'Otros'),
+    )
+    
+    tipo_gasto = models.CharField(max_length=20, choices=TIPOS_GASTO)
+    descripcion = models.TextField()
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha = models.DateField()
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f'{self.tipo_gasto} - ${self.monto} ({self.variedad.nombre})'
+
+   
+
+class Venta(models.Model):
+    producto = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha = models.DateField()
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+
+
+    def __str__(self):
+        return f'{self.producto} - {self.cantidad} unidades ({self.variedad.nombre})'
+
+class Pedido(models.Model):
+    producto = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+    fecha_pedido = models.DateField()
+    fecha_entrega = models.DateField()
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f'{self.producto} - {self.cantidad} unidades ({self.variedad.nombre})'

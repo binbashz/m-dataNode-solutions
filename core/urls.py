@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import management_view
 from .views import generar_pdf_recomendaciones
@@ -11,7 +11,16 @@ from .views import (
     VariedadDeleteView,
 )
 
+from rest_framework.routers import DefaultRouter
+from .views import CondicionesCultivoViewSet
+
+
+router = DefaultRouter()
+router.register(r'condiciones-cultivo', CondicionesCultivoViewSet)
+
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('', views.home, name='home'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('signup/', views.signup, name='signup'),
@@ -76,9 +85,18 @@ urlpatterns = [
     path('decode_barcode/', views.decode_barcode_view, name='decode_barcode'),
     path('favorite-barcodes/', views.favorite_barcodes, name='favorite_barcodes'),
     
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('borrar_gasto/<int:gasto_id>/', views.borrar_gasto, name='borrar_gasto'),
+    path('borrar_venta/<int:venta_id>/', views.borrar_venta, name='borrar_venta'),
+    path('borrar_pedido/<int:pedido_id>/', views.borrar_pedido, name='borrar_pedido'),
+    
     path('search/', views.search_results, name='search_results'),
+    
+    path('graficos/', views.visualizacion_graficos, name='graficos'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),
     path('error/500/', views.error_500, name='error_500'),
+    
+    
 ]

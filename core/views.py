@@ -17,6 +17,8 @@ from .simulacion import calcular_rendimiento
 from .forms import AnalisisCostosForm
 from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
 from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
+from .models import GastoOperativo, Venta, Pedido
+from .forms import GastoOperativoForm, VentaForm, PedidoForm
 from django.db.models import Count
 from django.contrib import messages
 import barcode
@@ -944,3 +946,85 @@ def search_results(request):
         results['productos'] = productos
         
         return render(request, 'core/search_results.html', {'query': query, 'results': results})
+
+
+# graficos 
+from rest_framework import viewsets
+from .serializers import CondicionesCultivoSerializer
+
+class CondicionesCultivoViewSet(viewsets.ModelViewSet):
+    queryset = CondicionesCultivo.objects.all()
+    serializer_class = CondicionesCultivoSerializer
+    
+def visualizacion_graficos(request):
+    condiciones = CondicionesCultivo.objects.all()  # Obtener datos para los gráficos
+    context = {'condiciones': condiciones}
+    return render(request, 'core/visualizacion.html', context)
+
+
+#vista para dashboard cards
+from django.contrib import messages
+
+def dashboard(request):
+    gasto_form = GastoOperativoForm()
+    venta_form = VentaForm()
+    pedido_form = PedidoForm()
+
+    if request.method == 'POST':
+        form_type = request.POST.get('form_type')
+        if form_type == 'gasto_form':
+            gasto_form = GastoOperativoForm(request.POST)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                messages.success(request, 'Gasto guardado correctamente.')
+                return redirect('dashboard')
+            else:
+                messages.error(request, f'Error en el formulario de gasto: {gasto_form.errors}')
+        elif form_type == 'venta_form':
+            venta_form = VentaForm(request.POST)
+            if venta_form.is_valid():
+                venta_form.save()
+                messages.success(request, 'Venta guardada correctamente.')
+                return redirect('dashboard')
+            else:
+                messages.error(request, f'Error en el formulario de venta: {venta_form.errors}')
+        elif form_type == 'pedido_form':
+            pedido_form = PedidoForm(request.POST)
+            if pedido_form.is_valid():
+                pedido_form.save()
+                messages.success(request, 'Pedido guardado correctamente.')
+                return redirect('dashboard')
+            else:
+                messages.error(request, f'Error en el formulario de pedido: {pedido_form.errors}')
+
+    context = {
+        'gasto_form': gasto_form,
+        'venta_form': venta_form,
+        'pedido_form': pedido_form,
+        'gastos': GastoOperativo.objects.all(),  
+        'ventas': Venta.objects.all(),  
+        'pedidos': Pedido.objects.all(),
+        'variedades': Variedad.objects.all(),
+    }
+    return render(request, 'core/dashboard.html', context)
+
+def borrar_gasto(request, gasto_id):
+    gasto = get_object_or_404(GastoOperativo, id=gasto_id)
+    if request.method == 'POST':
+        gasto.delete()
+        messages.success(request, 'Gasto eliminado correctamente.')
+    return redirect('dashboard')
+
+def borrar_venta(request, venta_id):
+    venta = get_object_or_404(Venta, id=venta_id)
+    if request.method == 'POST':
+        venta.delete()
+        messages.success(request, 'Venta eliminada correctamente.')
+    return redirect('dashboard')
+
+def borrar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    if request.method == 'POST':
+        pedido.delete()
+        messages.success(request, 'Pedido eliminado correctamente.')
+    return redirect('dashboard')
