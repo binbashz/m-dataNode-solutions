@@ -158,8 +158,6 @@ class Product(models.Model):
 
 
 
-
-
 class GastoOperativo(models.Model):
     TIPOS_GASTO = (
         ('Mantenimiento', 'Mantenimiento'),

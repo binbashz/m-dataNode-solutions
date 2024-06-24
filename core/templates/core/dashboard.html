@@ -2,29 +2,25 @@
 {% load static %}
 
 {% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 <div class="container mt-4">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-    {% endif %}
+    
+    <h1>Controla tus Gastos, Ventas y Pedidos</h1>
+
+    <hr>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
+        <li class="nav-item " role="presentation">
+            <a class="nav-link active" id="home-tab" href="{% url 'dashboard' %}" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item green-link" role="presentation">
             <a class="nav-link" id="gastos-tab" data-toggle="tab" href="#gastos" role="tab" aria-controls="gastos" aria-selected="false">Gastos</a>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item green-link" role="presentation">
             <a class="nav-link" id="ventas-tab" data-toggle="tab" href="#ventas" role="tab" aria-controls="ventas" aria-selected="false">Ventas</a>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item green-link" role="presentation">
             <a class="nav-link" id="pedidos-tab" data-toggle="tab" href="#pedidos" role="tab" aria-controls="pedidos" aria-selected="false">Pedidos</a>
         </li>
     </ul>
@@ -32,10 +28,19 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row mt-4">
-                <div class="col-md-6">
+                <div class="col-lg-6 mx-auto ">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Variedades</h5>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <a href="{% url 'graficar_datos' %}" class="btn btn-primary mt-2 mb-2">Ver Gráficos</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4>Mis variedades</h4>
+                            </div>                            
                         </div>
                         <ul class="list-group list-group-flush">
                             {% for variedad in variedades %}
@@ -52,7 +57,8 @@
 
         <div class="tab-pane fade" id="gastos" role="tabpanel" aria-labelledby="gastos-tab">
             <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <h3>Gastos</h3>
+                <div><h3>Gastos</h3>
+                <p>Registra y controla tus gastos.</p></div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#gastoModal">
                     <i class="fas fa-plus"></i> Nuevo Gasto
                 </button>
@@ -77,7 +83,8 @@
 
         <div class="tab-pane fade" id="ventas" role="tabpanel" aria-labelledby="ventas-tab">
             <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <h3>Ventas</h3>
+                <div><h3>Ventas</h3>
+                <p>Gestiona tus ventas y productos.</p></div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ventaModal">
                     <i class="fas fa-plus"></i> Nueva Venta
                 </button>
@@ -102,7 +109,8 @@
 
         <div class="tab-pane fade" id="pedidos" role="tabpanel" aria-labelledby="pedidos-tab">
             <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <h3>Pedidos</h3>
+                <div><h3>Pedidos</h3>
+                <p>Administra tus pedidos y entregas.</p></div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pedidoModal">
                     <i class="fas fa-plus"></i> Nuevo Pedido
                 </button>
@@ -222,5 +230,6 @@
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}

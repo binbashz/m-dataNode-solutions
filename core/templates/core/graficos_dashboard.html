@@ -1,0 +1,227 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-container">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <header>
+        <h1>Graficos de operaciones </h1>
+    </header>
+
+
+    <div class="charts-container">
+        <section class="chart-section">
+            <h2>Resumen Financiero</h2>
+            <p>Comparación entre gastos totales y ventas totales</p>
+            <div class="chart-wrapper">
+                <img src="data:image/png;base64,{{ imagen_png_base64 }}" alt="Gráfico de resumen financiero" class="responsive-chart">
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Gráfico Interactivo de Gastos vs Ventas</h2>
+            <p>Visualización dinámica de la relación entre gastos y ventas</p>
+            <div class="chart-container">
+                <canvas id="grafico-dashboard"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <section class="totals-container">
+        <h2>Resumen de Datos</h2>
+        <div class="totals-grid">
+            <div class="total-item">
+                <h3>Total de Gastos</h3>
+                <p class="total-value">$ {{ total_gastos|floatformat:2 }}</p>
+                <p class="total-description">Suma de todos los gastos operativos registrados (en panel de operaciones)</p>
+            </div>
+            <div class="total-item">
+                <h3>Total de Ventas</h3>
+                <p class="total-value">$ {{ total_ventas|floatformat:2 }}</p>
+                <p class="total-description">Ingresos totales por ventas realizadas</p>
+            </div>
+            <div class="total-item">
+                <h3>Número de Pedidos</h3>
+                <p class="total-value">{{ total_pedidos }}</p>
+                <p class="total-description">Cantidad total de pedidos procesados</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+   
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+    body, html {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h1, h2, h3 {
+        font-weight: 600;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        color: #444;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        color: #555;
+    }
+
+    p {
+        font-weight: 400;
+    }
+
+    .dashboard-nav {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+    }
+
+    .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .chart-section {
+        flex: 1 1 45%;
+        min-width: 300px;
+        background-color: #f8faf9;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chart-wrapper, .chart-container {
+        height: 300px;
+        width: 100%;
+    }
+
+    .responsive-chart {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .totals-container {
+        margin-top: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .totals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .total-item {
+        text-align: center;
+    }
+
+    .total-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #06a72e;
+    }
+
+    .total-description {
+        font-size: 14px;
+        color: #6c757d;
+        font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+        .chart-section {
+            flex: 1 1 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('grafico-dashboard').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Gastos', 'Ventas'],
+            datasets: [{
+                label: 'Totales ($)',
+                data: [
+                    {{ total_gastos }},
+                    {{ total_ventas }}
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Monto ($)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Comparación de Gastos y Ventas'
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

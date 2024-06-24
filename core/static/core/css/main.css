@@ -2891,6 +2891,12 @@ transform: translateY(-10px);
   padding: 20px;
 }
 
+.green-link .nav-link {
+  color: green;
+}
+
+
+
 /* Estilos para los títulos personalizados */
 .custom-title {
   margin-bottom: 10px;
@@ -2913,7 +2919,7 @@ transform: translateY(-10px);
 
 /* Estilos para los botones personalizados */
 .custom-btn {
-  background-color: #007bff;
+  background-color: #0bda50;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -2923,8 +2929,10 @@ transform: translateY(-10px);
 }
 
 .custom-btn:hover {
-  background-color: #0056b3;
+  background-color: #03661c;
 }
+
+/*  graficos de gestion venta pedido  gastos */
 
 
 

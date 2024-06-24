@@ -26,6 +26,10 @@ from django.utils.timezone import make_aware, get_current_timezone
 from django.utils import timezone
 from barcode.writer import ImageWriter
 import base64
+from django.db.models import Sum
+import matplotlib.pyplot as plt
+import urllib.parse
+import io
 from django.http import HttpResponseBadRequest
 from .forms import BarcodeForm
 from .models import Product
@@ -963,7 +967,6 @@ def visualizacion_graficos(request):
 
 
 #vista para dashboard cards
-from django.contrib import messages
 
 def dashboard(request):
     gasto_form = GastoOperativoForm()
@@ -1028,3 +1031,50 @@ def borrar_pedido(request, pedido_id):
         pedido.delete()
         messages.success(request, 'Pedido eliminado correctamente.')
     return redirect('dashboard')
+
+
+# graficar dashboard info 
+from django.db.models import Sum, F
+import matplotlib.pyplot as plt
+import urllib.parse
+
+def graficar_datos(request):
+    # Obtener datos para los gráficos
+    gastos = GastoOperativo.objects.all()
+    ventas = Venta.objects.all()
+    pedidos = Pedido.objects.all()
+
+    # Lógica para procesar los datos y prepararlos para los gráficos
+    total_gastos = GastoOperativo.objects.aggregate(Sum('monto'))['monto__sum'] or 0
+    total_ventas = Venta.objects.aggregate(total=Sum(F('cantidad') * F('precio_unitario')))['total'] or 0
+    total_pedidos = Pedido.objects.count()
+
+    # Crear gráfico de barras
+    fig, ax = plt.subplots()
+    labels = ['Gastos', 'Ventas']
+    valores = [total_gastos, total_ventas]
+    ax.bar(labels, valores)
+    ax.set_ylabel('Monto')
+    ax.set_title('Resumen Financiero')
+    plt.xticks(rotation=45)
+    
+    # Guardar el gráfico en un buffer
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    imagen_png = buffer.getvalue()
+    buffer.close()
+
+    # Convertir la imagen a base64 para mostrarla en la plantilla HTML
+    imagen_png_base64 = urllib.parse.quote(base64.b64encode(imagen_png).decode())
+
+    context = {
+        'gastos': gastos,
+        'ventas': ventas,
+        'pedidos': pedidos,
+        'total_gastos': total_gastos,
+        'total_ventas': total_ventas,
+        'total_pedidos': total_pedidos,
+        'imagen_png_base64': imagen_png_base64,
+    }
+    return render(request, 'core/graficos_dashboard.html', context)

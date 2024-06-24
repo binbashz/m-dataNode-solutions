@@ -3,6 +3,7 @@ from . import views
 from .views import management_view
 from .views import generar_pdf_recomendaciones
 from .views import recomendar_cultivo_view
+from .views import graficar_datos
 from django.contrib.auth import views as auth_views
 from .views import (
     VariedadListView,
@@ -86,6 +87,7 @@ urlpatterns = [
     path('favorite-barcodes/', views.favorite_barcodes, name='favorite_barcodes'),
     
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('graficar-datos/', views.graficar_datos, name='graficar_datos'),
     path('borrar_gasto/<int:gasto_id>/', views.borrar_gasto, name='borrar_gasto'),
     path('borrar_venta/<int:venta_id>/', views.borrar_venta, name='borrar_venta'),
     path('borrar_pedido/<int:pedido_id>/', views.borrar_pedido, name='borrar_pedido'),
