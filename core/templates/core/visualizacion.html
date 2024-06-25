@@ -5,8 +5,11 @@
 <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 
 <h1>Visualización de Condiciones de Cultivo</h1>
+<h4>Monitoreo de Condiciones Ambientales
+    <i class="fas fa-tint mx-2" style="opacity: 0.4;"></i>
+    <i class="fas fa-thermometer-half" style="opacity: 0.4;"></i>  
+<hr>
 
-<!-- Ejemplo de uso de librería para gráficos (puedes usar la que prefieras) -->
 <div class="row">
     <div class="col-lg-6">
         <canvas id="bar_chart"></canvas>
@@ -21,11 +24,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Variedad</th>
-            <th>Temperatura</th>
-            <th>Humedad</th>
-            <th>Altura</th>
-            <th>Fecha de Registro</th>
+            <th><strong> Variedad </strong></th>
+            <th><strong>Temperatura</strong></th>
+            <th><strong>Humedad</strong></th>
+            
         </tr>
     </thead>
     <tbody>
@@ -34,8 +36,6 @@
             <td>{{ condicion.variedad.nombre }}</td>
             <td>{{ condicion.temperatura }}</td>
             <td>{{ condicion.humedad }}</td>
-            <td>{{ condicion.altura }}</td>
-            <td>{{ condicion.fecha_registro }}</td>
         </tr>
         {% endfor %}
     </tbody>

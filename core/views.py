@@ -948,6 +948,25 @@ def search_results(request):
             Q(name__icontains=query) | Q(code__icontains=query)
         )
         results['productos'] = productos
+
+        gastos_operativos = GastoOperativo.objects.filter(
+            Q(tipo_gasto__icontains=query) | Q(descripcion__icontains=query) |
+            Q(variedad__nombre__icontains=query)
+        )
+        results['gastos_operativos'] = gastos_operativos
+
+        # Añadir búsqueda para Venta
+        ventas = Venta.objects.filter(
+            Q(producto__icontains=query) | Q(variedad__nombre__icontains=query)
+        )
+        results['ventas'] = ventas
+
+        # Añadir búsqueda para Pedido
+        pedidos = Pedido.objects.filter(
+            Q(producto__icontains=query) | Q(variedad__nombre__icontains=query)
+        )
+        results['pedidos'] = pedidos        
+    
         
         return render(request, 'core/search_results.html', {'query': query, 'results': results})
 

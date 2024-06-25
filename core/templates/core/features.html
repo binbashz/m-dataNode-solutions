@@ -2,74 +2,72 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
-    <div class="hero3">
-        <div class="banner-container">
-            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-            <div class="funcionalidades-title"> <h2> Funcionalidades</h2> </div>
+<body class="custombodyhome">
+  <div class="container">
+    <div class="hero">
+      <div>
+        <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+        <div class="hero2">
+          <h1> Funcionalidades</h1>
+        </div>
+      </div>
+
+      <div class="container-mgm">
+        <div class="card-mgm">
+          <h3><i class="fa fa-leaf"></i> Recomendaciones de Cultivo Personalizadas</h3>
+          <p>Recibe recomendaciones de cultivo personalizadas basadas en las condiciones de tu plantación y datos históricos.</p>
+          <a href="{% url 'recomendar_cultivo' %}" class="btn btn-primary"><i class="fa fa-eye"></i> Ver Recomendaciones</a>
         </div>
 
-        <div class="container-mgm">
-            <div class="card-mgm">
-                <h3>Recomendaciones de Cultivo Personalizadas</h3>
-                <p>Recibe recomendaciones de cultivo personalizadas basadas en las condiciones de tu plantación y datos históricos.</p>
-                <a href="{% url 'recomendar_cultivo' %}" class="btn btn-primary">Ver Recomendaciones</a>
-            </div>
-            
-            <div class="card-mgm">
-                <h3>Simulación de Rendimiento</h3>
-                <p>Simula el rendimiento de tus cultivos bajo diferentes condiciones y escenarios para optimizar la producción.</p>
-                <a href="{% url 'simulacion_rendimiento' %}" class="btn btn-primary">Simular Rendimiento</a>
-            </div>
-
-            <div class="card-mgm"> 
-                <h3>Análisis de Costos y Presupuestos</h3>
-                <p>Analiza los costos y presupuestos de tu operación para mejorar la eficiencia y maximizar los beneficios.</p>
-                <a href="{% url 'analizar_costos_presupuestos' %}" class="btn btn-primary">Analizar Costos</a>
-            </div>
-
-            <div class="card-mgm">
-                <h3>Gestión de Clientes y Muestras</h3>
-                <p>Registra nuevos clientes, recibe muestras y programa análisis.</p>
-                <div>
-                    <a href="{% url 'clientes' %}" class="btn btn-primary">Gestionar Clientes</a>
-                </div><br>
-                <div>
-                    <a href="{% url 'recepcion_muestra' %}" class="btn btn-primary">Recepción de Muestra</a>
-                </div><br>
-                <div>
-                    <a href="{% url 'programar_analisis' %}" class="btn btn-primary">Programar Análisis</a>
-                </div><br>
-            </div>
-            
-            <div class="card-mgm">
-                <h3>Registro de Resultados y Generación de Informes</h3>
-                <p>Registra los resultados de los análisis y genera informes detallados.</p>
-                <div>
-                    <a href="{% url 'registro_resultados' %}" class="btn btn-primary">Registro de Resultados</a>
-                </div><br>
-                <div>
-                    <a href="{% url 'ver_informes' %}" class="btn btn-primary">Informes</a>
-                </div><br>
-            </div> 
-            
-            <div class="card-mgm">
-                <h3>Controla tus Gastos, Ventas y Pedidos</h3>
-                <p>Registra y controla tus gastos.</p>
-                <p>Gestiona tus ventas y productos.</p>
-                <p>Administra tus pedidos y entregas.</p>
-                <div>
-                    <br>
-                    <a href="{% url 'dashboard' %}" class="btn btn-primary">Gestión de Operaciones</a>
-                </div><br>
-            </div>
+        <div class="card-mgm">
+          <h3><i class="fa fa-chart-line"></i> Simulación de Rendimiento</h3>
+          <p>Simula el rendimiento de tus cultivos bajo diferentes condiciones y escenarios para optimizar la producción.</p>
+          <a href="{% url 'simulacion_rendimiento' %}" class="btn btn-primary"><i class="fa fa-chart-area"></i> Simular Rendimiento</a>
         </div>
 
-
+        <div class="card-mgm">
+          <h3><i class="fa fa-money-bill-wave"></i> Análisis de Costos y Presupuestos</h3>
+          <p>Analiza los costos y presupuestos de tu operación para mejorar la eficiencia y maximizar los beneficios.</p>
+          <a href="{% url 'analizar_costos_presupuestos' %}" class="btn btn-primary"><i class="fa fa-calculator"></i> Analizar Costos</a>
         </div>
+
+        <div class="card-mgm">
+          <h3><i class="fa fa-users"></i> Gestión de Clientes y Muestras</h3>
+          <p>Registra nuevos clientes, recibe muestras y programa análisis.</p>
+          <div>
+            <a href="{% url 'clientes' %}" class="btn2"><i class="fa fa-user"></i>  Clientes</a>
+          </div><br>
+          <div>
+            <a href="{% url 'recepcion_muestra' %}" class="btn2"><i class="fa fa-flask"></i> Recepción de Muestra</a>
+          </div><br>
+          <div>
+            <a href="{% url 'programar_analisis' %}" class="btn2"><i class="fa fa-calendar-plus"></i> Programar Análisis</a>
+          </div><br>
+        </div>
+
+        <div class="card-mgm">
+          <h3><i class="fa fa-file-alt"></i> Registro de Resultados y Generación de Informes</h3>
+          <p>Registra los resultados de los análisis y genera informes detallados.</p>
+          <div>
+            <a href="{% url 'registro_resultados' %}" class="btn2"><i class="fa fa-clipboard-check"></i> Registro de Resultados</a>
+          </div><br>
+          <div>
+            <a href="{% url 'ver_informes' %}" class="btn2"><i class="fa fa-file-pdf"></i>  Informes  </a>
+          </div><br>
+        </div>
+
+        <div class="card-mgm">
+          <h3><i class="fa fa-chart-pie"></i> Controla tus Gastos, Ventas y Pedidos</h3>
+          <p>Registra y controla tus gastos.</p>
+          <p>Gestiona tus ventas y productos.</p>
+          <p>Administra tus pedidos y entregas.</p>
+          <div>
+            <br>
+            <a href="{% url 'dashboard' %}" class="btn3"><i class="fa fa-cogs"></i> Gestión de Operaciones</a>
+          </div><br>
+        </div>
+      </div>
     </div>
-</div>
-
-
-
+  </div>
+</body>
 {% endblock %}

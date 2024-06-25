@@ -125,4 +125,49 @@
     <p>No se encontraron resultados.</p>
 {% endif %}
 
+
+
+{% if results.gastos_operativos %}
+    <h3>Gastos Operativos</h3>
+    <ul>
+    {% for gasto in results.gastos_operativos %}
+        <li>
+            {{ gasto.tipo_gasto }} - {{ gasto.descripcion }} 
+            ({{ gasto.variedad.nombre }}) - ${{ gasto.monto }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.ventas %}
+    <h3>Ventas</h3>
+    <ul>
+    {% for venta in results.ventas %}
+        <li>
+            {{ venta.producto }} - {{ venta.cantidad }} unidades 
+            ({{ venta.variedad.nombre }}) - ${{ venta.precio_unitario }} por unidad
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.pedidos %}
+    <h3>Pedidos</h3>
+    <ul>
+    {% for pedido in results.pedidos %}
+        <li>
+            <strong>{{ pedido.producto }}</strong>
+            {{ pedido.variedad.nombre }} - {{ pedido.cantidad }} unidades
+            <br>
+            Pedido: {{ pedido.fecha_pedido|date:"F d, Y" }} - Entrega: {{ pedido.fecha_entrega|date:"F d, Y" }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if not results %}
+    <p>No se encontraron resultados.</p>
+{% endif %}
+
 {% endblock %}
+

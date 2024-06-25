@@ -259,36 +259,84 @@
 
                     <div class="contenedor-tarjetas">
                         <div class="tarjetas">
-                            <div class="tarjeta tarjeta1 animate__animated animate__fadeInUp">
+                          <!-- Tarjeta 1 -->
+                          <div class="tarjeta tarjeta1 animate__animated animate__fadeInUp">
                             <div class="contenedor">
                               <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
                             </div>
                             <div class="detalles">
+                              {% if user.is_authenticated %}
+                              <a href="{% url 'clientes' %}" class="tarjeta-cliente-link">
+                                <div class="">
+                                  <h5>Gestión de Clientes </h5>
+                                  <br>
+                                  <p>Accede para ver o crear clientes.</p>
+                                  <p class="multiline">Mantén un registro detallado de la información de tus clientes.</p>
+                                  <span class="btn4">
+                                    <i class="fa fa-user-times"></i>
+                                  </span>
+                                </div>
+                              </a>
+                              {% else %}
                               <h3>Gestión Integral de Cannabis</h3>
                               <p>Rastrea y gestiona múltiples variedades de cannabis con descripciones detalladas y condiciones de cultivo.</p>
+                              {% endif %}
                             </div>
                           </div>
-                          <div class="tarjeta tarjeta2 animate__animated animate__fadeInUp">
-                            <div class="contenedor">
-                              <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                          <!-- Tarjeta 2 -->
+                            <div class="tarjeta tarjeta2 animate__animated animate__fadeInUp">
+                                <div class="contenedor">
+                                <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                                </div>
+                                <div class="detalles">
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'graficos' %}" class="tarjeta-cliente-link">
+                                    <div class="">
+                                    <h5>Mis Cultivos</h5>
+                                    <p class="multiline">
+                                        Visualización gráfica de Datos de Humedad y Temperatura de tus cultivos registrados
+                                    </p>
+                                    <span class="btn4">
+                                        <i class="fa fa-stethoscope"></i>
+                                    </span>
+                                    </div>
+                                </a>
+                                {% else %}
+                                <h3>Seguimiento Avanzado de Cultivo</h3>
+                                <p>Monitorea las condiciones del suelo, iluminación, temperatura, humedad y más para un crecimiento óptimo.</p>
+                                {% endif %}
+                                </div>
                             </div>
-                            <div class="detalles">
-                              <h3>Seguimiento Avanzado de Cultivo</h3>
-                              <p>Monitorea las condiciones del suelo, iluminación, temperatura, humedad y más para un crecimiento óptimo.</p>
-                            </div>
-                          </div>
+  
+                          <!-- Tarjeta 3 -->
                           <div class="tarjeta tarjeta3 animate__animated animate__fadeInUp">
                             <div class="contenedor">
                               <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
                             </div>
                             <div class="detalles">
+                              {% if user.is_authenticated %}
+                              <a href="{% url 'dashboard' %}" class="tarjeta-cliente-link">
+                                <div class="">
+                                    <br>
+                                  <h5>Gastos, Ventas y Pedidos</h5>
+                                  <br><br>
+                                  <p>Registra y controla gastos.</p>
+                                  <p>Gestiona ventas y productos.</p>
+                                  <p>Administra pedidos y entregas.</p>
+                                  <span class="btn4">
+                                    <i class="fa fa-balance-scale"></i>
+                                  </span>
+                                </div>
+                              </a>
+                              {% else %}
                               <h3>Análisis de Costos</h3>
                               <p>Analiza costos incluyendo semillas, sustrato, energía, agua y mano de obra para optimizar tus operaciones.</p>
+                              {% endif %}
                             </div>
                           </div>
-                          <!-- Si necesitas agregar más tarjetas, puedes hacerlo aquí -->
                         </div>
                       </div>
+                      
                       
         
         <!-- Footer -->

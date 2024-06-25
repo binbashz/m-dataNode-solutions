@@ -4,11 +4,24 @@
 
 <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 
-<div class="container my-5">
-    <h1 class="text-center mb-4 form-title">{% if object %}Editar{% else %}Crear{% endif %} Variedad</h1>
+<div class="container my-8">
+    
+    <h1 class="text-center mb-3 form-title">
+        {% if object %}
+            Editar <i class="fa fa-edit"></i> Variedad
+            
+        {% else %}
+            Crear  Variedad &nbsp; &nbsp;<i class="fa fa-edit"></i><i class="fa-brands fa-canadian-maple-leaf"></i>
+        {% endif %}
+    </h1>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form method="post" class="form-container">
+                
+                <div class="text-center">
+                    <small>Crea o edita cultivos</small>
+                </div>
+
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="form-group">
