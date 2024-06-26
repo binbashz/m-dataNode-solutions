@@ -3,9 +3,9 @@
 
 {% block content %}
 
-<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-<div class="container mt-4">
-    
+
+<div class="container mt-4 ">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
     <div class="row">
         <div class="col">
             <h1>Controla tus Gastos, Ventas y Pedidos</h1>
@@ -16,8 +16,8 @@
     </div>
    
     <hr>
-
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    
+    <ul class="nav nav-tabs" id="myTab" role="tablist" >
         <li class="nav-item green-tab active" role="presentation">
             <a class="nav-link" id="home-tab" href="{% url 'dashboard' %}" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
         </li>
@@ -34,11 +34,11 @@
     
     
 
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content" style="border: 1px solid #cae9be; padding: 10px; margin: 10px; border-radius: 20px 12px 31px;" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row mt-4">
-                <div class="col-lg-6 mx-auto ">
-                    <div class="card">
+                <div class="mx-auto ">
+                    <div class="var">
                         <div class="card-header">
                             <div class="container-fluid">
                                 
@@ -50,6 +50,7 @@
                         <ul class="list-group list-group-flush">
                             {% for variedad in variedades %}
                                 <li class="list-group-item">{{ variedad.nombre }}</li>
+                                <hr>
                             {% empty %}
                                 <li class="list-group-item">No hay variedades registradas.</li>
                             {% endfor %}

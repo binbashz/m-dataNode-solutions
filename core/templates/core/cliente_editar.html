@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="clientesform">
+  <div class="row mt-5 mb-5">
+    <div class="col-md-8 offset-md-2">
+      <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+      <br>
+      <h1>Editar Cliente</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

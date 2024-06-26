@@ -7,18 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="cannabis, gestión, cultivo, medicinal, CannaTech Solutions">
     <meta name="robots" content="index, follow">
+    <title>{% block title %}CannaTech{% endblock %}</title>
 
+    <!-- Favicon -->
     <link rel="icon" href="{% static 'core/images/favicon.ico' %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static 'core/images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-    <link href="{% static 'core/css/main.css' %}" rel="stylesheet">
-    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <title>{% block title %}CannaTech{% endblock %}</title>
+    <!-- Custom Styles -->
+    <link href="{% static 'core/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'core/css/styles.css' %}" rel="stylesheet">
+
     {% block styles %}{% endblock %}
 </head>
 <body data-bs-theme="light">
@@ -30,7 +40,6 @@
                 <ion-icon name="menu-outline"></ion-icon>
                 <ion-icon name="close-outline"></ion-icon>
             </div>
-        
             <div class="barra-lateral">
                 <div>
                     <div class="nombre-pagina">
@@ -39,11 +48,9 @@
                         </a>
                         <p class="nombre">CannaTech</p>
                     </div>
-                    
                            <div class="alert alert-success mt-1 mb-1">
                         ¡Bienvenido,<br> {{ request.user.get_username }}!
                         <hr>
-                        
                                 <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
                                    <strong> <ion-icon name="search-outline" class="search-outline"></ion-icon> </strong>
                                     <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
@@ -51,77 +58,69 @@
                                     <button type="submit" class="btn-search"></button>
                                 </form>
                             </div>
-                        
-                                    </div>
-                        <nav class="navegacion">
-                        <!--  -->                   
-                    <li>
-                    <a id="home" href="{% url 'home' %}">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span class="text-color">Inicio</span>
-                    </a>
-                </li>
-
-                            <li>
-                                <a id="products" href="{% url 'products' %}">
-                                    <ion-icon name="leaf-outline"></ion-icon>
-                                    <span>Gestion Cultivos</span>
+                                  </div>
+                                <nav class="navegacion">
+                                     <!--  -->                   
+                                    <li>
+                                    <a id="home" href="{% url 'home' %}">
+                                        <ion-icon name="home-outline"></ion-icon>
+                                        <span class="text-color">Inicio</span>
+                                    </a>
+                                </li> 
+                                <li>
+                            <a id="products" href="{% url 'products' %}">
+                                            <ion-icon name="leaf-outline"></ion-icon>
+                                            <span>Gestion Cultivos</span>
+                                        </a>
+                                    </li>
+                                <a id="funcionalidades" href="{% url 'management-view' %}">
+                                    <ion-icon name="rocket-outline"></ion-icon>
+                                    <span>Servicios<br>Avanzados</span>
                                 </a>
-                            </li>
-                <a id="funcionalidades" href="{% url 'management-view' %}">
-                    <ion-icon name="rocket-outline"></ion-icon>
-                    <span>Servicios<br>Avanzados</span>
-                </a>
-            </li>
-
-                    <li>
-                        <a id="funcionalidades" href="{% url 'barcodes' %}">
-                        <ion-icon name="barcode-outline"></ion-icon>
-                        <span>Gestion Códigos</span>
-                        </a>
-                            </li>
-                            </ul>
-                    <li>
-            </nav>
-        
-                <div>
-                    <div class="linea"></div>
-        
-
-            </div>
-
-            <li>
-                <a id="exit" href="{% url 'exit' %}">
-                    <ion-icon name="exit-outline"></ion-icon>
-                    <span>Salir</span>
-                </a>
-            </li>
-            <li>
-            </div>
-            {% endif %}
-
-            <div class="col">
-                {% if not user.is_authenticated %}
-                <header class="header">
-                    <nav class="navbar navbar-expand-lg bg-transparent ">
-                        <div class="container-fluid">
-                            <a class="navbar-brand" href="{% url 'home' %}">
-                                <img src="{% static 'core/images/logo.png' %}" alt="CannaTech Logo">
-                                <span class="ms-2">CannaTech</span>
-                            </a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
-                                    <li><a class="nav-link fw-bold" href="{% url 'login' %}">Iniciar sesión</a></li>
-                                    <li><a class="nav-link fw-bold" href="{% url 'signup' %}">Registrarse</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </header>
-                {% endif %}
+                                     </li>
+                                         <li>
+                                            <a id="funcionalidades" href="{% url 'barcodes' %}">
+                                            <ion-icon name="barcode-outline"></ion-icon>
+                                            <span>Gestion Códigos</span>
+                                                </a>
+                                                    </li>
+                                                </ul>
+                                            <li>
+                                            </nav>
+                                        <div>
+                                    <div class="linea"></div>
+                                </div>
+                                <li>
+                                    <a id="exit" href="{% url 'exit' %}">
+                                        <ion-icon name="exit-outline"></ion-icon>
+                                        <span>Salir</span>
+                                    </a>
+                                </li>
+                                <li>
+                                </div>
+                                            {% endif %}
+                        <div class="col">
+                            {% if not user.is_authenticated %}
+                            <header class="header">
+                                <nav class="navbar navbar-expand-lg bg-transparent ">
+                                    <div class="container-fluid">
+                                        <a class="navbar-brand" href="{% url 'home' %}">
+                                            <img src="{% static 'core/images/logo.png' %}" alt="CannaTech Logo">
+                                            <span class="ms-2">CannaTech</span>
+                                        </a>
+                                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                            <span class="navbar-toggler-icon"></span>
+                                        </button>
+                                        <div class="collapse navbar-collapse" id="navbarNav">
+                                            <ul class="navbar-nav ms-auto">
+                                                <li><a class="nav-link fw-bold" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                                <li><a class="nav-link fw-bold" href="{% url 'signup' %}">Registrarse</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </header>
+                            {% endif %}
 
                 <center>
                     <div id="loader" class="containerloader">
@@ -149,7 +148,16 @@
                     {% endblock %}
                 </main>
 
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+    <!-- Custom Scripts -->
     <script type="text/javascript" src="{% static 'core/js/dakrtheme.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/loader.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/navbar.js' %}"></script>
@@ -157,13 +165,7 @@
     <script type="text/javascript" src="{% static 'core/js/marginevent.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/scrollbtn.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/favoritocode.js' %}"></script>
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'core/js/modaldelete.js' %}"></script>
 
     {% block scripts %}{% endblock %}
 </body>

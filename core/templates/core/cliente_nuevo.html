@@ -1,19 +1,66 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<div class="customfor2">
-    <div class="row mt-2">
-        <div class="col-md-8 offset-md-2">
-            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-            <br>
-            <h1>Nuevo Cliente</h1>
-            <h3 class="subtitle">Complete el formulario para agregar un nuevo cliente</h3>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-success">Guardar</button>
-            </form>
+<style>
+  .customfor2 {
+    padding: 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  .card-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  .card-body {
+    padding: 20px;
+  }
+ 
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  form p {
+    margin-bottom: 15px;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    border-radius: 20px 12px 31px;
+  }
+</style>
+
+<div class="contaiener-fluid px-4">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+  <div class="reow">
+    <div class="cols-md-8 offset-md-2">
+      <div class="cards mb-4">
+        <div class="carsd-header">
+          
+          <h1 class="mt-2">Nuevo Cliente</h1>
+          <p> &nbsp; Complete el formulario para agregar un nuevo cliente</p>
         </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Guardar</button>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

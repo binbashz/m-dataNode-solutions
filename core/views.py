@@ -629,11 +629,15 @@ def analizar_costos_presupuestos(request):
     return render(request, 'core/formulario_costos_presupuestos.html', {'form': form})
 
 
-#Analisis
+
+# Vista para mostrar la lista de clientes
+@login_required
 def clientes(request):
     clientes = Cliente.objects.all()
     return render(request, 'core/clientes.html', {'clientes': clientes})
 
+# Vista para crear un nuevo cliente
+@login_required
 def cliente_nuevo(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -645,12 +649,30 @@ def cliente_nuevo(request):
         form = ClienteForm()
     return render(request, 'core/cliente_nuevo.html', {'form': form})
 
+@login_required
+def editar_cliente(request, cliente_id):
+    cliente = get_object_or_404(Cliente, id=cliente_id)
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cliente actualizado exitosamente.')
+            return redirect('clientes')
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(request, 'core/cliente_editar.html', {'form': form})
+
+@login_required
 def eliminar_cliente(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
-    cliente.delete()
-    messages.success(request, 'Cliente eliminado exitosamente.')
+    if request.method == 'POST':
+        nombre_cliente = cliente.nombre
+        cliente.delete()
+        messages.success(request, f'Cliente "{nombre_cliente}" eliminado exitosamente.')
+        return redirect('clientes')
     return redirect('clientes')
 
+@login_required
 def recepcion_muestra(request):
     if request.method == 'POST':
         form = MuestraForm(request.POST)
@@ -670,7 +692,7 @@ def recepcion_muestra(request):
     return render(request, 'core/recepcion_muestra.html', {'form': form})
 
 
-
+@login_required
 def programar_analisis(request, muestra_id=None):
     muestras_pendientes = Muestra.objects.filter(analisisprogramado__isnull=True)
     if request.method == 'POST':
@@ -690,7 +712,7 @@ def programar_analisis(request, muestra_id=None):
     # Pasa muestra_id al contexto del renderizado
     return render(request, 'core/programar_analisis.html', {'form': form, 'muestras_pendientes': muestras_pendientes, 'muestra_id': muestra_id})
 
-
+@login_required
 def registro_resultados(request):
     analisis_pendientes = AnalisisProgramado.objects.filter(resultadoanalisis__isnull=True)
     if request.method == 'POST':
@@ -717,7 +739,7 @@ def registro_resultados(request):
     
     return render(request, 'core/registro_resultados.html', {'form': form, 'analisis_pendientes': analisis_pendientes})
 
-
+@login_required
 def ver_informes(request):
     resultados = ResultadoAnalisis.objects.all()
 
@@ -883,6 +905,7 @@ def decode_barcode(barcode_data):
     return product_name, product_code
 
 
+@login_required
 # Barra de Busqueda
 def search_results(request):
     query = request.GET.get('q')
@@ -986,7 +1009,7 @@ def visualizacion_graficos(request):
 
 
 #vista para dashboard cards
-
+@login_required
 def dashboard(request):
     gasto_form = GastoOperativoForm()
     venta_form = VentaForm()
@@ -1057,6 +1080,7 @@ from django.db.models import Sum, F
 import matplotlib.pyplot as plt
 import urllib.parse
 
+@login_required
 def graficar_datos(request):
     # Obtener datos para los gráficos
     gastos = GastoOperativo.objects.all()

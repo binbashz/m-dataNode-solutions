@@ -2,7 +2,19 @@
 {% load static %}
 {% block content %}
 
-<body class="custombodyhome">
+<style>
+     form p {
+    margin-bottom: 15px;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 20px 12px 31px;
+  }
+</style>
 <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 
 <div class="container my-5">
@@ -17,5 +29,5 @@
         </div>
     </div>
 </div>
-</body>
+
 {% endblock %}
