@@ -5,7 +5,7 @@
 <div class="dashboard-container">
     <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
     <header>
-        <h1 class="mt-1">Graficos de operaciones </h1>
+        <h1 class="mt-1">Graficos de operaciones</h1>
     </header>
 
     <div class="charts-container">
@@ -13,7 +13,7 @@
             <h2>Resumen Financiero</h2>
             <p>Comparación entre gastos totales y ventas totales</p>
             <div class="chart-wrapper">
-                <img src="data:image/png;base64,{{ imagen_png_base64 }}" alt="Gráfico de resumen financiero" class="responsive-chart">
+                <canvas id="grafico-resumen-financiero"></canvas>
             </div>
         </section>
 
@@ -49,7 +49,6 @@
 </div>
 
 <style>
-   
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
     body, html {
@@ -177,6 +176,55 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    var ctxResumen = document.getElementById('grafico-resumen-financiero').getContext('2d');
+    var gradient = ctxResumen.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(75, 192, 192, 0.2)');
+    gradient.addColorStop(1, 'rgba(735, 0, 130, 0.7)');
+
+    
+    var borderGradient = ctxResumen.createLinearGradient(0, 0, 0, 400);
+    borderGradient.addColorStop(0, 'rgba(75, 192, 192, 1)');
+    borderGradient.addColorStop(1, 'rgba(75, 192, 75, 1)');
+
+    var myResumenChart = new Chart(ctxResumen, {
+        type: 'bar',
+        data: {
+            labels: ['Gastos', 'Ventas'],
+            datasets: [{
+                label: 'Totales ($)',
+                data: [
+                    {{ total_gastos }},
+                    {{ total_ventas }}
+                ],
+                backgroundColor: gradient,
+                borderColor: borderGradient,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Monto ($)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Resumen Financiero'
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
     var ctx = document.getElementById('grafico-dashboard').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -189,12 +237,12 @@
                     {{ total_ventas }}
                 ],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(75, 192, 75, 0.5)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)'
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 75, 1)'
                 ],
                 borderWidth: 1
             }]

@@ -53,7 +53,7 @@ th, td {
 .btn {
   padding: 10px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px 12px 31px;
   cursor: pointer;
   text-decoration: none;
 }
@@ -81,6 +81,7 @@ th, td {
   font-size: 0.875rem;
 }
 
+
 /* Estilos para el modal */
 .modalclientes {
   display: none;
@@ -95,15 +96,21 @@ th, td {
   align-items: center;
 }
 
+
 .modalclientes-content {
-  background-color: #fff;
-  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);  
+  backdrop-filter: blur(15px);           
+  -webkit-backdrop-filter: blur(15px);   
   border-radius: 20px 12px 31px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  max-width: auto;
+  margin-top: 2rem;
+  margin: auto;
   text-align: center;
   margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 
 .modalclientes-content .close {
   color: #aaa;
@@ -122,11 +129,12 @@ th, td {
 .modalclientes-content h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
+  margin-top: 1rem;
 }
 
 .modalclientes-content p {
   font-size: 1rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .modalclientes-content .modal-buttons {
@@ -138,8 +146,9 @@ th, td {
 .modalclientes-content .btn-cancel,
 .modalclientes-content .btn-delete {
   padding: 10px 20px;
+  margin-bottom: 0.7rem;
   border: none;
-  border-radius: 5px;
+  border-radius:  20px 12px 31px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

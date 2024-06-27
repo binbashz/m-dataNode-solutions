@@ -2978,7 +2978,12 @@ transform: translateY(-10px);
 
 .var .list-group-item {
   background-color: rgba(255, 255, 255, 0.5); 
-  border: none; 
+  border: none;
+}
+
+.list-group{
+  border-radius:  20px 12px 31px;
+  margin: 3px;
 }
 
 /* scroll botton top  BOTON PARA SCROLL AL TOP */
