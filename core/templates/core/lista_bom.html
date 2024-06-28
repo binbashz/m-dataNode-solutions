@@ -1,0 +1,259 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+/* Estilos generales */
+.container-fluid {
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cardmodal {
+  border: 1px solid #ddd;
+  border-radius: 20px 12px 31px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow-x: auto;
+}
+
+.cardmodal-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.cardmodal-body {
+  padding: 15px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Estilos para botones */
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px 12px 31px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-prev {
+  margin-left: 1rem;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+}
+
+/* Estilos para el modal */
+.modalclientes {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modalclientes-content {
+  background: rgba(255, 255, 255, 0.1);  
+  backdrop-filter: blur(15px);           
+  -webkit-backdrop-filter: blur(15px);   
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: auto;
+  margin-top: 2rem;
+  margin: auto;
+  text-align: center;
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modalclientes-content .close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modalclientes-content .close:hover,
+.modalclientes-content .close:focus {
+  color: #555;
+}
+
+.modalclientes-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  margin-top: 1rem;
+}
+
+.modalclientes-content p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modalclientes-content .modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modalclientes-content .btn-cancel,
+.modalclientes-content .btn-delete {
+  padding: 10px 20px;
+  margin-bottom: 0.7rem;
+  border: none;
+  border-radius: 20px 12px 31px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalclientes-content .btn-cancel {
+  background-color: #ddd;
+  color: #333;
+}
+
+.modalclientes-content .btn-cancel:hover {
+  background-color: #bbb;
+}
+
+.modalclientes-content .btn-delete {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.modalclientes-content .btn-delete:hover {
+  background-color: #d32f2f;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .btn-prev {
+    margin-bottom: 1rem;
+  }
+
+  .cardmodal-header h1 {
+    font-size: 1.25rem;
+  }
+
+  th, td {
+    font-size: 0.875rem;
+    padding: 8px;
+  }
+
+  .btn {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+  }
+
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="cardmodal">
+        <div class="card-headermodal">
+          <br>
+          <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+          <h1>&nbsp;Listas de Materiales (BOM)</h1>
+          &emsp;<a href="{% url 'crear_bom' %}" class="btn btn-primary btn-sm">Nueva Lista de Materiales</a>
+        </div>
+        <div class="cardmodal-body">
+          <div class="table-responsive">
+            <table id="datatablesBOM" class="table">
+              <thead>
+                <tr>
+                  <th>Nombre del Producto</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                 {% for lista in listas %}
+                <tr>
+                  <td><a href="{% url 'detalle_bom' lista.pk %}">{{ lista.nombre_producto }}</a></td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="openModal('{{ lista.pk }}')">Eliminar</button>
+                    <div id="myModal{{ lista.pk }}" class="modalclientes">
+                      <div class="modalclientes-content">
+                        <span class="close" onclick="closeModal('{{ lista.pk }}')">&times;</span>
+                        <h2>Confirmar eliminación</h2>
+                        <p>¿Está seguro de que desea eliminar esta Lista de Materiales?</p>
+                        <div class="modal-buttons">
+                          <button class="btn-cancel" onclick="closeModal('{{ lista.pk }}')">Cancelar</button>
+                          <form id="deleteForm{{ lista.pk }}" action="{% url 'eliminar_bom' lista.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Eliminar</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById('myModal' + id).style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    document.getElementById('myModal' + id).style.display = 'none';
+  }
+</script>
+
+{% endblock %}

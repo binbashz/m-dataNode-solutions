@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="row mt-3 mb-3">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="col-md-6 offset-md-2">
+        
+
+<div class="mpp-dashboard">
+    <div class="mpp-flex-container">
+        <div class="mpp-module">
+            <div class="mpp-module-header">
+                <h2>Planes de Producción</h2>
+            </div>
+            <div class="mpp-module-content">
+                <ul class="mpp-action-list">
+                    <li>
+                        <a href="{% url 'crear_plan_produccion' %}" class="mpp-btn mpp-btn-primary">Crear Plan de Producción</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'lista_planes_produccion' %}" class="mpp-btn mpp-btn-secondary">Ver Planes de Producción</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mpp-module">
+            <div class="mpp-module-header">
+                <h2>Listas de Materiales (BOM)</h2>
+            </div>
+            <div class="mpp-module-content">
+                <ul class="mpp-action-list">
+                    <li>
+                        <a href="{% url 'crear_bom' %}" class="mpp-btn mpp-btn-primary">Crear Lista de Materiales</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'lista_bom' %}" class="mpp-btn mpp-btn-secondary">Ver Listas de Materiales</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Crear Nueva Lista de Materiales (BOM)</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="{{ form.nombre_producto.id_for_label }}">Nombre producto:</label>
+        {{ form.nombre_producto }}
+  
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'lista_bom' %}">Volver a la lista de BOM</a>
+{% endblock %}

@@ -3455,7 +3455,96 @@ transform: translateY(-10px);
   background-color: #03661c;
 }
 
-/*  graficos de gestion venta pedido  gastos */
+
+
+
+/* panel produccion material */
+
+.mpp-dashboard {
+  padding: 20px;
+}
+
+.mpp-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.mpp-module {
+  border: 1px solid #ddd;
+  border-radius: 20px 12px 31px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.mpp-module:hover {
+  transform: translateY(-5px);
+}
+
+.mpp-module-header {
+  background-color: #f8faf9;
+  padding: 15px;
+  border-bottom: 1px solid #70f78e;
+}
+
+.mpp-module-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.mpp-module-content {
+  padding: 20px;
+}
+
+.mpp-action-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.mpp-action-list li {
+  margin-bottom: 10px;
+}
+
+.mpp-btn {
+  display: inline-block;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px 12px 31px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.mpp-btn-primary {
+  background: linear-gradient(45deg, rgba(44, 112, 167, 0.6) 24%, rgba(105, 223, 121, 0.6));
+  color: #055015;
+}
+
+.mpp-btn-primary:hover {
+  background-color: #088833;
+}
+
+.mpp-btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.mpp-btn-secondary:hover {
+  background-color: #545b62;
+}
+
+@media (max-width: 768px) {
+  .mpp-module {
+      max-width: 100%;
+  }
+}
 
 
 
@@ -3465,4 +3554,3 @@ transform: translateY(-10px);
   color: #2a6b3a;
   text-decoration: none;
 }
-

@@ -7,6 +7,7 @@ from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, A
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from io import BytesIO
 from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
@@ -19,6 +20,8 @@ from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
 from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
 from .models import GastoOperativo, Venta, Pedido
 from .forms import GastoOperativoForm, VentaForm, PedidoForm
+from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales
+from .forms import PlanProduccionForm, TareaProduccionForm, ListaMaterialesForm, ItemListaMaterialesForm
 from django.db.models import Count
 from django.contrib import messages
 import barcode
@@ -1121,3 +1124,62 @@ def graficar_datos(request):
         'imagen_png_base64': imagen_png_base64,
     }
     return render(request, 'core/graficos_dashboard.html', context)
+
+
+#BOM
+
+
+def lista_planes_produccion(request):
+    planes = PlanProduccion.objects.all()
+    return render(request, 'core/lista_planes_produccion.html', {'planes': planes})
+
+def detalle_plan_produccion(request, pk):
+    plan = get_object_or_404(PlanProduccion, pk=pk)
+    tareas = plan.tareaproduccion_set.all()
+    return render(request, 'core/detalle_plan_produccion.html', {'plan': plan, 'tareas': tareas})
+
+def crear_plan_produccion(request):
+    if request.method == 'POST':
+        form = PlanProduccionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_planes_produccion')
+    else:
+        form = PlanProduccionForm()
+    return render(request, 'core/formulario_plan_produccion.html', {'form': form})
+
+def lista_bom(request):
+    listas = ListaMateriales.objects.all()
+    return render(request, 'core/lista_bom.html', {'listas': listas})
+
+def detalle_bom(request, pk):
+    lista = get_object_or_404(ListaMateriales, pk=pk)
+    items = lista.itemlistamateriales_set.all()
+    return render(request, 'core/detalle_bom.html', {'lista': lista, 'items': items})
+
+def crear_bom(request):
+    if request.method == 'POST':
+        form = ListaMaterialesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_bom')
+    else:
+        form = ListaMaterialesForm()
+    
+    print("Campos del formulario:", form.fields.keys())
+    return render(request, 'core/formulario_bom.html', {'form': form})
+
+
+def lista_bom(request):
+    listas = ListaMateriales.objects.all()
+    return render(request, 'core/lista_bom.html', {'listas': listas})
+
+def eliminar_bom(request, pk):
+    bom = get_object_or_404(ListaMateriales, pk=pk)
+    if request.method == 'POST':
+        bom.delete()
+        return redirect('lista_bom')
+    return redirect('lista_bom')
+
+def panel_de_control(request):
+    return render(request, 'core/panel.html')

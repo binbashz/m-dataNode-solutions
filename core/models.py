@@ -197,3 +197,51 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f'{self.producto} - {self.cantidad} unidades ({self.variedad.nombre})'
+
+
+class Material(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    cantidad_en_inventario = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.nombre
+
+class ListaMateriales(models.Model):
+    nombre_producto = models.CharField(max_length=100)
+    materiales = models.ManyToManyField(Material, through='ItemListaMateriales')
+
+    def __str__(self):
+        return self.nombre_producto
+
+class ItemListaMateriales(models.Model):
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    lista_materiales = models.ForeignKey(ListaMateriales, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.cantidad} de {self.material.nombre} para {self.lista_materiales.nombre_producto}"
+    
+    
+
+class PlanProduccion(models.Model):
+    nombre = models.CharField(max_length=100)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    detalles = models.TextField()
+    estado = models.CharField(max_length=20, choices=[('planificado', 'Planificado'), ('en_progreso', 'En Progreso'), ('completado', 'Completado')])
+
+    def __str__(self):
+        return self.nombre
+
+class TareaProduccion(models.Model):
+    plan = models.ForeignKey(PlanProduccion, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    asignado_a = models.CharField(max_length=100)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    estado = models.CharField(max_length=20, choices=[('pendiente', 'Pendiente'), ('en_progreso', 'En Progreso'), ('completado', 'Completado')])
+
+    def __str__(self):
+        return self.nombre

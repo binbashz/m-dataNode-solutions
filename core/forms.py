@@ -6,7 +6,10 @@ from .models import Cultivo
 from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad
 from .models import AnalisisCostos
 from .models import Muestra, AnalisisProgramado, ResultadoAnalisis, TipoAnalisis
+from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales
 from .models import Cliente
+from .models import ListaMateriales, Material, ItemListaMateriales
+
 
 
 
@@ -219,3 +222,65 @@ class PedidoForm(forms.ModelForm):
             'fecha_pedido': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
             'fecha_entrega': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
         }
+        
+
+
+class PlanProduccionForm(forms.ModelForm):
+    class Meta:
+        model = PlanProduccion
+        fields = ['nombre', 'fecha_inicio', 'fecha_fin', 'detalles', 'estado']
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+            'fecha_fin': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+        }
+
+class TareaProduccionForm(forms.ModelForm):
+    class Meta:
+        model = TareaProduccion
+        fields = ['nombre', 'descripcion', 'asignado_a', 'fecha_inicio', 'fecha_fin', 'estado']
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+            'fecha_fin': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+        }
+
+class ListaMaterialesForm(forms.ModelForm):
+    materiales = forms.ModelMultipleChoiceField(
+        queryset=Material.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = ListaMateriales
+        fields = ['nombre_producto', 'materiales']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['materiales'].initial = self.instance.materiales.all()
+
+    def save(self, commit=True):
+        lista_materiales = super().save(commit=False)
+        if commit:
+            lista_materiales.save()
+            self.save_materiales(lista_materiales)
+        return lista_materiales
+
+    def save_materiales(self, lista_materiales):
+        materiales = self.cleaned_data.get('materiales')
+        lista_materiales.materiales.clear()
+        for material in materiales:
+            ItemListaMateriales.objects.create(
+                lista_materiales=lista_materiales,
+                material=material,
+                cantidad=1  
+            )
+
+class ItemListaMaterialesForm(forms.ModelForm):
+    class Meta:
+        model = ItemListaMateriales
+        fields = ['material', 'lista_materiales', 'cantidad']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['material'].queryset = Material.objects.all()

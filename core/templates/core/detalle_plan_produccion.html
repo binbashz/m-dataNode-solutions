@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="row mt-3 mb-3">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="col-md-6 offset-md-2">
+        <h1>{{ plan.nombre }}</h1>
+        <p>{{ plan.detalles }}</p>
+      
+
+   
+
+           
+       
+</div>
+
+{% endblock %}

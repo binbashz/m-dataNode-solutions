@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="row mt-3 mb-3">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="col-md-6 offset-md-2">
+<h2>Crear Plan de Producción</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+    </div>
+</div>
+{% endblock %}
+

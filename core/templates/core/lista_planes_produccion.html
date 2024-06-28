@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="row mt-3 mb-3">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="col-md-6 offset-md-2">
+        <h1>Planes de Producción</h1>
+        <ul class="list-group">
+            {% for plan in planes %}
+                <li class="list-group-item">
+                    <a href="{% url 'detalle_plan_produccion' plan.pk %}">{{ plan.nombre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'crear_plan_produccion' %}" class="btn btn-primary mt-3">Crear Nuevo Plan de Producción</a>
+    </div>
+
+
+
+{% endblock %}

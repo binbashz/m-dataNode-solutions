@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{{ lista.nombre_producto }}</h1>
+<h2>Materiales</h2>
+<ul>
+    {% for item in items %}
+        <li>{{ item.cantidad }} de {{ item.material.nombre }}</li>
+    {% endfor %}
+</ul>
+<a href="#">Añadir Material (Funcionalidad futura)</a>
+{% endblock %}
