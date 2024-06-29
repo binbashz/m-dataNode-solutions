@@ -1,15 +1,29 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>Crear Nueva Lista de Materiales (BOM)</h1>
-
-<form method="post">
-    {% csrf_token %}
-    <div>
-        <label for="{{ form.nombre_producto.id_for_label }}">Nombre producto:</label>
-        {{ form.nombre_producto }}
+<div class="row mt-3 mb-3">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="col-md-6 offset-md-2">
+        <h1>Crear Nueva Lista de Materiales (BOM)</h1>
+        <hr>
+        <details>
+            <summary>Detalles de Creación de Lista de Materiales (BOM)</summary>
+            <p>
+                En esta sección puedes crear una nueva lista de materiales (BOM) para tus productos. Completa el formulario con el nombre del producto y luego presiona Guardar para agregarlo.
+            </p>
+        </details>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.nombre_producto.id_for_label }}" class="form-label">Nombre del producto:</label>
+                {{ form.nombre_producto }}
+            </div>
   
-    <button type="submit">Guardar</button>
-</form>
-<a href="{% url 'lista_bom' %}">Volver a la lista de BOM</a>
+            <button type="submit" class="btn4 btn-primary">Guardar</button>
+        </form>
+
+        <a href="{% url 'lista_bom' %}" class="btn3 btn-secondary mt-3">Volver a la lista de BOM</a>
+    </div>
+</div>
 {% endblock %}

@@ -550,6 +550,9 @@ body {
 
 
 /*-------------main*/
+ .alert-success  {
+  margin: 10px 0;
+}
 
 #inbox{
   background-color: var(--color-menu-hover);
@@ -599,7 +602,7 @@ nav ul li {
 
 nav ul li a {
   text-decoration: none;
-  color: #1a2238;
+  color: #194619;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -3372,7 +3375,7 @@ transform: translateY(-10px);
 
 .btn-outline-success {
   font-size: 14px;
-  padding: 6px 12px;
+  padding: 4px 10px;
 }
 
 .search-outline {

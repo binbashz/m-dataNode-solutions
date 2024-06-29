@@ -5,13 +5,29 @@
 <div class="row mt-3 mb-3">
     <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
     <div class="col-md-6 offset-md-2">
-<h2>Crear Plan de Producción</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-</form>
+        <h2>Crear Plan de Producción</h2>
+        <hr>
+        <details>
+            <summary>¿Cómo usar este formulario?</summary>
+            <p>Para crear un plan de producción, completa los siguientes campos:</p>
+            <ul>
+                <li><strong>Nombre del Plan:</strong> Ingresa el nombre para identificar tu plan de producción.</li>
+                <li><strong>Fecha de Inicio:</strong> Selecciona la fecha de inicio de la producción.</li>
+                <li><strong>Descripción:</strong> Proporciona una breve descripción del plan y sus objetivos.</li>
+                <li><strong>Recursos Necesarios:</strong> Lista los recursos necesarios para la producción (por ejemplo, materiales, mano de obra).</li>
+                <li><strong>Actividades:</strong> Describe las actividades clave y sus respectivas fechas.</li>
+            </ul>
+            <p>Una vez completados los campos, presiona el botón "Guardar" para crear tu plan de producción.</p>
+        </details>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn3 btn-sm">Guardar</button>
+            </div>
+        </form>
     </div>
 </div>
-{% endblock %}
 
+{% endblock %}

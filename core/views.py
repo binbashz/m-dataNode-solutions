@@ -1148,6 +1148,12 @@ def crear_plan_produccion(request):
         form = PlanProduccionForm()
     return render(request, 'core/formulario_plan_produccion.html', {'form': form})
 
+
+def eliminar_plan_produccion(request, pk):
+    plan = get_object_or_404(PlanProduccion, pk=pk)
+    plan.delete()
+    return redirect('lista_planes_produccion')
+
 def lista_bom(request):
     listas = ListaMateriales.objects.all()
     return render(request, 'core/lista_bom.html', {'listas': listas})

@@ -2,20 +2,39 @@
 
 {% block content %}
 
+<style>
+    .custom-delete-button {
+        padding: 0.25rem 0.5rem; /* Ajusta el relleno según sea necesario */
+        font-size: 0.75rem; /* Ajusta el tamaño de la fuente según sea necesario */
+        line-height: 1; /* Ajusta la altura de la línea según sea necesario */
+    }
+</style>
+
 <div class="row mt-3 mb-3">
     <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
     <div class="col-md-6 offset-md-2">
         <h1>Planes de Producción</h1>
-        <ul class="list-group">
-            {% for plan in planes %}
-                <li class="list-group-item">
-                    <a href="{% url 'detalle_plan_produccion' plan.pk %}">{{ plan.nombre }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="{% url 'crear_plan_produccion' %}" class="btn btn-primary mt-3">Crear Nuevo Plan de Producción</a>
+
+        {% if planes %}
+            <ul class="list-group">
+                {% for plan in planes %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'detalle_plan_produccion' plan.pk %}">{{ plan.nombre }}</a>
+                        <form method="post" action="{% url 'eliminar_plan_produccion' plan.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn3 btn-danger btn-sm custom-delete-button">Eliminar</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No hay planes de producción disponibles.
+            </div>
+        {% endif %}
+
+        <a href="{% url 'crear_plan_produccion' %}" class="btn4 btn-primary mt-3">Crear Nuevo Plan de Producción</a>
     </div>
-
-
+</div>
 
 {% endblock %}

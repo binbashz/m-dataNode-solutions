@@ -102,6 +102,7 @@ urlpatterns = [
     path('planes-produccion/', views.lista_planes_produccion, name='lista_planes_produccion'),
     path('planes-produccion/<int:pk>/', views.detalle_plan_produccion, name='detalle_plan_produccion'),
     path('planes-produccion/nuevo/', views.crear_plan_produccion, name='crear_plan_produccion'),
+    path('planes/<int:pk>/eliminar/', views.eliminar_plan_produccion, name='eliminar_plan_produccion'),
     path('bom/', views.lista_bom, name='lista_bom'),
     path('bom/<int:pk>/', views.detalle_bom, name='detalle_bom'),
     path('bom/nuevo/', views.crear_bom, name='crear_bom'),
