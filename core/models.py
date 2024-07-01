@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
-class Variedad(models.Model):
+class Variedad(models.Model): #planta
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None) 
@@ -245,3 +245,31 @@ class TareaProduccion(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+# Gestión de Membresías y Cuotas
+class Miembro(models.Model):
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    numero_socio = models.CharField(max_length=10, unique=True)
+    fecha_ingreso = models.DateField()
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nombre} {self.apellido} - {self.numero_socio}"
+
+
+class Cuota(models.Model):
+    miembro = models.ForeignKey(Miembro, on_delete=models.CASCADE)
+    fecha_pago = models.DateField()
+    monto = models.DecimalField(max_digits=8, decimal_places=2)
+    PERIODO_CHOICES = [
+        ('MENSUAL', 'Mensual'),
+        ('TRIMESTRAL', 'Trimestral'),
+        ('ANUAL', 'Anual'),
+    ]
+    periodo = models.CharField(max_length=10, choices=PERIODO_CHOICES, default='MENSUAL')
+    pagado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Cuota de {self.miembro.nombre} {self.miembro.apellido} - {self.fecha_pago}"

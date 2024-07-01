@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from .models import Cultivo
@@ -9,8 +10,7 @@ from .models import Muestra, AnalisisProgramado, ResultadoAnalisis, TipoAnalisis
 from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales
 from .models import Cliente
 from .models import ListaMateriales, Material, ItemListaMateriales
-
-
+from .models import Miembro, Cuota
 
 
 class RegisterForm(UserCreationForm):
@@ -194,7 +194,6 @@ class BarcodeForm(forms.Form):
     is_favorite = forms.BooleanField(label='Marcar como favorito', required=False)
     
     
-
 from .models import GastoOperativo, Venta, Pedido
 
 
@@ -284,3 +283,22 @@ class ItemListaMaterialesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['material'].queryset = Material.objects.all()
+             
+             
+
+
+class MiembroForm(forms.ModelForm):
+    class Meta:
+        model = Miembro
+        fields = ['nombre', 'apellido', 'email', 'numero_socio', 'fecha_ingreso']
+        widgets = {
+            'fecha_ingreso': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class CuotaForm(forms.ModelForm):
+    class Meta:
+        model = Cuota
+        fields = ['fecha_pago', 'monto', 'periodo', 'pagado']
+        widgets = {
+            'fecha_pago': forms.DateInput(attrs={'type': 'date'}),
+        }

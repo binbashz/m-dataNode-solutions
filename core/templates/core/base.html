@@ -34,6 +34,7 @@
         
             <div class="barra-lateral">
                 <div>
+                    
                     <div class="nombre-pagina">
                         <a href="{% url 'home' %}">
                             <img src="{% static 'core/images/logo.png' %}" alt="CannaTech Logo" class="logo">
@@ -51,18 +52,15 @@
                                    
                                     <button type="submit" class="btn-search"></button>
                                 </form>
+                                <a id="home" href="{% url 'home' %}" class="no-decoration">
+                                    <ion-icon name="home-outline"></ion-icon>
+                                    <span class="text-color"><small>Inicio</small></span>
+                                </a>
+                                
                             </div>
-                        
                                     </div>
                         <nav class="navegacion">
                         <!--  -->                   
-                    <li>
-                    <a id="home" href="{% url 'home' %}">
-                        <ion-icon name="home-outline"></ion-icon>
-                        <span class="text-color">Inicio</span>
-                    </a>
-                </li>
-                <div style="border-top: 1px solid #9eb9abb2; margin: 5px 0;"></div>
 
                             <li>
                                 <a id="products" href="{% url 'products' %}">
@@ -83,6 +81,13 @@
                     <ion-icon name="construct-outline"></ion-icon>
                     <span class="text-color">Producción<br>Materiales</span>
                     
+                </a>
+            </li>
+            <div style="border-top: 1px solid #9eb9abb2; margin: 5px 0;"></div>
+            <li>
+                <a id="panelproduccion" href="{% url 'lista_miembros' %}">
+                    <ion-icon name="people-outline"></ion-icon>
+                    <span class="text-color">Admin. Miembros</span>      
                 </a>
             </li>
             <div style="border-top: 1px solid #9eb9abb2; margin: 5px 0;"></div>

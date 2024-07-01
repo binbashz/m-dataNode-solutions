@@ -143,3 +143,4 @@ handler404 = 'core.views.error_page'
 # Página de error 500
 handler500 = 'core.views.error_page'
 
+

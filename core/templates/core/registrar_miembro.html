@@ -1,0 +1,66 @@
+<!-- templates/core/registrar_miembro.html -->
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<br>
+          <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+          <br>
+  <div class="container">
+    <h1>Registrar Nuevo Miembro</h1>
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_nombre">Nombre:</label>
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+          <div class="text-danger">
+            {{ form.nombre.errors.as_text }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_apellido">Apellido:</label>
+        {{ form.apellido }}
+        {% if form.apellido.errors %}
+          <div class="text-danger">
+            {{ form.apellido.errors.as_text }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_email">Email:</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="text-danger">
+            {{ form.email.errors.as_text }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_numero_socio">Número de Socio:</label>
+        {{ form.numero_socio }}
+        {% if form.numero_socio.errors %}
+          <div class="text-danger">
+            {{ form.numero_socio.errors.as_text }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_fecha_ingreso">Fecha de Ingreso:</label>
+        {{ form.fecha_ingreso }}
+        {% if form.fecha_ingreso.errors %}
+          <div class="text-danger">
+            {{ form.fecha_ingreso.errors.as_text }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group form-check">
+        {{ form.activo }}
+        <label class="form-check-label" for="id_activo">Activo</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+  </div>
+{% endblock %}

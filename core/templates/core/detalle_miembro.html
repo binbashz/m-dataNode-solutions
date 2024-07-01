@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{{ miembro.nombre_completo }}</h1>
+<p>Número de Socio: {{ miembro.numero_socio }}</p>
+<p>Email: {{ miembro.email }}</p>
+<p>Fecha de Ingreso: {{ miembro.fecha_ingreso }}</p>
+<p>Estado: {% if miembro.activo %}Activo{% else %}Inactivo{% endif %}</p>
+<a href="{% url 'editar_miembro' miembro.id %}">Editar Información</a>
+
+  <h2>Registrar Cuota</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar Cuota</button>
+  </form>
+
+  <h2>Historial de Cuotas</h2>
+  <table>
+    <tr>
+      <th>Fecha de Pago</th>
+      <th>Monto</th>
+      <th>Periodo</th>
+      <th>Estado</th>
+    </tr>
+    {% for cuota in cuotas %}
+      <tr>
+        <td>{{ cuota.fecha_pago }}</td>
+        <td>{{ cuota.monto }}</td>
+        <td>{{ cuota.get_periodo_display }}</td>
+        <td>{% if cuota.pagado %}Pagado{% else %}Pendiente{% endif %}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No hay cuotas registradas.</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %}

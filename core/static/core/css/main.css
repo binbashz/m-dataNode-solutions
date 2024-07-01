@@ -559,6 +559,19 @@ body {
   color: var(--color-menu-hover-texto);
 }
 
+/* home icon barra */
+.no-decoration {
+  text-decoration: none;
+  color: inherit; /* Usa este color para que herede el color del texto circundante */
+}
+
+.no-decoration:hover,
+.no-decoration:focus,
+.no-decoration:active {
+  text-decoration: none;
+  color: inherit;
+}
+
 main {
   padding: 20px;
   transition: margin-left 0.5s ease;
@@ -1022,6 +1035,7 @@ form input[type="range"] {
   width: 17rem; 
   height: auto; /* Cambiar de altura fija a auto */
   margin: 0 auto;
+  margin-top: 1px;
   margin-bottom: 9rem; 
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(170, 241, 212, 0.5);
@@ -1188,8 +1202,8 @@ form input[type="range"] {
   min-height: 100px;
   background: linear-gradient(45deg, rgba(193, 161, 245, 0.6) 24%, rgba(105, 223, 121, 0.6));
   border-radius: 20px;
-  margin-top: 3.5rem;
-  margin: 2rem 20px 2rem 0;
+  margin-top: 1.5rem;
+  margin: 2rem 20px 0 0;
   display: flex;
   align-items: center;
   padding: 10px;

@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1>Reporte de Cuotas Pendientes</h1>
+  <table>
+    <tr>
+      <th>Miembro</th>
+      <th>Número de Socio</th>
+      <th>Fecha de Pago</th>
+      <th>Monto</th>
+      <th>Periodo</th>
+    </tr>
+    {% for cuota in cuotas_pendientes %}
+      <tr>
+        <td>{{ cuota.miembro.usuario.get_full_name }}</td>
+        <td>{{ cuota.miembro.numero_socio }}</td>
+        <td>{{ cuota.fecha_pago }}</td>
+        <td>{{ cuota.monto }}</td>
+        <td>{{ cuota.get_periodo_display }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">No hay cuotas pendientes.</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %}

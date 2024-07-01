@@ -107,6 +107,12 @@ urlpatterns = [
     path('bom/<int:pk>/', views.detalle_bom, name='detalle_bom'),
     path('bom/nuevo/', views.crear_bom, name='crear_bom'),
     path('bom/<int:pk>/eliminar/', views.eliminar_bom, name='eliminar_bom'),
+    
+    path('miembros/', views.lista_miembros, name='lista_miembros'),
+    path('miembro/registrar/', views.registrar_miembro, name='registrar_miembro'),
+    path('miembro/<int:miembro_id>/', views.detalle_miembro, name='detalle_miembro'),
+    path('miembro/<int:miembro_id>/editar/', views.editar_miembro, name='editar_miembro'),
+    path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'),  
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),

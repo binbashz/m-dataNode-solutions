@@ -36,6 +36,8 @@ import io
 from django.http import HttpResponseBadRequest
 from .forms import BarcodeForm
 from .models import Product
+from .models import Miembro, Cuota
+from .forms import MiembroForm, CuotaForm
 from PIL import Image, ImageDraw, ImageFont
 import os
 from barcode import Code128
@@ -1128,7 +1130,6 @@ def graficar_datos(request):
 
 #BOM
 
-
 def lista_planes_produccion(request):
     planes = PlanProduccion.objects.all()
     return render(request, 'core/lista_planes_produccion.html', {'planes': planes})
@@ -1189,3 +1190,69 @@ def eliminar_bom(request, pk):
 
 def panel_de_control(request):
     return render(request, 'core/panel.html')
+
+
+
+# Gestión de Membresías y Cuotas
+
+
+@login_required
+def registrar_miembro(request):
+    if request.method == 'POST':
+        form = MiembroForm(request.POST)
+        if form.is_valid():
+            miembro = form.save()
+            messages.success(request, f'Miembro {miembro.nombre_completo()} registrado exitosamente.')
+            return redirect('lista_miembros')
+    else:
+        form = MiembroForm()
+    return render(request, 'core/registrar_miembro.html', {'form': form})
+
+
+@login_required
+def lista_miembros(request):
+    miembros = Miembro.objects.all().order_by('numero_socio')
+    return render(request, 'core/admin_miembros.html', {'miembros': miembros})
+
+
+@login_required
+def detalle_miembro(request, miembro_id):
+    miembro = get_object_or_404(Miembro, id=miembro_id)
+    cuotas = Cuota.objects.filter(miembro=miembro).order_by('-fecha_pago')
+    
+    if request.method == 'POST':
+        form = CuotaForm(request.POST)
+        if form.is_valid():
+            cuota = form.save(commit=False)
+            cuota.miembro = miembro
+            cuota.save()
+            messages.success(request, 'Cuota registrada exitosamente.')
+            return redirect('detalle_miembro', miembro_id=miembro.id)
+    else:
+        form = CuotaForm(initial={'fecha_pago': timezone.now().date()})
+    
+    return render(request, 'core/detalle_miembro.html', {
+        'miembro': miembro, 
+        'cuotas': cuotas, 
+        'form': form
+    })
+
+@login_required
+def reporte_cuotas(request):
+    cuotas_pendientes = Cuota.objects.filter(pagado=False).order_by('fecha_pago')
+    return render(request, 'core/reporte_cuotas.html', {'cuotas_pendientes': cuotas_pendientes})
+
+@login_required
+def editar_miembro(request, miembro_id):
+    miembro = get_object_or_404(Miembro, id=miembro_id)
+    if request.method == 'POST':
+        form = MiembroForm(request.POST, instance=miembro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Información del miembro actualizada exitosamente.')
+            return redirect('detalle_miembro', miembro_id=miembro.id)
+    else:
+        form = MiembroForm(instance=miembro)
+    return render(request, 'core/editar_miembro.html', {'form': form, 'miembro': miembro})
+
+

@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+/* Estilos para el formulario y los botones */
+.form-container {
+  margin-bottom: 20px; 
+  background-color: rgba(255, 255, 255, 0.2); 
+  padding: 20px;
+  border-radius: 20px 12px 31px;
+}
+.form-container form {
+  margin-bottom: 20px; 
+}
+
+.btn-container {
+  margin-top: 10px; 
+}
+
+.btn-container button,
+.btn-container a {
+  padding: 8px 12px; 
+  font-size: 14px; 
+}
+
+.btn-container button.btn-primary {
+  background-color: #1ab165;
+  color: #fff;
+}
+
+.btn-container button.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-container button.btn-primary:hover,
+.btn-container button.btn-secondary:hover,
+.btn-container a.btn-primary:hover,
+.btn-container a.btn-secondary:hover {
+  opacity: 0.8; 
+}
+</style>
+
+<div class="container">
+    
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-container">
+          <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+          <br>
+        <h1>Editar Miembro</h1>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="btn-container">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{% url 'detalle_miembro' miembro.id %}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
