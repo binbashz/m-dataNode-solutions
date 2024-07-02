@@ -33,21 +33,114 @@
   color: #fff;
 }
 
+.btn-container button.btn-danger {
+  background-color: #f44336;
+  color: #fff;
+}
+
 .btn-container button.btn-primary:hover,
 .btn-container button.btn-secondary:hover,
+.btn-container button.btn-danger:hover,
 .btn-container a.btn-primary:hover,
-.btn-container a.btn-secondary:hover {
+.btn-container a.btn-secondary:hover,
+.btn-container a.btn-danger:hover {
   opacity: 0.8; 
+}
+
+/* Estilos para el modal */
+.modalclientes {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modalclientes-content {
+  background: rgba(255, 255, 255, 0.1);  
+  backdrop-filter: blur(15px);           
+  -webkit-backdrop-filter: blur(15px);   
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: auto;
+  margin-top: 2rem;
+  margin: auto;
+  text-align: center;
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modalclientes-content .close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modalclientes-content .close:hover,
+.modalclientes-content .close:focus {
+  color: #555;
+}
+
+.modalclientes-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  margin-top: 1rem;
+}
+
+.modalclientes-content p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modalclientes-content .modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modalclientes-content .btn-cancel,
+.modalclientes-content .btn-delete {
+  padding: 10px 20px;
+  margin-bottom: 0.7rem;
+  border: none;
+  border-radius:  20px 12px 31px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalclientes-content .btn-cancel {
+  background-color: #ddd;
+  color: #333;
+}
+
+.modalclientes-content .btn-cancel:hover {
+  background-color: #bbb;
+}
+
+.modalclientes-content .btn-delete {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.modalclientes-content .btn-delete:hover {
+  background-color: #d32f2f;
 }
 </style>
 
 <div class="container">
-    
   <div class="row">
     <div class="col-md-12">
       <div class="form-container">
-          <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-          <br>
+        <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+        <br>
         <h1>Editar Miembro</h1>
         <form method="post">
           {% csrf_token %}
@@ -55,10 +148,38 @@
           <div class="btn-container">
             <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="{% url 'detalle_miembro' miembro.id %}" class="btn btn-secondary">Cancelar</a>
+            <button type="button" class="btncode btn-danger" onclick="openModal('{{ miembro.id }}')">Eliminar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div id="myModal{{ miembro.id }}" class="modalclientes">
+  <div class="modalclientes-content">
+    <span class="close" onclick="closeModal('{{ miembro.id }}')">&times;</span>
+    <h2>Confirmar eliminación</h2>
+    <p>¿Está seguro de que desea eliminar al miembro {{ miembro.nombre }} {{ miembro.apellido }}?</p>
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="closeModal('{{ miembro.id }}')">Cancelar</button>
+      <form action="{% url 'eliminar_miembro' miembro.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-delete">Eliminar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById('myModal' + id).style.display = 'flex';
+}
+
+function closeModal(id) {
+  document.getElementById('myModal' + id).style.display = 'none';
+}
+</script>
+
 {% endblock %}

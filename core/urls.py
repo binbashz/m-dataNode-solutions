@@ -15,10 +15,8 @@ from .views import (
 from rest_framework.routers import DefaultRouter
 from .views import CondicionesCultivoViewSet
 
-
 router = DefaultRouter()
 router.register(r'condiciones-cultivo', CondicionesCultivoViewSet)
-
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -112,6 +110,7 @@ urlpatterns = [
     path('miembro/registrar/', views.registrar_miembro, name='registrar_miembro'),
     path('miembro/<int:miembro_id>/', views.detalle_miembro, name='detalle_miembro'),
     path('miembro/<int:miembro_id>/editar/', views.editar_miembro, name='editar_miembro'),
+    path('miembro/<int:miembro_id>/eliminar/', views.eliminar_miembro, name='eliminar_miembro'),
     path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'),  
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),

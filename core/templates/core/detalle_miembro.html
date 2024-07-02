@@ -1,37 +1,60 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>{{ miembro.nombre_completo }}</h1>
-<p>Número de Socio: {{ miembro.numero_socio }}</p>
-<p>Email: {{ miembro.email }}</p>
-<p>Fecha de Ingreso: {{ miembro.fecha_ingreso }}</p>
-<p>Estado: {% if miembro.activo %}Activo{% else %}Inactivo{% endif %}</p>
-<a href="{% url 'editar_miembro' miembro.id %}">Editar Información</a>
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
 
-  <h2>Registrar Cuota</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar Cuota</button>
-  </form>
+<div class="miembro-perfil">
+    <div class="perfil-encabezado">
+        <h1 class="perfil-nombre">{{ miembro.nombre_completo }}</h1>
+        <span class="perfil-estado {% if miembro.activo %}estado-activo{% else %}estado-inactivo{% endif %}">
+            {% if miembro.activo %}Activo{% else %}Inactivo{% endif %}
+        </span>
+    </div>
+    
+    <div class="perfil-detalles">
+        <div class="detalle-item">
+            <strong>Número de Socio:</strong>
+            <p>{{ miembro.numero_socio }}</p>
+        </div>
+        <div class="detalle-item">
+            <strong>Email:</strong>
+            <p>{{ miembro.email }}</p>
+        </div>
+        <div class="detalle-item">
+            <strong>Fecha de Ingreso:</strong>
+            <p>{{ miembro.fecha_ingreso }}</p>
+        </div>
+    </div>
+    
+    <a href="{% url 'editar_miembro' miembro.id %}" class=" btn3 ">Editar Perfil</a>
+</div>
 
-  <h2>Historial de Cuotas</h2>
-  <table>
-    <tr>
-      <th>Fecha de Pago</th>
-      <th>Monto</th>
-      <th>Periodo</th>
-      <th>Estado</th>
-    </tr>
-    {% for cuota in cuotas %}
-      <tr>
-        <td>{{ cuota.fecha_pago }}</td>
-        <td>{{ cuota.monto }}</td>
-        <td>{{ cuota.get_periodo_display }}</td>
-        <td>{% if cuota.pagado %}Pagado{% else %}Pendiente{% endif %}</td>
-      </tr>
-    {% empty %}
-      <tr><td colspan="4">No hay cuotas registradas.</td></tr>
-    {% endfor %}
-  </table>
+<div class="seccion-cuotas">
+    <div class="cuotas-registro">
+        <h2 class="seccion-titulo">Nueva Cuota</h2>
+        <form method="post" class="formulario-cuota">
+            {% csrf_token %}
+            <div class="campo-grupo">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn3 btn-sm">Registrar Pago</button>
+        </form>
+    </div>
+
+    <div class="cuotas-historial">
+        <h2 class="seccion-titulo">Historial de Pagos</h2>
+        <div class="lista-cuotas">
+            {% for cuota in cuotas %}
+                <div class="cuota-item {% if cuota.pagado %}cuota-pagada{% else %}cuota-pendiente{% endif %}">
+                    <span>{{ cuota.fecha_pago }}</span>
+                    <span>{{ cuota.monto }}</span>
+                    <span>{{ cuota.get_periodo_display }}</span>
+                    <span>{% if cuota.pagado %}Pagado{% else %}Pendiente{% endif %}</span>
+                </div>
+            {% empty %}
+                <div class="sin-cuotas">No hay registros de pagos.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

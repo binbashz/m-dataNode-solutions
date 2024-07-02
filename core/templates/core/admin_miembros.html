@@ -116,7 +116,7 @@ th, td {
                 {% for miembro in miembros %}
                   <tr>
                     <td><a href="{% url 'detalle_miembro' miembro.id %}">{{ miembro.numero_socio }}</a></td>
-                    <td>{{ miembro.nombre_completo }}</td>
+                    <td>{{ miembro.nombre }} {{ miembro.apellido }}</td>
                     <td>{{ miembro.email }}</td>
                     <td>{{ miembro.fecha_ingreso }}</td>
                     <td>{% if miembro.activo %}Activo{% else %}Inactivo{% endif %}</td>

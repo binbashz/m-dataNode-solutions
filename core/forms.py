@@ -290,7 +290,7 @@ class ItemListaMaterialesForm(forms.ModelForm):
 class MiembroForm(forms.ModelForm):
     class Meta:
         model = Miembro
-        fields = ['nombre', 'apellido', 'email', 'numero_socio', 'fecha_ingreso']
+        fields = ['nombre', 'apellido', 'email', 'numero_socio', 'fecha_ingreso', 'activo']
         widgets = {
             'fecha_ingreso': forms.DateInput(attrs={'type': 'date'}),
         }

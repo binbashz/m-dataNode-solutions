@@ -121,12 +121,6 @@
     </ul>
 {% endif %}
 
-{% if not results %}
-    <p>No se encontraron resultados.</p>
-{% endif %}
-
-
-
 {% if results.gastos_operativos %}
     <h3>Gastos Operativos</h3>
     <ul>
@@ -165,9 +159,74 @@
     </ul>
 {% endif %}
 
-{% if not results %}
-    <p>No se encontraron resultados.</p>
+{% if results.materiales %}
+    <h3>Materiales</h3>
+    <ul>
+    {% for material in results.materiales %}
+        <li>{{ material.nombre }} - {{ material.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.lista_materiales %}
+    <h3>Listas de Materiales</h3>
+    <ul>
+    {% for lista in results.lista_materiales %}
+        <li>{{ lista.nombre }} - {{ lista.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.items_lista_materiales %}
+    <h3>Items de Lista de Materiales</h3>
+    <ul>
+    {% for item in results.items_lista_materiales %}
+        <li>{{ item.nombre }} - {{ item.cantidad }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.plan_produccion %}
+    <h3>Planes de Producción</h3>
+    <ul>
+    {% for plan in results.plan_produccion %}
+        <li>{{ plan.nombre }} - {{ plan.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.tareas_produccion %}
+    <h3>Tareas de Producción</h3>
+    <ul>
+    {% for tarea in results.tareas_produccion %}
+        <li>{{ tarea.nombre }} - {{ tarea.descripcion }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.miembros %}
+    <h3>Miembros</h3>
+    <ul>
+    {% for miembro in results.miembros %}
+        <li>
+            {{ miembro.nombre }} - {{ miembro.rol }}
+            <ul>
+                <li><strong>Número de Socio:</strong> {{ miembro.numero_socio }}</li>
+                <li><strong>Email:</strong> {{ miembro.email }}</li>
+                <li><strong>Fecha de Ingreso:</strong> {{ miembro.fecha_ingreso }}</li>
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.cuotas %}
+    <h3>Cuotas</h3>
+    <ul>
+    {% for cuota in results.cuotas %}
+        <li>{{ cuota.tipo }} - {{ cuota.monto }}</li>
+    {% endfor %}
+    </ul>
 {% endif %}
 
 {% endblock %}
-

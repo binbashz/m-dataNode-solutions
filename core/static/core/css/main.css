@@ -849,7 +849,7 @@ nav.active ul li a:hover span {
 .custom-form-container {
  background: linear-gradient(white, rgba(72, 255, 0, 0.6));
  padding: 1rem;
- border-radius: 0.5rem;
+ border-radius: 20px 12px 31px;
 }
 
 .form-signin {
@@ -1331,7 +1331,7 @@ form input[type="range"] {
 .form-container {
   background-color: #fff;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 20px 12px 31px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -3273,12 +3273,12 @@ transform: translateY(-10px);
 
 
 .btncode {
-  --border-color: linear-gradient(-45deg, #ff0000, #17aa03, #00ff88);
+  --border-color: linear-gradient(-45deg, #ff0000, #ee0404, #b2f007);
   --border-width: 0.125em;
   --curve-size: 0.5em;
   --blur: 30px;
-  --bg: #ebfff2;
-  --color: #2b8f27;
+  --bg: #ebd780c4;
+  --color: #060c06;
   color: var(--color);
   cursor: pointer;
   position: relative;
@@ -3565,9 +3565,138 @@ transform: translateY(-10px);
 
 
 
+
+/* detalles de miembro */
+.miembro-perfil {
+  width: 100%;
+  max-width: 800px;
+  margin: 1rem auto;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  backdrop-filter: blur(20px);
+}
+
+.perfil-encabezado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(233, 236, 239, 0.6);
+  padding-bottom: 1rem;
+}
+
+.perfil-estado {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px 12px 31px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.estado-activo { background-color: rgba(40, 167, 69, 0.8); color: white; }
+.estado-inactivo { background-color: rgba(220, 53, 69, 0.8); color: white; }
+
+.perfil-detalles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detalle-item {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.8rem;
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.seccion-cuotas {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cuotas-registro, .cuotas-historial {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 1rem;
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  backdrop-filter: blur(30px);
+}
+
+.lista-cuotas {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.cuota-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(233, 236, 239, 0.6);
+}
+
+.cuota-pagada { background-color: rgba(232, 245, 233, 0.6); }
+.cuota-pendiente { background-color: rgba(255, 243, 205, 0.6); }
+
+/* Media queries para tablets */
+@media screen and (min-width: 768px) {
+  .miembro-perfil {
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+
+  .perfil-encabezado {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .perfil-estado {
+    margin-top: 0;
+  }
+
+  .perfil-detalles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .seccion-cuotas {
+    flex-direction: row;
+  }
+
+  .cuotas-registro, .cuotas-historial {
+    flex: 1;
+  }
+}
+
+/* Media queries para escritorio */
+@media screen and (min-width: 1024px) {
+  .miembro-perfil {
+    padding: 2rem;
+    margin: 2rem auto;
+  }
+
+  .perfil-detalles {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cuota-item {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
 /* footer */
 .footer a {
   margin-top: 5rem;
   color: #2a6b3a;
   text-decoration: none;
 }
+
+
+

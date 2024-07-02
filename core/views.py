@@ -20,7 +20,7 @@ from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
 from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
 from .models import GastoOperativo, Venta, Pedido
 from .forms import GastoOperativoForm, VentaForm, PedidoForm
-from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales
+from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales, Material
 from .forms import PlanProduccionForm, TareaProduccionForm, ListaMaterialesForm, ItemListaMaterialesForm
 from django.db.models import Count
 from django.contrib import messages
@@ -996,6 +996,41 @@ def search_results(request):
         results['pedidos'] = pedidos        
     
         
+        materiales = Material.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query)
+        )
+        results['materiales'] = materiales
+
+        listas_materiales = ListaMateriales.objects.filter(
+            Q(nombre_producto__icontains=query)
+        )
+        results['listas_materiales'] = listas_materiales
+
+        items_listas_materiales = ItemListaMateriales.objects.filter(
+            Q(material__nombre__icontains=query) | Q(lista_materiales__nombre_producto__icontains=query)
+        )
+        results['items_listas_materiales'] = items_listas_materiales
+
+        planes_produccion = PlanProduccion.objects.filter(
+            Q(nombre__icontains=query) | Q(detalles__icontains=query)
+        )
+        results['planes_produccion'] = planes_produccion
+
+        tareas_produccion = TareaProduccion.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(asignado_a__icontains=query)
+        )
+        results['tareas_produccion'] = tareas_produccion
+
+        miembros = Miembro.objects.filter(
+            Q(nombre__icontains=query) | Q(apellido__icontains=query) | Q(email__icontains=query) | Q(numero_socio__icontains=query)
+        )
+        results['miembros'] = miembros
+
+        cuotas = Cuota.objects.filter(
+            Q(miembro__nombre__icontains=query) | Q(miembro__apellido__icontains=query)
+        )
+        results['cuotas'] = cuotas
+
         return render(request, 'core/search_results.html', {'query': query, 'results': results})
 
 
@@ -1193,8 +1228,7 @@ def panel_de_control(request):
 
 
 
-# Gestión de Membresías y Cuotas
-
+# Gestión de Membresías Miembros y Cuotas
 
 @login_required
 def registrar_miembro(request):
@@ -1254,5 +1288,16 @@ def editar_miembro(request, miembro_id):
     else:
         form = MiembroForm(instance=miembro)
     return render(request, 'core/editar_miembro.html', {'form': form, 'miembro': miembro})
+
+
+@login_required
+def eliminar_miembro(request, miembro_id):
+    miembro = get_object_or_404(Miembro, id=miembro_id)
+    if request.method == 'POST':
+        nombre_miembro = f"{miembro.nombre} {miembro.apellido}"
+        miembro.delete()
+        messages.success(request, f'Miembro "{nombre_miembro}" eliminado exitosamente.')
+        return redirect('lista_miembros')
+    return redirect('lista_miembros')
 
 
