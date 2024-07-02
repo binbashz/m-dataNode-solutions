@@ -1,53 +1,54 @@
+from io import BytesIO
+# Módulos de Django
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
-from django.urls import reverse
-from .forms import RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm, AnalisisCalidadForm
-from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, AnalisisCalidad, Variedad
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from io import BytesIO
-from django.urls import reverse_lazy
-from django.views.generic.edit import DeleteView
-from django.http import HttpResponseNotFound, HttpResponseServerError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponseBadRequest
+from django.db.models import Count, Q
+from django.contrib import messages
+from django.utils.timezone import make_aware, get_current_timezone
+from django.utils import timezone
+
+# Reportlab
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
-from .forms import CultivoForm
-from .simulacion import calcular_rendimiento
-from .forms import AnalisisCostosForm
-from .models import Cliente, Muestra, AnalisisProgramado, ResultadoAnalisis
-from .forms import ClienteForm, MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm
-from .models import GastoOperativo, Venta, Pedido
-from .forms import GastoOperativoForm, VentaForm, PedidoForm
-from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales, Material
-from .forms import PlanProduccionForm, TareaProduccionForm, ListaMaterialesForm, ItemListaMaterialesForm
-from django.db.models import Count
-from django.contrib import messages
+
+# Barcode y PIL
 import barcode
-from django.utils.timezone import make_aware, get_current_timezone
-from django.utils import timezone
 from barcode.writer import ImageWriter
-import base64
-from django.db.models import Sum
+from PIL import Image, ImageDraw, ImageFont
+
+# Matplotlib
 import matplotlib.pyplot as plt
+
+# Python estándar
+import base64
 import urllib.parse
 import io
-from django.http import HttpResponseBadRequest
-from .forms import BarcodeForm
-from .models import Product
-from .models import Miembro, Cuota
-from .forms import MiembroForm, CuotaForm
-from PIL import Image, ImageDraw, ImageFont
 import os
-from barcode import Code128
-from django.db.models import Q
+
+# Modelos y Formularios 
 from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado, 
-    ResultadoAnalisis, Product
+    ResultadoAnalisis, Product, Miembro, Cuota,
+    GastoOperativo, Venta, Pedido, PlanProduccion,
+    TareaProduccion, ListaMateriales, ItemListaMateriales, Material
 )
+from .forms import (
+    RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm,
+    AnalisisCalidadForm, CultivoForm, AnalisisCostosForm, ClienteForm,
+    MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm, GastoOperativoForm,
+    VentaForm, PedidoForm, PlanProduccionForm, TareaProduccionForm,
+    ListaMaterialesForm, ItemListaMaterialesForm, BarcodeForm,
+    MiembroForm, CuotaForm
+)
+from .simulacion import calcular_rendimiento
+
 
 def home(request):
     return render(request, 'core/home.html')
