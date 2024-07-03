@@ -221,8 +221,7 @@ class ItemListaMateriales(models.Model):
 
     def __str__(self):
         return f"{self.cantidad} de {self.material.nombre} para {self.lista_materiales.nombre_producto}"
-    
-    
+       
 
 class PlanProduccion(models.Model):
     nombre = models.CharField(max_length=100)
@@ -275,3 +274,16 @@ class Cuota(models.Model):
 
     def __str__(self):
         return f"Cuota de {self.miembro.nombre} {self.miembro.apellido} - {self.fecha_pago}"
+
+
+# modelo para base de datos tipo CSV
+class CannabisPlant(models.Model):
+    strain = models.CharField(max_length=100)
+    plant_type = models.CharField(max_length=100)
+    rating = models.FloatField()
+    effects = models.TextField()
+    flavor = models.TextField()
+    description = models.TextField()
+
+    def __str__(self):
+        return self.strain

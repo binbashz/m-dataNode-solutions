@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<body class="custombody2">
+<div class="container">
+    <div class="hero">
+        <div class="hero-header">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <h1>Lista de Plantas de Cannabis</h1>
+        </div>
+
+        <div class="search-container mb-4">
+            <form method="GET" action="" class="d-flex">
+                <input type="text" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Buscar plantas...">
+                <button type="submit" class="custom-search-btn"><i class="fa fa-search"></i> Buscar</button>
+            </form>
+        </div>
+                
+        <div class="plant-list">
+            {% for plant in page_obj.object_list %}
+            <div class="horizontal-card mb-4">
+                <div class="horizontal-card-body">
+                    <h5 class="horizontal-card-title">{{ plant.strain }}</h5>
+                    <h6 class="horizontal-card-subtitle mb-2 text-muted">{{ plant.plant_type }} - Rating: {{ plant.rating }}</h6>
+                    <p class="horizontal-card-text">
+                        <strong>Effects:</strong> {{ plant.effects }}<br>
+                        <strong>Flavor:</strong> {{ plant.flavor }}<br>
+                        <strong>Description:</strong> {{ plant.description }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query }}&page=1">&laquo; primera</a>&nbsp;
+                    <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">&nbsp;anterior</a>&nbsp;
+                {% endif %}
+
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">siguiente</a>&nbsp;&nbsp;&nbsp;
+                    <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">última &raquo;</a>&nbsp;
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock %}

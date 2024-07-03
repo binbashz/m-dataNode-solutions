@@ -10,7 +10,7 @@ from django.db.models import Count, Q
 from django.contrib import messages
 from django.utils.timezone import make_aware, get_current_timezone
 from django.utils import timezone
-
+from django.core.paginator import Paginator
 # Reportlab
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -37,7 +37,7 @@ from .models import (
     Muestra, TipoAnalisis, AnalisisProgramado, 
     ResultadoAnalisis, Product, Miembro, Cuota,
     GastoOperativo, Venta, Pedido, PlanProduccion,
-    TareaProduccion, ListaMateriales, ItemListaMateriales, Material
+    TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
 from .forms import (
     RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm,
@@ -270,7 +270,6 @@ def analisis_create(request, variedad_id):
     return render(request, 'core/analisis_form.html', {'form': form, 'variedad': variedad})
 
 
-
 def analisis_detail(request, variedad_id, analisis_id):
     user = request.user  # Obtener el usuario actualmente autenticado
     variedad = get_object_or_404(Variedad, pk=variedad_id)
@@ -388,7 +387,6 @@ def recomendaciones_view(request):
         'tipo_suelo_descripcion': tipo_suelo_descripcion,
         'condiciones': condiciones
     })
-
 
 
 #Esta función maneja la visualización de las recomendaciones almacenadas en la sesión del usuario
@@ -604,7 +602,6 @@ def home_datos_usuario(request):
         return render(request, 'core/home.html')
 
 
-
 # simulacion rendimentos funcion
 @login_required
 def simular_rendimiento(request):
@@ -633,7 +630,6 @@ def analizar_costos_presupuestos(request):
         analisis.save()
         return render(request, 'core/resultados_analisis_costos_presupuestos.html', {'resultados': analisis})
     return render(request, 'core/formulario_costos_presupuestos.html', {'form': form})
-
 
 
 # Vista para mostrar la lista de clientes
@@ -1165,7 +1161,6 @@ def graficar_datos(request):
 
 
 #BOM
-
 def lista_planes_produccion(request):
     planes = PlanProduccion.objects.all()
     return render(request, 'core/lista_planes_produccion.html', {'planes': planes})
@@ -1228,9 +1223,7 @@ def panel_de_control(request):
     return render(request, 'core/panel.html')
 
 
-
 # Gestión de Membresías Miembros y Cuotas
-
 @login_required
 def registrar_miembro(request):
     if request.method == 'POST':
@@ -1301,4 +1294,17 @@ def eliminar_miembro(request, miembro_id):
         return redirect('lista_miembros')
     return redirect('lista_miembros')
 
+
+def plant_list(request):
+    query = request.GET.get('q')
+    if query:
+        plants = CannabisPlant.objects.filter(strain__icontains=query)
+    else:
+        plants = CannabisPlant.objects.all()
+
+    paginator = Paginator(plants, 6)  # 6 plantas por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'core/plant_list.html', {'page_obj': page_obj, 'query': query})
 

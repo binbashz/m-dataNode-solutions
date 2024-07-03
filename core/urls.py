@@ -112,6 +112,8 @@ urlpatterns = [
     path('miembro/<int:miembro_id>/editar/', views.editar_miembro, name='editar_miembro'),
     path('miembro/<int:miembro_id>/eliminar/', views.eliminar_miembro, name='eliminar_miembro'),
     path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'),  
+    
+    path('plants/', views.plant_list, name='plant_list'),
         
     path('error/<str:error_message>/', views.error_page, name='error_page'),
     path('error/404/', views.error_404, name='error_404'),
