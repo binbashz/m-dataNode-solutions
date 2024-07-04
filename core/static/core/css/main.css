@@ -312,8 +312,6 @@ body {
 
 
 
-
-
 /*-----------------Menu*/
 .menu{
   position: fixed;
@@ -334,7 +332,7 @@ body {
 
 
 /*----------------Barra Lateral*/
-.barra-lateral{
+.barra-lateral {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -342,15 +340,25 @@ body {
   width: 250px;
   height: 100%;
   overflow: hidden;
-  padding: 20px 15px;
+  padding: 12px 9px;
+  padding-top: 0.8rem;
   background-color: #ebfff2;
-  transition: width 0.5s ease,background-color 0.3s ease,left 0.5s ease;
+  transition: width 0.5s ease, background-color 0.3s ease, left 0.5s ease;
   z-index: 50;
 }
 
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+  .barra-lateral {
+    padding: 0;
+    padding-top: 2.3rem;
+  }
+}
+
+
 .barra-lateral {
   color: #fff;
-  border-radius: 15px;
+  border-radius: 20px 12px 31px;
 
 }
 
@@ -2889,60 +2897,56 @@ transform: translateY(-10px);
 
 /* banner seccion div con foto  home */
 
-.bannerhome {
+/* Estilos generales para los contenedores del carousel */
+
+.carousel-item {
+  height: auto; 
+}
+
+.bannerhome, .bannerhome2, .bannerhome3 {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
   width: 100%;
+  height: 100%;
   padding: 20px;
-  background-image: linear-gradient(120deg, rgba(212, 252, 121, 0.6) 15%, rgba(150, 230, 161, 0.6) 50%, rgba(11, 223, 152, 0.6) 100%);
   border-radius: 30px 73px 14px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  color: #083d24;
 }
 
-.bannerhome-content {
+.bannerhome-content, .bannerhome-content2, .bannerhome-content3,
+.bannerhome-image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   max-width: 100%;
   text-align: center;
 }
 
-.hero2 {
+.bannerhome p, .bannerhome2 p, .bannerhome3 p {
+  font-size: 1rem;
+  color: #103d19;
+  margin-bottom: 20px;
+}
+
+.bannerhome .hero2, .bannerhome2 .hero2, .bannerhome3 .hero2 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-.bannerhome p {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.bannerhome-features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.feature {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.feature i {
-  margin-right: 10px;
-  color: #009688;
-}
-
 .bannerhome-image img {
   max-width: 100%;
+  max-height: 300px;
+  height: auto;
+  object-fit: cover;
   border-radius: 30px 63px 111px;
   margin: 1rem 0;
+  margin-left: 1rem;
   z-index: 4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: filter 0.3s ease-in-out;
@@ -2952,37 +2956,49 @@ transform: translateY(-10px);
   filter: brightness(140%);
 }
 
+/* Estilos específicos para cada banner */
+.bannerhome {
+  background-image: linear-gradient(120deg, rgba(212, 252, 121, 0.6) 15%, rgba(150, 230, 161, 0.6) 50%, rgba(11, 223, 152, 0.6) 100%);
+}
+
+.bannerhome2 {
+  background-image: linear-gradient(120deg, rgba(121, 252, 121, 0.6) 15%, rgba(194, 118, 238, 0.6) 50%, rgba(82, 21, 139, 0.6) 100%);
+}
+
+.bannerhome3 {
+  background-image: linear-gradient(120deg, rgba(245, 218, 64, 0.6) 15%, rgba(102, 186, 224, 0.6) 50%, rgba(53, 223, 11, 0.6) 100%);
+}
+
+/* Estilos para los botones de control del carousel */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  color: #000;
+}
+
+.carousel-control-prev, .carousel-control-next {
+  width: auto;
+  padding: 0 15px;
+}
+
+/* Media queries para ajustar el diseño en pantallas más grandes */
 @media (min-width: 768px) {
-  .bannerhome {
+  .bannerhome, .bannerhome2, .bannerhome3 {
     flex-direction: row;
   }
 
-  .bannerhome-content {
+  .bannerhome-content, .bannerhome-content2, .bannerhome-content3 {
     max-width: 50%;
     text-align: left;
   }
 
-  .bannerhome-features {
-    justify-content: flex-start;
-  }
-
-  .bannerhome-image img {
-    max-width: 85%;
-    margin-left: 4rem;
-  }
-
-  .hero2 {
-    margin-top: -3rem;
-  }
-
-  .bannerhome p {
+  .bannerhome p, .bannerhome2 p, .bannerhome3 p {
     font-size: 1.2rem;
   }
 
-  .feature {
-    font-size: 1rem;
+  .bannerhome3 h3 {
+    font-size: 1.5rem;
   }
 }
+
 
 
 .var {
@@ -3013,7 +3029,7 @@ transform: translateY(-10px);
   border: 2px solid #80b380; 
   outline: none;
   background-color: transparent; 
-  color: #022707; 
+  color: #0dce64da; 
   cursor: pointer;
   padding: 10px;
   border-radius: 100px;
@@ -3026,13 +3042,11 @@ transform: translateY(-10px);
 }
 
 #myBtn:hover {
-  background-color: rgba(51, 148, 27, 0.788); 
+  background-color: rgb(245, 5, 245,0.1); 
 }
 
 
-/* /simulacion rendimiento  y estilos para otros contendeores */ 
-
-
+/* simulacion rendimiento  y estilos para otros contendeores */ 
 
 .customfor h1 {
   color: #ffffff; 
@@ -3641,8 +3655,42 @@ transform: translateY(-10px);
   border-bottom: 1px solid rgba(233, 236, 239, 0.6);
 }
 
-.cuota-pagada { background-color: rgba(232, 245, 233, 0.6); }
-.cuota-pendiente { background-color: rgba(255, 243, 205, 0.6); }
+.cuota-pagada {
+   background-color: rgba(93, 221, 104, 0.3); 
+   border-radius: 20px 12px 31px;
+  }
+
+  .cuota-pagada {
+    background-color: #90EE90; 
+}
+
+.cuota-pendiente {
+    background-color: #FFB6C1; 
+}
+
+.cuota-pendiente {
+   background-color: rgba(255, 60, 0, 0.255); 
+   border-radius: 20px 12px 31px;
+  }
+
+.text-rojo {
+  color: rgb(221, 15, 15);
+  border-radius: 20px 12px 31px;
+}
+
+.monto-tachado {
+  text-decoration: line-through;
+  color: rgb(172, 7, 7); 
+  border-radius: 20px 12px 31px;
+}
+/* Estilo para las celdas <td> */
+.table-striped tbody tr td {
+  border-radius: 20px 12px 31px;
+  padding: 0.4rem; 
+  background-color: rgba(255, 60, 0, 0.155); 
+}
+
+
 
 /* Media queries para tablets */
 @media screen and (min-width: 768px) {

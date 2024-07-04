@@ -274,6 +274,16 @@ class Cuota(models.Model):
 
     def __str__(self):
         return f"Cuota de {self.miembro.nombre} {self.miembro.apellido} - {self.fecha_pago}"
+    
+class Pago(models.Model):
+    
+    miembro = models.ForeignKey(Miembro, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+
+    
+    def __str__(self):
+        return f"Pago de {self.miembro} - {self.fecha}"
 
 
 # modelo para base de datos tipo CSV

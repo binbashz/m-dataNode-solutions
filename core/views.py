@@ -6,6 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError, HttpResponseBadRequest
+from django.http import HttpResponseRedirect
 from django.db.models import Count, Q
 from django.contrib import messages
 from django.utils.timezone import make_aware, get_current_timezone
@@ -35,7 +36,7 @@ from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado, 
-    ResultadoAnalisis, Product, Miembro, Cuota,
+    ResultadoAnalisis, Product, Miembro, Cuota,Pago,
     GastoOperativo, Venta, Pedido, PlanProduccion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
@@ -1265,6 +1266,7 @@ def detalle_miembro(request, miembro_id):
         'form': form
     })
 
+    
 @login_required
 def reporte_cuotas(request):
     cuotas_pendientes = Cuota.objects.filter(pagado=False).order_by('fecha_pago')
@@ -1295,6 +1297,44 @@ def eliminar_miembro(request, miembro_id):
     return redirect('lista_miembros')
 
 
+# cuotas 
+def historial_pagos(request, miembro_id):
+    miembro = get_object_or_404(Miembro, id=miembro_id)
+    cuotas = Cuota.objects.filter(miembro=miembro)
+    context = {
+        'miembro': miembro,
+        'cuotas': cuotas,
+    }
+    return render(request, 'core/historial_pagos.html', context)
+
+def eliminar_cuota(request, cuota_id):
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    if request.method == 'POST':
+        cuota.delete()
+        messages.success(request, 'La cuota ha sido eliminada correctamente.')
+    return redirect('historial_pagos', miembro_id=cuota.miembro.id)
+
+def eliminar_todas_cuotas(request, miembro_id):
+    if request.method == 'POST':
+        miembro = get_object_or_404(Miembro, id=miembro_id)
+        Cuota.objects.filter(miembro=miembro).delete()
+        messages.success(request, 'Todas las cuotas han sido eliminadas.')
+    return redirect('detalle_miembro', miembro_id=miembro_id)
+
+
+def marcar_pagado(request, cuota_id):
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    cuota.pagado = True
+    cuota.save()
+    messages.success(request, 'La cuota ha sido marcada como pagada.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def historial_pagos(request, miembro_id):
+    pagos = Pago.objects.filter(miembro_id=miembro_id)
+    return render(request, 'core/historial_pagos.html', {'pagos': pagos})
+
+
+#CSV database plants
 def plant_list(request):
     query = request.GET.get('q')
     if query:

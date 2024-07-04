@@ -78,22 +78,65 @@
                 </div>
             </div><br>
             
-              <div class="bannerhome">
-                <div class="bannerhome-content">
-                    <div class="hero2">
-                    <h1>Revoluciona tu <br> Cultivo de Cannabis</h1> 
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6500">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
-                  <p> con nuestra plataforma integral. Gestiona variedades, tratamientos, análisis y costos de manera eficiente. Optimiza tu producción y descubre el potencial de tus cultivos de forma fácil y efectiva.</p>
-                  <div class="bannerhome-features">
-                    
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="bannerhome">
+                      <div class="bannerhome-content">
+                        <div class="hero2">
+                          <h1>Revoluciona tu <br> Cultivo de Cannabis</h1>
+                        </div>
+                        <p>Con nuestra plataforma integral. Gestiona variedades, tratamientos, análisis y costos de manera eficiente. Optimiza tu producción y descubre el potencial de tus cultivos de forma fácil y efectiva.</p>
+                      </div>
+                      <div class="bannerhome-image">
+                        <img src="{% static 'core/images/plant2.jpg' %}" alt="Tecnología en cultivo de cannabis">
+                      </div>
+                      <div class="ring"></div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="bannerhome2">
+                      <div class="bannerhome-content">
+                        <div class="hero2">
+                          <h2>Gestión Integral de Cannabis</h2>
+                        </div>
+                        <p>Gestiona variedades, registra condiciones de cultivo y tratamiento fitofarmacéutico, y recibe recomendaciones personalizadas basadas en los datos ingresados. Simula y predice el rendimiento de tus cosechas y analiza los costos asociados para optimizar tus operaciones.</p>
+                      </div>
+                      <div class="bannerhome-image">
+                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Tecnología en cultivo de cannabis">
+                      </div>
+                      <div class="ring"></div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="bannerhome3">
+                      <div class="bannerhome-content">
+                        <div class="hero2">
+                          <h3>Base de datos integrada con más de 2300 variedades de cultivos</h3>
+                        </div>
+                        <p>Nuestra plataforma te ofrece acceso a una extensa base de datos con más de 2300 variedades de cultivos de cannabis. Encuentra información detallada sobre tipo de cepa, calificación, efectos, sabor y descripción para cada variedad, todo en un solo lugar.</p>
+                      </div>
+                      <div class="bannerhome-image">
+                        <img src="{% static 'core/images/plant3.jpeg' %}" alt="Tecnología en cultivo de cannabis">
+                      </div>
+                      <div class="ring"></div>
+                    </div>
                   </div>
                 </div>
-                <div class="bannerhome-image">
-                  <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Tecnología en cultivo de cannabis">
-                </div>
-                <div class="ring"></div>
-              </div>       
-            
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
         {% endif %}
        
         <!--  cards carrusel -->

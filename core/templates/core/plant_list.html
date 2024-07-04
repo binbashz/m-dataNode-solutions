@@ -17,21 +17,26 @@
         </div>
                 
         <div class="plant-list">
-            {% for plant in page_obj.object_list %}
-            <div class="horizontal-card mb-4">
-                <div class="horizontal-card-body">
-                    <h5 class="horizontal-card-title">{{ plant.strain }}</h5>
-                    <h6 class="horizontal-card-subtitle mb-2 text-muted">{{ plant.plant_type }} - Rating: {{ plant.rating }}</h6>
-                    <p class="horizontal-card-text">
-                        <strong>Effects:</strong> {{ plant.effects }}<br>
-                        <strong>Flavor:</strong> {{ plant.flavor }}<br>
-                        <strong>Description:</strong> {{ plant.description }}
-                    </p>
+            {% if page_obj.object_list %}
+                {% for plant in page_obj.object_list %}
+                <div class="horizontal-card mb-4">
+                    <div class="horizontal-card-body">
+                        <h5 class="horizontal-card-title">{{ plant.strain }}</h5>
+                        <h6 class="horizontal-card-subtitle mb-2 text-muted">{{ plant.plant_type }} - Rating: {{ plant.rating }}</h6>
+                        <p class="horizontal-card-text">
+                            <strong>Effects:</strong> {{ plant.effects }}<br>
+                            <strong>Flavor:</strong> {{ plant.flavor }}<br>
+                            <strong>Description:</strong> {{ plant.description }}
+                        </p>
+                    </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No se encontraron resultados para la búsqueda.</p>
+            {% endif %}
         </div>
 
+        {% if page_obj.object_list %}
         <div class="pagination">
             <span class="step-links">
                 {% if page_obj.has_previous %}
@@ -49,6 +54,7 @@
                 {% endif %}
             </span>
         </div>
+        {% endif %}
     </div>
 </div>
 </body>

@@ -1,0 +1,20 @@
+<!-- templates/core/historial_pagos.html -->
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+    <h2>Historial de Pagos</h2>
+    {% if pagos %}
+        <ul>
+            {% for pago in pagos %}
+                <li>{{ pago.fecha }} - {{ pago.monto }}{% if pago.pagado %} - Pagado{% endif %}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay pagos registrados.</p>
+    {% endif %}
+{% endblock %}
+

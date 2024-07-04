@@ -296,6 +296,13 @@ class MiembroForm(forms.ModelForm):
         }
 
 class CuotaForm(forms.ModelForm):
+    PAGADO_CHOICES = [
+        (True, 'Pagado'),
+        (False, 'Pendiente')
+    ]
+
+    pagado = forms.ChoiceField(choices=PAGADO_CHOICES, widget=forms.RadioSelect)
+
     class Meta:
         model = Cuota
         fields = ['fecha_pago', 'monto', 'periodo', 'pagado']

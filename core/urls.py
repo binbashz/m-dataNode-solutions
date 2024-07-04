@@ -109,9 +109,15 @@ urlpatterns = [
     path('miembros/', views.lista_miembros, name='lista_miembros'),
     path('miembro/registrar/', views.registrar_miembro, name='registrar_miembro'),
     path('miembro/<int:miembro_id>/', views.detalle_miembro, name='detalle_miembro'),
+    path('detalle_miembro/<int:miembro_id>/', views.detalle_miembro, name='detalle_miembro'),
     path('miembro/<int:miembro_id>/editar/', views.editar_miembro, name='editar_miembro'),
     path('miembro/<int:miembro_id>/eliminar/', views.eliminar_miembro, name='eliminar_miembro'),
-    path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'),  
+    path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'), 
+    path('eliminar_cuota/<int:cuota_id>/', views.eliminar_cuota, name='eliminar_cuota'),
+    path('eliminar_todas_cuotas/<int:miembro_id>/', views.eliminar_todas_cuotas, name='eliminar_todas_cuotas'),
+    path('marcar_pagado/<int:cuota_id>/', views.marcar_pagado, name='marcar_pagado'),
+    path('historial_pagos/', views.historial_pagos, name='historial_pagos'),
+    path('historial_pagos/<int:miembro_id>/', views.historial_pagos, name='historial_pagos'),
     
     path('plants/', views.plant_list, name='plant_list'),
         
