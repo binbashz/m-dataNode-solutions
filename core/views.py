@@ -17,6 +17,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
+
 # Barcode y PIL
 import barcode
 from barcode.writer import ImageWriter
@@ -1355,14 +1356,15 @@ def historial_pagos(request, miembro_id):
 
 
 #CSV database plants
+
 def plant_list(request):
     query = request.GET.get('q')
     if query:
-        plants = CannabisPlant.objects.filter(strain__icontains=query)
+        plants = CannabisPlant.objects.filter(strain__icontains=query).order_by('id')  
     else:
-        plants = CannabisPlant.objects.all()
+        plants = CannabisPlant.objects.all().order_by('id')  
 
-    paginator = Paginator(plants, 6)  # 6 plantas por página
+    paginator = Paginator(plants, 6)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
