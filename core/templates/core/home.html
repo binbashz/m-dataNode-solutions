@@ -45,13 +45,10 @@
                 <div class="profile">
                     <h2 class="welcome-text">¡Bienvenido,<br></h2>
                     <h4>{{ request.user.get_username }}!</h4>
-                    <a id="exit" href="{% url 'exit' %}">
-                        <ion-icon name="exit-outline"></ion-icon>
-                        <span>Salir</span>
-                    </a>
                 </div>
                 
-                <div class="schedule-table">
+                <div class="schedule-table" onclick="window.location.href='features'">
+                    
                     <h2> Servicios Avanzados</h2>
                     <table>
                         <tr>
@@ -77,21 +74,24 @@
                        
                     </table>
                 </div>
+                
             
-                <div class="exercise-table">
-                    <h2>Buscar variedad</h2>
-                    
+                <div class="exercise-table" onclick="window.location.href='plants'">
+                    <h3><i class="fas fa-search"></i> Buscador de Plantas</h3>
+                    <p>Nuestra plataforma te ofrece acceso a una extensa base de datos con más de 2300 variedades de cultivos de cannabis.</p>
+                    <p>Encuentra información detallada sobre tipo de cepa, calificación, efectos, sabor y descripción para cada variedad, todo en un solo lugar.</p>
+                    <p>Haz clic para buscar plantas.</p>
                 </div>
-            
-                <div class="calories">
+                            
+
+                <div class="calories"  onclick="window.location.href='dashboard'">
                     <h5>Gestion de Operaciones</h5>
                     <div><strong>Gastos</strong> </div>
                     <div><strong>Ventas</strong> </div>
                     <div><strong> Pedidos</strong></div>
-                    <p>Ver Reporte de Cuotas Pendientes</p>
                 </div>
             
-                <div class="personal-bests">
+                <div class="personal-bests" onclick="window.location.href='graficos'">
                     <h2><h5>Mis Cultivos</h5></h2>
                     <ul>
                         <li>Visualización gráfica de Datos.</li>
@@ -101,7 +101,7 @@
                     </ul>
                 </div>
             
-                <div class="challenges">
+                <div class="challenges"  onclick="window.location.href='bom/nuevo'">
                     <h2>Creación de Lista de Materiales (BOM)
                    </h2>
                     <ul>
@@ -110,16 +110,20 @@
                        
                     </ul>
                 </div>
-            
                 <div class="activity-feed">
-                    <h2>Programar Análisis</h2>
-                    <ul>
-                        <li>Registro de Resultados</li>
+                    <div class="half-card" onclick="window.location.href='programar-analisis'">
                         <br>
+                        <h2>Programar Análisis</h2>
                         <br>
                         
-                    </ul>
+                    </div>
+                    <hr>
+                    <div class="half-card" onclick="window.location.href='recepcion-muestra'">
+                        <h2>Recepción de Muestra</h2>
+                        <p>Registrar una nueva muestra</p>
+                    </div>
                 </div>
+                
             </div>
               
                              
@@ -383,37 +387,36 @@
         <br><br>
         <div class="bento">
             
-            <div class="schedule-table">
-                <h2> Servicios Avanzados</h2>
+            <div class="exercise-table2">
+                <h2>Administración de Clientes y Miembros</h2>
                 <table>
                     <tr>
-                        <th>Simulación de rendimiento</th>
-                        <th> Gestión de Clientes y Miembros</th>
+                        <th>Agregar Cliente</th>
+                        <th>Agregar Miembro</th>
                         <th>Análisis de Costos y Presupuestos</th>
                     </tr>
-                   
-                        <td> Análisis de costos y presupuestos</td>
+                    <tr>
+                        <td>Análisis de costos y presupuestos</td>
                         <td>Seguimiento cuota de Miembros</td>
-                        <td>Historial de pagos </td>
+                        <td>Historial de pagos</td>
                     </tr>
-                   
-                   
                 </table>
             </div>
-        
+            
+            
             <div class="calories">
-                <h5>Lorem imusem s</h5>
+                <h5>Lorem ipsum </h5>
                 <div><strong>Ver resumen</strong> </div>
                 <div><strong>ver pagos pendientes</strong> </div>
                 <div><strong> ver flujos </strong></div>
                 <p>Ver Reporte de Cuotas Pendientes</p>
             </div>
-            <div class="calories">
-                <h4>{{ request.user.get_username }}!</h4>
-                    <a id="exit" href="{% url 'exit' %}">
-                        <ion-icon name="exit-outline"></ion-icon>
-                        <span>Salir</span>
-                    </a>
+
+            <div class="calories profilex">
+                    
+                    <a href="{% url 'exit' %}" class="btnexit btn-outline-primary" id="exit">Salir</a>
+                </div>
+                
             </div>
         
             
