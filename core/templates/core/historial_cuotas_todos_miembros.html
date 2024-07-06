@@ -1,0 +1,50 @@
+<!-- templates/core/ -->
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+ 
+<div class="cuotas-historial">
+    <h2 class="seccion-titulo">Historial de Cuotas de Todos los Miembros</h2>
+
+    {% for item in todas_las_cuotas %}
+        <div class="cuotas-miembro">
+            <h5>Cuotas de {{ item.miembro.nombre_completo }} </h5>
+            <strong>Número de Socio:</strong>
+            <br>
+            <p>{{ item.miembro.numero_socio }}</p>
+
+            <div class="lista-cuotas">
+                {% for cuota in item.cuotas %}
+                    <div class="cuota-item {% if cuota.pagado %}cuota-pagada{% else %}cuota-pendiente{% endif %}" data-estado="{% if cuota.pagado %}pagados{% else %}pendientes{% endif %}">
+                        <span>{{ cuota.fecha_pago }}</span>
+                        <span>{{ cuota.monto }}</span>
+                        <span>{{ cuota.get_periodo_display }}</span>
+                        <span>
+                            {% if cuota.pagado %}
+                                <strong><i class="far fa-check-circle" style="font-size: 0.75rem; color: #4ae43c; font-weight: 500;"></i></strong> Pagado
+                            {% else %}
+                                <form action="{% url 'marcar_pagado' cuota.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-success btn-sm no-background" style="display: inline-flex; align-items: center; white-space: nowrap; padding: 5px 10px; border: 1px solid #f86464bd; color: #fff; border-radius: 5px;">
+                                        <strong><i class="far fa-check-circle" style="font-size: 0.75rem; color: #ff7f50; font-weight: 500;"></i></strong>
+                                        <small style="font-size: 0.675rem; color: #cf0e0e94; font-weight: 600; margin-left: 5px;">
+                                            ¡No Pago! <br> Marcar Pagado
+                                        </small>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+

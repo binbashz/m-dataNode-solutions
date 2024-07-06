@@ -81,6 +81,15 @@ th, td {
   font-size: 0.875rem;
 }
 
+.d-inline {
+  display: inline-block;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
 /* Estilos para el modal */
 .modalclientes {
@@ -96,7 +105,6 @@ th, td {
   align-items: center;
 }
 
-
 .modalclientes-content {
   background: rgba(255, 255, 255, 0.1);  
   backdrop-filter: blur(15px);           
@@ -110,7 +118,6 @@ th, td {
   margin: auto;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
-
 
 .modalclientes-content .close {
   color: #aaa;
@@ -205,7 +212,8 @@ th, td {
         <div class="card-headermodal">
           <br>
           <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-          <h1>&nbsp;Gestión de Clientes</h1>
+          <br>
+          <h2>&nbsp;Gestión de Clientes</h2>
           &emsp;<a href="{% url 'cliente_nuevo' %}" class="btn btn-primary btn-sm">Nuevo Cliente</a>
         </div>
         <div class="cardmodal-body">
@@ -227,9 +235,9 @@ th, td {
                   <td>{{ cliente.direccion }}</td>
                   <td>{{ cliente.telefono }}</td>
                   <td>{{ cliente.email }}</td>
-                  <td>
-                    <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-warning btn-sm">Editar</a>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="openModal('{{ cliente.id }}')">Eliminar</button>
+                  <td class="d-flex">
+                    <a href="{% url 'editar_cliente' cliente.id %}" class="btn8 btn-warning btn-sm d-inline">Editar</a>
+                    <button type="button" class="btn8 btn-danger btn-sm d-inline" onclick="openModal('{{ cliente.id }}')">Eliminar</button>
                     <div id="myModal{{ cliente.id }}" class="modalclientes">
                       <div class="modalclientes-content">
                         <span class="close" onclick="closeModal('{{ cliente.id }}')">&times;</span>
@@ -257,13 +265,13 @@ th, td {
 </div>
 
 <script>
-  function openModal(id) {
-    document.getElementById('myModal' + id).style.display = 'flex';
-  }
+function openModal(id) {
+  document.getElementById('myModal' + id).style.display = 'flex';
+}
 
-  function closeModal(id) {
-    document.getElementById('myModal' + id).style.display = 'none';
-  }
+function closeModal(id) {
+  document.getElementById('myModal' + id).style.display = 'none';
+}
 </script>
 
 {% endblock %}

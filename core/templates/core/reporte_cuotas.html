@@ -22,8 +22,8 @@
                     <hr>
                     <tbody>
                         {% for cuota in cuotas_pendientes %}
-                        <tr>
-                            <td><span class="text-rojo">{{ cuota.miembro.nombre_completo }}</span></td>
+                        <tr class="cuotasfondo">
+                            <td><span class="">{{ cuota.miembro.nombre_completo }}</span></td>
                             <td>{{ cuota.miembro.numero_socio }}</td>
                             <td>{{ cuota.fecha_pago }}</td>
                             <td><span class="monto-tachado">{{ cuota.monto }}</span></td>

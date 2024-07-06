@@ -246,7 +246,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #FFA000;
+  background-color: yellow;
 }
 
 
@@ -3268,6 +3268,12 @@ transform: translateY(-10px);
 
 /* codigo de barra agregar a favorito */
 /* Oculta el checkbox real */
+
+/* btn favorito homecode*/
+.btn8.btnf:hover {
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 16%, rgba(255,244,0,1) 100%);
+  transition: background 2.5s ease;
+}
 .star-checkbox {
   display: none;
 }
@@ -3577,7 +3583,7 @@ transform: translateY(-10px);
 /* detalles de miembro */
 .miembro-perfil {
   width: 100%;
-  max-width: 800px;
+  max-width: auto;
   margin: 1rem auto;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px 12px 31px;
@@ -3628,6 +3634,11 @@ transform: translateY(-10px);
   margin-top: 1rem;
 }
 
+#filtro-cuotas {
+  border-radius: 20px 12px 31px; 
+}
+
+
 .cuotas-registro, .cuotas-historial {
   width: 100%;
   background: rgba(255, 255, 255, 0.3);
@@ -3666,6 +3677,10 @@ transform: translateY(-10px);
 .cuota-pendiente {
    background-color: rgba(255, 60, 0, 0.255); 
    border-radius: 20px 12px 31px;
+  }
+
+  .cuotasfondo {
+    background-color: rgba(255, 0, 0, 0.744);
   }
 
 /* historial cutoas eliminar/ marcar pagado */
@@ -3749,16 +3764,17 @@ transform: translateY(-10px);
 .btn8 {
   align-items: center;
   appearance: none;
-  background-color: #d5fce6;
+  background-color: #c1fddb;
   border: 1px solid #dbdbdb;
   border-radius: 20px 12px 31px;
   margin-bottom: 0.2rem;
   box-shadow: none;
   margin: 1px;
   box-sizing: border-box;
-  color: #363636;
+  color: #817a7a;
   cursor: pointer;
   display: inline-flex;
+  transition: background 1.5s ease; 
   font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 1rem;
   height: 2.5em;
@@ -3773,10 +3789,11 @@ transform: translateY(-10px);
   touch-action: manipulation;
   vertical-align: top;
   white-space: nowrap;
+  
 }
 
 .btn8:active {
-  border-color: #4a4a4a;
+  border-color: #ffd103;
   outline: 0;
 }
 
@@ -3799,7 +3816,8 @@ transform: translateY(-10px);
 .table-striped tbody tr td {
   border-radius: 20px 12px 31px;
   padding: 0.4rem; 
-  background-color: rgba(255, 60, 0, 0.155); 
+  background-color: rgba(255, 255, 255, 0.155); 
+  color: #fff;
 }
 
 
@@ -4030,6 +4048,11 @@ transform: translateY(-10px);
 
 .calories {
   --bg: linear-gradient(-45deg, #F7F1FF 0%, #E7FFEC 20%, #D1F9E7 39%, #BCD2E7 76%, #B8D0E5 100%);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px 12px 31px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  backdrop-filter: blur(20px);
 }
 
 .personal-bests {
@@ -4041,7 +4064,7 @@ transform: translateY(-10px);
 }
 
 .activity-feed {
-  --bg: linear-gradient(-45deg, #35C3F3 0%, #8b9fe8 20%, #e681d8 39%, #ffa9a4 76%, #cefef0 100%);
+  --bg: linear-gradient(-95deg, #E6F8FF 0%, #f9b9e6 20%, #d2f287 39%, #77d693 76%, #7bbeca 100%);
 }
 
 /* Media queries para dispositivos más grandes */
@@ -4082,7 +4105,12 @@ transform: translateY(-10px);
 }
 
 /* footer */
-.footer a {
+
+.mainfooter  {
+  margin-top: 10rem;
+  
+}
+.mainfooter a {
   margin-top: 5rem;
   color: #2a6b3a;
   text-decoration: none;

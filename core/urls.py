@@ -118,6 +118,7 @@ urlpatterns = [
     path('marcar_pagado/<int:cuota_id>/', views.marcar_pagado, name='marcar_pagado'),
     path('historial_pagos/', views.historial_pagos, name='historial_pagos'),
     path('historial_pagos/<int:miembro_id>/', views.historial_pagos, name='historial_pagos'),
+    path('historial-cuotas-todos-miembros/', views.historial_cuotas_todos_miembros, name='historial_cuotas_todos_miembros'),
     
     path('plants/', views.plant_list, name='plant_list'),
         

@@ -43,40 +43,52 @@
 
     <div class="cuotas-historial">
         <h2 class="seccion-titulo">Historial de Pagos</h2>
-        <div class="lista-cuotas">
-            {% for cuota in cuotas %}
-                <div class="cuota-item {% if cuota.pagado %}cuota-pagada{% else %}cuota-pendiente{% endif %}">
-                    <span>{{ cuota.fecha_pago }}</span>
-                    <span>{{ cuota.monto }}</span>
-                    <span>{{ cuota.get_periodo_display }}</span>
-                    <span>
-                        {% if cuota.pagado %}
-                            Pagado
-                        {% else %}
-                            <form action="{% url 'marcar_pagado' cuota.id %}" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-success btn-sm no-background">[Marcar Pagado]</button>
-                            </form>
-                        {% endif %}
-                    </span>
-                    <form action="{% url 'eliminar_cuota' cuota.id %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-sm no-background">Eliminar</button>
-                    </form>
-                </div>
-            {% empty %}
-                <div class="sin-cuotas">No hay registros de pagos.</div>
-            {% endfor %}
-        </div>
-        <hr>
-        {% if cuotas %}
-            <div class="eliminar-todas">
-                <form action="{% url 'eliminar_todas_cuotas' miembro.id %}" method="post" style="margin-top: 8px;">
-                    {% csrf_token %}
-                    <small><button type="submit" class="btn-nav no-background">Eliminar todas las cuotas</button></small>
-                </form>
+        <div class="cuotas-historial">
+            <h5>Cuotas de {{ miembro.nombre_completo }} </h5>
+             <strong>Número de Socio:</strong>
+             <br>
+            <p>{{ miembro.numero_socio }}</p>
+
+            <div class="filtro-estado">
+                <label for="filtro-cuotas">Filtrar por: </label>
+                <select id="filtro-cuotas">
+                    <option value="todos">Todos</option>
+                    <option value="pagados">Pagados</option>
+                    <option value="pendientes">Pendientes</option>
+                </select>
             </div>
-        {% endif %}
-    </div>
-    
+            <hr>
+            <div class="lista-cuotas">
+                {% for cuota in cuotas %}
+                    <div class="cuota-item {% if cuota.pagado %}cuota-pagada{% else %}cuota-pendiente{% endif %}" data-estado="{% if cuota.pagado %}pagados{% else %}pendientes{% endif %}">
+                        <span>{{ cuota.fecha_pago }}</span>
+                        <span>{{ cuota.monto }}</span>
+                        <span>{{ cuota.get_periodo_display }}</span>
+                        <span>
+                            {% if cuota.pagado %}
+                                <strong><i class="far fa-check-circle" style="font-size: 0.75rem; color: #4ae43c; font-weight: 500;"></i></strong> Pagado
+                            {% else %}
+                                <form action="{% url 'marcar_pagado' cuota.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-success btn-sm no-background" style="display: inline-flex; align-items: center; white-space: nowrap; padding: 5px 10px; border: 1px solid #f86464bd; color: #fff; border-radius: 5px;">
+                                        <strong><i class="far fa-check-circle" style="font-size: 0.75rem; color: #ff7f50; font-weight: 500;"></i></strong>
+                                        <small style="font-size: 0.675rem; color: #cf0e0e94; font-weight: 600; margin-left: 5px;">
+                                            ¡No Pago! <br> Marcar Pagado
+                                        </small>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </span>
+                        <form action="{% url 'eliminar_cuota' cuota.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-sm no-background" style="font-size: 0.8rem; color: rgba(0, 0, 0, 0.5);">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                {% empty %}
+                    <div class="sin-cuotas">No hay registros de pagos.</div>
+                {% endfor %}
+            </div>
+            
 {% endblock %}

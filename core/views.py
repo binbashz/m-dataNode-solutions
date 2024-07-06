@@ -1266,6 +1266,26 @@ def detalle_miembro(request, miembro_id):
         'form': form
     })
 
+
+
+@login_required
+def historial_cuotas_todos_miembros(request):
+    # Obtener todos los miembros
+    miembros = Miembro.objects.all()
+
+    # Crear una lista para almacenar todas las cuotas de todos los miembros
+    todas_las_cuotas = []
+
+    # Iterar sobre cada miembro y obtener sus cuotas
+    for miembro in miembros:
+        cuotas_miembro = Cuota.objects.filter(miembro=miembro).order_by('-fecha_pago')
+        todas_las_cuotas.append({
+            'miembro': miembro,
+            'cuotas': cuotas_miembro,
+        })
+
+    return render(request, 'core/historial_cuotas_todos_miembros.html', {'todas_las_cuotas': todas_las_cuotas})
+
     
 @login_required
 def reporte_cuotas(request):

@@ -11,6 +11,7 @@
   margin-bottom: 10px;
   margin-left: 15px; 
 }
+
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -54,11 +55,21 @@ th, td {
 
 /* Estilos para botones */
 .btn {
-  padding: 10px 15px;
+  padding: 8px 12px;
   border: none;
   border-radius: 20px 12px 31px;
   cursor: pointer;
   text-decoration: none;
+  display: inline-block;
+  margin: 5px 2px;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 5px 8px;
+  font-size: 0.8rem;
 }
 
 .btn-primary {
@@ -79,9 +90,46 @@ th, td {
   background-color: #c82333;
 }
 
-.btn-sm {
-  padding: 5px 10px;
-  font-size: 0.875rem;
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Estilos específicos para móviles */
+@media (max-width: 768px) {
+  .btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .btn-sm {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-container .btn {
+    width: 100%;
+    margin: 5px 0;
+  }
 }
 </style>
 
@@ -96,8 +144,11 @@ th, td {
           <div class="title-container">
             <h1>Administración de Miembros</h1>
           </div>
-          &emsp;<a href="{% url 'registrar_miembro' %}" class="btn btn-primary btn-sm">Registrar Nuevo Miembro</a>
-          <a href="{% url 'reporte_cuotas' %}" class="btn btn-secondary btn-sm">Ver Reporte de Cuotas</a>
+          <div class="btn-container">
+            <a href="{% url 'registrar_miembro' %}" class="btn btn-primary btn-sm">Registrar Nuevo Miembro</a>
+            <a href="{% url 'reporte_cuotas' %}" class="btn btn-secondary btn-sm">Ver Reporte de Cuotas</a>
+            <a href="{% url 'historial_cuotas_todos_miembros' %}" class="btn btn-secondary btn-sm">Ver Historial de Cuotas</a>
+          </div>
         </div>
         <div class="cardmodal-body">
           <div class="table-responsive">
@@ -121,10 +172,10 @@ th, td {
                     <td>{{ miembro.fecha_ingreso }}</td>
                     <td>{% if miembro.activo %}Activo{% else %}Inactivo{% endif %}</td>
                     <td>
-                      <div class="btn-group" role="group">
+                      <div class="d-flex">
                         <a href="{% url 'editar_miembro' miembro.id %}" class="btn8 btn-warning btn-sm d-inline">Editar</a>
                         <a href="{% url 'detalle_miembro' miembro.id %}" class="btn8 btn-info btn-sm d-inline">Ver Detalles</a>
-                    </div>         
+                    </div>                        
                     </td>
                   </tr>
                 {% empty %}

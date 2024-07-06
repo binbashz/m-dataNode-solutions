@@ -107,7 +107,7 @@
                     <ul>
                         <li>crear una nueva lista de materiales</li>
                         <li>para tus productos</li>
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M12.3691 8.87988H17.6191" stroke="#2BC916" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M6.38086 8.87988L7.13086 9.62988L9.38086 7.37988" stroke="#649EB9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M12.3691 15.8799H17.6191" stroke="#64B985" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M6.38086 15.8799L7.13086 16.6299L9.38086 14.3799" stroke="#b9647e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#b9647e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                       
                     </ul>
                 </div>
             
@@ -378,6 +378,55 @@
                 </div>
             </div>
         </div>
+        
+        {% if user.is_authenticated %}
+        <br><br>
+        <div class="bento">
+            
+            <div class="schedule-table">
+                <h2> Servicios Avanzados</h2>
+                <table>
+                    <tr>
+                        <th>Simulación de rendimiento</th>
+                        <th> Gestión de Clientes y Miembros</th>
+                        <th>Análisis de Costos y Presupuestos</th>
+                    </tr>
+                   
+                        <td> Análisis de costos y presupuestos</td>
+                        <td>Seguimiento cuota de Miembros</td>
+                        <td>Historial de pagos </td>
+                    </tr>
+                   
+                   
+                </table>
+            </div>
+        
+            <div class="calories">
+                <h5>Lorem imusem s</h5>
+                <div><strong>Ver resumen</strong> </div>
+                <div><strong>ver pagos pendientes</strong> </div>
+                <div><strong> ver flujos </strong></div>
+                <p>Ver Reporte de Cuotas Pendientes</p>
+            </div>
+            <div class="calories">
+                <h4>{{ request.user.get_username }}!</h4>
+                    <a id="exit" href="{% url 'exit' %}">
+                        <ion-icon name="exit-outline"></ion-icon>
+                        <span>Salir</span>
+                    </a>
+            </div>
+        
+            
+        </div>
+
+        <div class="profile">
+            <h1>Editar variedad<br></h1>         
+    </a>
+        </div>
+        
+        {% endif %}
+
+
         {% if not user.is_authenticated %}
         <div class="contenedor-tarjetas">
             <div class="tarjetas">
@@ -421,7 +470,7 @@
                       
         
         <!-- Footer -->
-        <footer class="footer">
+        <footer class="mainfooter">
             <hr>
             <div class="container">
                 <div class="row">
