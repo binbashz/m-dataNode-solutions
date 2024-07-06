@@ -43,9 +43,6 @@
                     </div>
                     
                            <div class="alert alert-success mt-1 mb-1">
-                        ¡Bienvenido,<br> {{ request.user.get_username }}!
-                        <hr>
-                        
                                 <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
                                    <strong> <ion-icon name="search-outline" class="search-outline"></ion-icon> </strong>
                                     <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
@@ -102,12 +99,7 @@
                         <ion-icon name="barcode-outline"></ion-icon>
                         <span>Gestion Códigos</span>
                         </a>
-                            </li>
-                  
-                <a id="exit" href="{% url 'exit' %}">
-                    <ion-icon name="exit-outline"></ion-icon>
-                    <span>Salir</span>
-                </a>  
+                            </li> 
             </div>
         </nav>
             {% endif %}

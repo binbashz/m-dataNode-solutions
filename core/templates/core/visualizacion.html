@@ -23,7 +23,7 @@
 <h2>Datos Detallados</h2>
 <table class="table table-striped">
     <thead>
-        <tr>
+        <tr class="titulosgraficohumedadbr">
             <th><strong> Variedad </strong></th>
             <th><strong>Temperatura</strong></th>
             <th><strong>Humedad</strong></th>
@@ -32,7 +32,7 @@
     </thead>
     <tbody>
         {% for condicion in condiciones %}
-        <tr>
+        <tr class="humedadtemp-background">
             <td>{{ condicion.variedad.nombre }}</td>
             <td>{{ condicion.temperatura }}</td>
             <td>{{ condicion.humedad }}</td>

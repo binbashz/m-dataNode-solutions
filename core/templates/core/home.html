@@ -40,6 +40,89 @@
                 </div>
             </div><br>
 
+            <!-- bento grid div-->
+            <div class="bento">
+                <div class="profile">
+                    <h2 class="welcome-text">¡Bienvenido,<br></h2>
+                    <h4>{{ request.user.get_username }}!</h4>
+                    <a id="exit" href="{% url 'exit' %}">
+                        <ion-icon name="exit-outline"></ion-icon>
+                        <span>Salir</span>
+                    </a>
+                </div>
+                
+                <div class="schedule-table">
+                    <h2> Servicios Avanzados</h2>
+                    <table>
+                        <tr>
+                            <th>Simulación de rendimiento</th>
+                            <th> Gestión de Clientes y Miembros</th>
+                            <th>Análisis de Costos y Presupuestos</th>
+                        </tr>
+                        <tr>
+                            <td> Recomendaciones de cultivo personalizadas </td>
+                            <td>Crear o Listar Clientes</td>
+                            <td>Controla tus Gastos, Ventas y Pedidos</td>
+                        </tr>
+                        <tr>
+                            <td> Análisis de costos y presupuestos</td>
+                            <td>Seguimiento cuota de Miembros</td>
+                            <td>Historial de pagos </td>
+                        </tr>
+                        <tr>
+                            <td>Variables de Condiciones de Cultivo</td>
+                            <td>Agenda Pedidos.</td>
+                            <td>Grafica Ingresos , Egresos y Pedidos</td>
+                        </tr>
+                       
+                    </table>
+                </div>
+            
+                <div class="exercise-table">
+                    <h2>Buscar variedad</h2>
+                    
+                </div>
+            
+                <div class="calories">
+                    <h5>Gestion de Operaciones</h5>
+                    <div><strong>Gastos</strong> </div>
+                    <div><strong>Ventas</strong> </div>
+                    <div><strong> Pedidos</strong></div>
+                    <p>Ver Reporte de Cuotas Pendientes</p>
+                </div>
+            
+                <div class="personal-bests">
+                    <h2><h5>Mis Cultivos</h5></h2>
+                    <ul>
+                        <li>Visualización gráfica de Datos.</li>
+                        <li>Humedad</li>
+                        <li>Temperatura</li>
+                       
+                    </ul>
+                </div>
+            
+                <div class="challenges">
+                    <h2>Creación de Lista de Materiales (BOM)
+                   </h2>
+                    <ul>
+                        <li>crear una nueva lista de materiales</li>
+                        <li>para tus productos</li>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M12.3691 8.87988H17.6191" stroke="#2BC916" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M6.38086 8.87988L7.13086 9.62988L9.38086 7.37988" stroke="#649EB9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M12.3691 15.8799H17.6191" stroke="#64B985" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="0.4" d="M6.38086 15.8799L7.13086 16.6299L9.38086 14.3799" stroke="#b9647e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#b9647e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </ul>
+                </div>
+            
+                <div class="activity-feed">
+                    <h2>Programar Análisis</h2>
+                    <ul>
+                        <li>Registro de Resultados</li>
+                        <br>
+                        <br>
+                        
+                    </ul>
+                </div>
+            </div>
+              
+                             
         {% else %}
             <!-- if not logged show  -->
             <div class="tarjetacontainer">
@@ -94,7 +177,7 @@
                         <p>Con nuestra plataforma integral. Gestiona variedades, tratamientos, análisis y costos de manera eficiente. Optimiza tu producción y descubre el potencial de tus cultivos de forma fácil y efectiva.</p>
                       </div>
                       <div class="bannerhome-image">
-                        <img src="{% static 'core/images/plant2.jpg' %}" alt="Tecnología en cultivo de cannabis">
+                        <img src="{% static 'core/images/plantan.gif' %}" alt="Tecnología en cultivo de cannabis">
                       </div>
                       <div class="ring"></div>
                     </div>
@@ -108,7 +191,7 @@
                         <p>Gestiona variedades, registra condiciones de cultivo y tratamiento fitofarmacéutico, y recibe recomendaciones personalizadas basadas en los datos ingresados. Simula y predice el rendimiento de tus cosechas y analiza los costos asociados para optimizar tus operaciones.</p>
                       </div>
                       <div class="bannerhome-image">
-                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Tecnología en cultivo de cannabis">
+                        <img src="{% static 'core/images/default-analysis.gif' %}" alt="Tecnología en cultivo de cannabis">
                       </div>
                       <div class="ring"></div>
                     </div>
@@ -122,7 +205,7 @@
                         <p>Nuestra plataforma te ofrece acceso a una extensa base de datos con más de 2300 variedades de cultivos de cannabis. Encuentra información detallada sobre tipo de cepa, calificación, efectos, sabor y descripción para cada variedad, todo en un solo lugar.</p>
                       </div>
                       <div class="bannerhome-image">
-                        <img src="{% static 'core/images/plant3.jpeg' %}" alt="Tecnología en cultivo de cannabis">
+                        <img src="{% static 'core/images/plantan3.gif' %}" alt="Tecnología en cultivo de cannabis">
                       </div>
                       <div class="ring"></div>
                     </div>
@@ -295,86 +378,45 @@
                 </div>
             </div>
         </div>
-                    <!--  -->
-                    <div class="contenedor-tarjetas">
-                        <div class="tarjetas">
-                          <!-- Tarjeta 1 -->
-                          <div class="tarjeta tarjeta1 animate__animated animate__fadeInUp">
-                            <div class="contenedor">
-                              <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                            </div>
-                            <div class="detalles">
-                              {% if user.is_authenticated %}
-                              <a href="{% url 'clientes' %}" class="tarjeta-cliente-link">
-                                <div class="">
-                                  <h5>Gestión de Clientes </h5>
-                                  <br>
-                                  <p>Accede para ver o crear clientes.</p>
-                                  <p class="multiline">Mantén un registro detallado de la información de tus clientes.</p>
-                                  <span class="btn4">
-                                    <i class="fa fa-user-times"></i>
-                                  </span>
-                                </div>
-                              </a>
-                              {% else %}
-                              <h3>Gestión Integral de Cannabis</h3>
-                              <p>Rastrea y gestiona múltiples variedades de cannabis con descripciones detalladas y condiciones de cultivo.</p>
-                              {% endif %}
-                            </div>
-                          </div>
-                          <!-- Tarjeta 2 -->
-                            <div class="tarjeta tarjeta2 animate__animated animate__fadeInUp">
-                                <div class="contenedor">
-                                <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                                </div>
-                                <div class="detalles">
-                                {% if user.is_authenticated %}
-                                <a href="{% url 'graficos' %}" class="tarjeta-cliente-link">
-                                    <div class="">
-                                    <h5>Mis Cultivos</h5>
-                                    <p class="multiline">
-                                        Visualización gráfica de Datos de Humedad y Temperatura de tus cultivos registrados
-                                    </p>
-                                    <span class="btn4">
-                                        <i class="fa fa-stethoscope"></i>
-                                    </span>
-                                    </div>
-                                </a>
-                                {% else %}
-                                <h3>Seguimiento Avanzado de Cultivo</h3>
-                                <p>Monitorea las condiciones del suelo, iluminación, temperatura, humedad y más para un crecimiento óptimo.</p>
-                                {% endif %}
-                                </div>
-                            </div>
-  
-                          <!-- Tarjeta 3 -->
-                          <div class="tarjeta tarjeta3 animate__animated animate__fadeInUp">
-                            <div class="contenedor">
-                              <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
-                            </div>
-                            <div class="detalles">
-                              {% if user.is_authenticated %}
-                              <a href="{% url 'dashboard' %}" class="tarjeta-cliente-link">
-                                <div class="">
-                                    <br>
-                                  <h5>Gastos, Ventas y Pedidos</h5>
-                                  <br><br>
-                                  <p>Registra y controla gastos.</p>
-                                  <p>Gestiona ventas y productos.</p>
-                                  <p>Administra pedidos y entregas.</p>
-                                  <span class="btn4">
-                                    <i class="fa fa-balance-scale"></i>
-                                  </span>
-                                </div>
-                              </a>
-                              {% else %}
-                              <h3>Análisis de Costos</h3>
-                              <p>Analiza costos incluyendo semillas, sustrato, energía, agua y mano de obra para optimizar tus operaciones.</p>
-                              {% endif %}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+        {% if not user.is_authenticated %}
+        <div class="contenedor-tarjetas">
+            <div class="tarjetas">
+                <!-- Tarjeta 1 -->
+                <div class="tarjeta tarjeta1 animate__animated animate__fadeInUp">
+                    <div class="contenedor">
+                        <img src="{% static 'core/images/flower.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                    </div>
+                    <div class="detalles">
+                        <h3>Gestión Integral de Cannabis</h3>
+                        <p>Rastrea y gestiona múltiples variedades de cannabis con descripciones detalladas y condiciones de cultivo.</p>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta 2 -->
+                <div class="tarjeta tarjeta2 animate__animated animate__fadeInUp">
+                    <div class="contenedor">
+                        <img src="{% static 'core/images/flower2.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                    </div>
+                    <div class="detalles">
+                        <h3>Seguimiento Avanzado de Cultivo</h3>
+                        <p>Monitorea las condiciones del suelo, iluminación, temperatura, humedad y más para un crecimiento óptimo.</p>
+                    </div>
+                </div>
+        
+                <!-- Tarjeta 3 -->
+                <div class="tarjeta tarjeta3 animate__animated animate__fadeInUp">
+                    <div class="contenedor">
+                        <img src="{% static 'core/images/seeds.jpg' %}" alt="laboratorio_analisis" class="imclas">
+                    </div>
+                    <div class="detalles">
+                        <h3>Análisis de Costos</h3>
+                        <p>Analiza costos incluyendo semillas, sustrato, energía, agua y mano de obra para optimizar tus operaciones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
                       
                       
         

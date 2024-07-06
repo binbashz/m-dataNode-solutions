@@ -221,12 +221,14 @@
 {% endif %}
 
 {% if results.cuotas %}
-    <h3>Cuotas</h3>
-    <ul>
+<h3>Cuotas</h3>
+<div>
     {% for cuota in results.cuotas %}
-        <li>{{ cuota.tipo }} - {{ cuota.monto }}</li>
+        <p>{{ cuota.monto }}</p>
+        <p>--------------</p>
     {% endfor %}
-    </ul>
+</div>
+
 {% endif %}
 
 {% endblock %}

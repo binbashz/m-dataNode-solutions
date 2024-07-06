@@ -146,8 +146,8 @@
           {% csrf_token %}
           {{ form.as_p }}
           <div class="btn-container">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="{% url 'detalle_miembro' miembro.id %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn8 btn-primary">Guardar</button>
+            <a href="{% url 'detalle_miembro' miembro.id %}" class="btn8 btn-secondary">Cancelar</a>
             <button type="button" class="btncode btn-danger" onclick="openModal('{{ miembro.id }}')">Eliminar</button>
           </div>
         </form>

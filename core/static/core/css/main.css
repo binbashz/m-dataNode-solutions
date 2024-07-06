@@ -1033,7 +1033,8 @@ form input[type="range"] {
 /* Tarjetas */
 .tarjetas {
   display: inline-flex; /* Inline-flex para que se desplazen horizontalmente */
-  gap: 20px; /* Espaciado entre tarjetas */
+  gap: 20px;
+  border-radius: 20px 12px 31px; 
 }
 
 /* Tarjeta individual */
@@ -1123,6 +1124,25 @@ form input[type="range"] {
   overflow: hidden;
 }
 
+
+/* Clase para el color de fondo de las filas de la tabla */
+.humedadtemp-background {
+  font-style: white;
+  padding: 10px;
+  background-image: linear-gradient(to right, 
+  rgba(73, 230, 125, 0.863) 0%, 
+  rgb(146, 245, 212) 19%, 
+  rgba(177, 245, 87, 0.829) 42%, 
+  rgba(112, 62, 204, 0.774) 79%, 
+  rgba(56, 177, 207, 0.712) 100%
+);
+
+}
+
+.titulosgraficohumedadbr{
+  border-radius: 20px 12px 31px;
+}
+
 /* Imagen */
 .imclas {
   width: 100%;
@@ -1209,7 +1229,7 @@ form input[type="range"] {
   height: auto;
   min-height: 100px;
   background: linear-gradient(45deg, rgba(193, 161, 245, 0.6) 24%, rgba(105, 223, 121, 0.6));
-  border-radius: 20px;
+  border-radius: 20px 12px 31px;
   margin-top: 1.5rem;
   margin: 2rem 20px 0 0;
   display: flex;
@@ -1893,7 +1913,7 @@ figcaption {
 
 .signup-image-section {
   flex: 1;
-  background-image: url('/static/core/images/btn.jpg');
+  background-image: url('/static/core/images/btn.gif');
   margin-top: 50px;
   margin-block-end: 48px;
   background-size: cover;
@@ -2796,7 +2816,7 @@ transform: translateY(-10px);
   background: #f8f9fa;
   border: 1px solid #dee2e6;
   padding: 20px; 
-  border-radius: 5px; 
+  border-radius: 20px 12px 31px; 
   text-align: center;
   transition: transform 0.2s; 
 }
@@ -3296,37 +3316,49 @@ transform: translateY(-10px);
   color: var(--color);
   cursor: pointer;
   position: relative;
+  border-radius: 20px 12px 31px;
   isolation: isolate;
   display: inline-grid;
   place-content: center;
   padding: 0.5em 1.5em;
   font-size: 13px;
   border: 0;
-  box-shadow: 10px 10px 20px rgba(9, 209, 52, 0.6);
-  clip-path: polygon(
-    /* Top-left */ 0% var(--curve-size),
-    var(--curve-size) 0,
-    /* top-right */ 100% 0,
-    100% calc(100% - var(--curve-size)),
-    /* bottom-right 1 */ calc(100% - var(--curve-size)) 100%,
-    /* bottom-right 2 */ 0 100%
-  );
-  transition: color 250ms;
+  box-shadow: 10px 10px 20px rgba(207, 250, 216, 0.6);
+  display: inline-flex;
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  height: 2.5em;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) 1em;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
 }
 
-.btncode::after,
-.btncode::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+.btncode:active {
+  border-color: #4a4a4a;
+  outline: 0;
 }
 
-.btncode::before {
-  background: var(--border-color);
-  background-size: 300% 300%;
-  animation: move-bg7234 5s ease infinite;
-  z-index: -2;
+.btncode:focus {
+  border-color: #ff2600;
+  outline: 0;
 }
+
+.btncode:hover {
+  border-color: #047e0e;
+}
+
+.btncode:focus:not(:active) {
+  box-shadow: rgba(255, 0, 0, 0.842) 0 0 0 .125em;
+}
+
 
 @keyframes move-bg7234 {
   0% {
@@ -3342,45 +3374,7 @@ transform: translateY(-10px);
   }
 }
 
-.btncode::after {
-  background: var(--bg);
-  z-index: -1;
-  clip-path: polygon(
-    /* Top-left */ var(--border-width)
-      calc(var(--curve-size) + var(--border-width) * 0.5),
-    calc(var(--curve-size) + var(--border-width) * 0.5) var(--border-width),
-    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
-    calc(100% - var(--border-width))
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    /* bottom-right 1 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
-      calc(100% - var(--border-width)),
-    /* bottom-right 2 */ var(--border-width) calc(100% - var(--border-width))
-  );
-  transition: clip-path 500ms;
-}
 
-.btncode:where(:hover, :focus)::after {
-  clip-path: polygon(
-    /* Top-left */ calc(100% - var(--border-width))
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    calc(100% - var(--border-width)) var(--border-width),
-    /* top-right */ calc(100% - var(--border-width)) var(--border-width),
-    calc(100% - var(--border-width))
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
-    /* bottom-right 1 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
-      calc(100% - var(--border-width)),
-    /* bottom-right 2 */
-      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5))
-      calc(100% - var(--border-width))
-  );
-  transition: 200ms;
-}
-
-.btncode:where(:hover, :focus) {
-  color: #ffffff;
-}
 
 
 /* Estilos para la barra de busqueda - search */
@@ -3592,6 +3586,7 @@ transform: translateY(-10px);
   backdrop-filter: blur(20px);
 }
 
+
 .perfil-encabezado {
   display: flex;
   flex-direction: column;
@@ -3673,6 +3668,72 @@ transform: translateY(-10px);
    border-radius: 20px 12px 31px;
   }
 
+/* historial cutoas eliminar/ marcar pagado */
+.cuotas-historial {
+    padding: 20px;
+}
+
+.lista-cuotas {
+    display: flex;
+    flex-direction: column;
+}
+
+.cuota-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.cuota-pagada {
+    background-color: #b8fdb7; 
+}
+
+.cuota-pendiente {
+    background-color: #fcbfbfea; 
+}
+
+.btn-success.btn-sm, .btn-sm, .btn-nav {
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.no-background {
+    background: none;
+    color: inherit;
+    padding: 0;
+}
+
+.eliminar-todas {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Media queries for responsiveness historial cutoas  */
+@media (max-width: 768px) {
+  .cuota-item {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .cuota-item span,
+  .cuota-item .acciones,
+  .cuota-item form {
+      text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .cuota-item span,
+  .cuota-item .acciones,
+  .cuota-item form {
+      min-width: 100%;
+  }
+}
+
 .text-rojo {
   color: rgb(221, 15, 15);
   border-radius: 20px 12px 31px;
@@ -3683,6 +3744,57 @@ transform: translateY(-10px);
   color: rgb(172, 7, 7); 
   border-radius: 20px 12px 31px;
 }
+
+
+.btn8 {
+  align-items: center;
+  appearance: none;
+  background-color: #d5fce6;
+  border: 1px solid #dbdbdb;
+  border-radius: 20px 12px 31px;
+  margin-bottom: 0.2rem;
+  box-shadow: none;
+  margin: 1px;
+  box-sizing: border-box;
+  color: #363636;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  height: 2.5em;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) 1em;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.btn8:active {
+  border-color: #4a4a4a;
+  outline: 0;
+}
+
+.btn8:focus {
+  border-color: #157e3d;
+  outline: 0;
+}
+
+.btn8:hover {
+  border-color: #2bd439;
+}
+
+.btn8:focus:not(:active) {
+  box-shadow: rgba(51, 163, 56, 0.25) 0 0 0 .125em;
+}
+
+
+
 /* Estilo para las celdas <td> */
 .table-striped tbody tr td {
   border-radius: 20px 12px 31px;
@@ -3824,8 +3936,150 @@ transform: translateY(-10px);
   }
 }
 
+/** ------------------------***/ 
 
 
+
+/*  benento home if is logged */
+/* Estilo base */
+
+
+/* Contenedor principal */
+.bento {
+  display: grid;
+  gap: 1ch;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  padding: 1ch;
+}
+
+/* Estilo de los elementos dentro de .bento */
+.bento > * {
+  background: var(--bg, #eeeeee7c);
+  border-radius: 2ch;
+  color: hsl(215, 75%, 10%);
+  padding: 2ch;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bento h2 {
+  margin-block: 0 1ch;
+  font-size: 1.2em;
+}
+
+/* Ajustes adicionales para elementos específicos como tablas y listas */
+.bento table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9em;
+}
+
+.bento td, .bento th {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: .66ch;
+  text-align: left;
+}
+
+.bento th {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  font-variant: small-caps;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.bento ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bento li {
+  padding: 0.5ch 0;
+}
+
+
+
+/* Estilos específicos para cada sección */
+
+.profile {
+  --bg: linear-gradient(to bottom right, rgba(255, 255, 255, 0.6), rgba(177, 152, 209, 0.6) 30%, rgba(97, 152, 173, 0.6) 36%, rgba(146, 223, 165, 0.6) 50%);
+  background: var(--bg);
+  padding: 20px;
+  position: relative;
+  border-radius: 20px 12px 31px;
+  text-align: center;
+}
+
+.profile a#exit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  margin-right: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile a#exit:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.schedule-table, .exercise-table {
+  --bg: linear-gradient(45deg, #87CEFA 0%, #C0F0F1 20%, #A0E2EF 39%, #68B5EB 76%, #7CACD2 100%);
+}
+
+.calories {
+  --bg: linear-gradient(-45deg, #F7F1FF 0%, #E7FFEC 20%, #D1F9E7 39%, #BCD2E7 76%, #B8D0E5 100%);
+}
+
+.personal-bests {
+  --bg: linear-gradient(-95deg, #E6F8FF 0%, #B9F9EF 20%, #87F2E9 39%, #77d693 76%, #7bbeca 100%);
+}
+
+.challenges {
+  --bg: linear-gradient(-95deg, #E6F8FF 0%, #B9F9EF 20%, #d2f287 39%, #77d693 76%, #7bbeca 100%);
+}
+
+.activity-feed {
+  --bg: linear-gradient(-45deg, #35C3F3 0%, #8b9fe8 20%, #e681d8 39%, #ffa9a4 76%, #cefef0 100%);
+}
+
+/* Media queries para dispositivos más grandes */
+@media (min-width: 768px) {
+  .bento {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .profile {
+    grid-column: span 3;
+  }
+
+  .schedule-table, .exercise-table {
+    grid-column: span 2;
+  }
+
+  .calories, .personal-bests, .challenges, .activity-feed {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .profile {
+    grid-column: span 4;
+  }
+
+  .schedule-table, .exercise-table {
+    grid-column: span 2;
+  }
+
+  .calories, .personal-bests, .challenges, .activity-feed {
+    grid-column: span 1;
+  }
+}
 
 /* footer */
 .footer a {
