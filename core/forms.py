@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from django import forms
 from django.db import models
 from django.contrib.auth.models import User
@@ -8,9 +9,8 @@ from .models import Variedad, CondicionesCultivo, TratamientoFitofarmaceutico, A
 from .models import AnalisisCostos
 from .models import Muestra, AnalisisProgramado, ResultadoAnalisis, TipoAnalisis
 from .models import PlanProduccion, TareaProduccion, ListaMateriales, ItemListaMateriales
-from .models import Cliente
-from .models import ListaMateriales, Material, ItemListaMateriales
-from .models import Miembro, Cuota
+from .models import Cliente, Stock,  Venta, Product, GastoOperativo, Pedido
+from .models import ListaMateriales, Material, ItemListaMateriales, Miembro, Cuota
 
 
 class RegisterForm(UserCreationForm):
@@ -136,7 +136,7 @@ class AnalisisCalidadForm(forms.ModelForm):
             'class': 'form-control'
         })
 
-    
+  
 # Analisis
 class ClienteForm(forms.ModelForm):
     class Meta:
@@ -187,15 +187,12 @@ class ResultadoAnalisisForm(forms.ModelForm):
         model = ResultadoAnalisis
         fields = ['analisis_programado', 'fecha_analisis', 'resultados', 'observaciones']
         
-# Bar code generator 
+# Bar code generator an Product registration
 class BarcodeForm(forms.Form):
     product_name = forms.CharField(label='Nombre del Producto', max_length=36, help_text='Máximo 36 caracteres')
     product_code = forms.CharField(label='Código del Producto', max_length=15, help_text='Máximo 15 caracteres')
     is_favorite = forms.BooleanField(label='Marcar como favorito', required=False)
     
-    
-from .models import GastoOperativo, Venta, Pedido
-
 
 class GastoOperativoForm(forms.ModelForm):
     class Meta:
@@ -209,21 +206,116 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
         fields = ['producto', 'cantidad', 'precio_unitario', 'fecha', 'variedad']
-        widgets = {
-            'fecha': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['producto'].queryset = Product.objects.filter(user=user)
+
+    def save(self, commit=True):
+        venta = super(VentaForm, self).save(commit=False)
+        if self.user:
+            venta.user = self.user
+        if commit:
+            venta.save()
+        return venta
+
+
 
 class PedidoForm(forms.ModelForm):
+    producto = forms.ModelChoiceField(
+        queryset=Product.objects.filter(stock__quantity__gt=0).order_by('name'),
+        label="Producto",
+        empty_label="Seleccione un producto"
+    )
+    variedad = forms.ModelChoiceField(
+        queryset=Variedad.objects.all(),
+        label="Variedad",
+        empty_label="Seleccione una variedad",
+        required=False  # Puedes ajustar esto según tus necesidades
+    )
+    descripcion = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        required=False,
+        label="Descripción"
+    )
+    direccion = forms.CharField(
+        max_length=200,
+        required=False,
+        label="Dirección de entrega"
+    )
+    telefono = forms.CharField(
+        max_length=20,
+        required=False,
+        label="Teléfono de contacto"
+    )
+    asociar_cliente = forms.BooleanField(
+        required=False,
+        label="¿Asociar con cliente/miembro registrado?",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    cliente = forms.ModelChoiceField(
+        queryset=Cliente.objects.all().order_by('nombre'),
+        required=False,
+        label="Cliente",
+        empty_label="Seleccione un cliente"
+    )
+    miembro = forms.ModelChoiceField(
+        queryset=Miembro.objects.all().order_by('nombre'),
+        required=False,
+        label="Miembro",
+        empty_label="Seleccione un miembro"
+    )
+
     class Meta:
         model = Pedido
-        fields = ['producto', 'cantidad', 'fecha_pedido', 'fecha_entrega', 'variedad']
+        fields = ['producto', 'variedad', 'cantidad', 'fecha_pedido', 'fecha_entrega', 'descripcion', 'direccion', 'telefono', 'asociar_cliente', 'cliente', 'miembro']
         widgets = {
-            'fecha_pedido': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
-            'fecha_entrega': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
+            'fecha_pedido': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_entrega': forms.DateInput(attrs={'type': 'date'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        producto = cleaned_data.get('producto')
+        cantidad = cleaned_data.get('cantidad')
+        asociar_cliente = cleaned_data.get('asociar_cliente')
+        cliente = cleaned_data.get('cliente')
+        miembro = cleaned_data.get('miembro')
+
+        if producto and cantidad:
+            stock_disponible = producto.stock.quantity
+            if cantidad > stock_disponible:
+                raise ValidationError(f"La cantidad pedida ({cantidad}) excede el stock disponible ({stock_disponible}).")
+
+        fecha_pedido = cleaned_data.get('fecha_pedido')
+        fecha_entrega = cleaned_data.get('fecha_entrega')
+        if fecha_pedido and fecha_entrega and fecha_entrega < fecha_pedido:
+            raise ValidationError("La fecha de entrega no puede ser anterior a la fecha de pedido.")
+
+        if asociar_cliente and not (cliente or miembro):
+            raise ValidationError("Si desea asociar el pedido, debe seleccionar un cliente o un miembro.")
+
+        if cliente and miembro:
+            raise ValidationError("No puede seleccionar tanto un cliente como un miembro. Elija solo uno.")
+
+        return cleaned_data
+
         
+class AddToStockForm(forms.Form):
+    product = forms.ModelChoiceField(
+        queryset=Product.objects.all(),
+        label="Producto",
+        empty_label="Seleccione un producto"
+    )
+    quantity = forms.IntegerField(min_value=1, label="Cantidad")
 
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.all().order_by('name')
+        self.fields['product'].label_from_instance = lambda obj: f"{obj.name} - {obj.variedad.nombre if obj.variedad else 'Sin variedad'} - {obj.code}"
+        
 class PlanProduccionForm(forms.ModelForm):
     class Meta:
         model = PlanProduccion
@@ -284,8 +376,6 @@ class ItemListaMaterialesForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['material'].queryset = Material.objects.all()
              
-             
-
 
 class MiembroForm(forms.ModelForm):
     class Meta:
@@ -308,4 +398,18 @@ class CuotaForm(forms.ModelForm):
         fields = ['fecha_pago', 'monto', 'periodo', 'pagado']
         widgets = {
             'fecha_pago': forms.DateInput(attrs={'type': 'date'}),
+        }    
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = ['product', 'quantity']
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Selecciona un producto'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['product'].label = 'Producto'
+        self.fields['quantity'].label = 'Cantidad'

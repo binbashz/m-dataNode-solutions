@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+    .container {
+        padding: 20px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .btn8 {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 20px 12px 31px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px 2px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        background-color: #00ff62e7;
+        color: #fff;
+    }
+    @media (max-width: 768px) {
+        .btn8 {
+            width: 100%;
+            margin: 5px 0;
+        }
+        .table-responsive {
+            border: 0;
+        }
+        .table-responsive table {
+            border: 0;
+        }
+        .table-responsive table thead {
+            display: none;
+        }
+        .table-responsive table tr {
+            margin-bottom: 10px;
+            display: block;
+            border-bottom: 2px solid #ddd;
+        }
+        .table-responsive table td {
+            display: block;
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+        .table-responsive table td:before {
+            content: attr(data-label);
+            position: absolute;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+    }
+</style>
+
+<div class="container">
+
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Lista de Productos en Stock</h1>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in stocks %}
+                        <tr>
+                            <td data-label="Producto">{{ stock.product }}</td>
+                            <td data-label="Cantidad">{{ stock.quantity }}</td>
+                            <td data-label="Acciones">
+                                <a href="{% url 'stock_detail' product_id=stock.product.id %}" class="btn8 btn-sm">Ver Detalles</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No hay productos en stock actualmente.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

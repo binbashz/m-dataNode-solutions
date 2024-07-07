@@ -9,15 +9,18 @@
             <title>Generador de códigos de barras</title>
 
             <div class="codigo-barra-container">
+                <h1>REGISTRAR PRODUCTO</h1>
                 <h1>Generador de códigos de barras</h1>
                 <hr>
                 <ul class="codigo-barra-list">
                     <li class="codigo-barra-item">
-                        <p>Genera un código de barras con número de producto.</p>
+                        <strong><p>Registra tu producto con creacion de codigo de barras</p></strong>
+                        <p>Genera un código de barras con número de producto.</p> 
                         <small>(El número se muestra al decodificar)</small>
                         <strong><a href="{% url 'barcode_form' %}" class="btn btn-primary">Generar código de barras (código estándar)</a></strong>
                     </li>
                     <li class="codigo-barra-item">
+                       <strong> <p>Registra tu producto con creacion de codigo de barras</p></strong>
                         <p>Genera un código de barras con número de producto y nombre.</p>
                         <small>(El nombre del producto y el número se muestran al decodificar)</small>
                         <strong><a href="{% url 'barcode_form2' %}" class="btn btn-primary">Generar código de barras</a></strong>

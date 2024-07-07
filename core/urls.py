@@ -87,6 +87,7 @@ urlpatterns = [
     path('favorite-barcodes/', views.favorite_barcodes, name='favorite_barcodes'),
     
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('add-venta/', views.add_venta, name='add_venta'),
     path('graficar-datos/', views.graficar_datos, name='graficar_datos'),
     path('borrar_gasto/<int:gasto_id>/', views.borrar_gasto, name='borrar_gasto'),
     path('borrar_venta/<int:venta_id>/', views.borrar_venta, name='borrar_venta'),
@@ -119,6 +120,11 @@ urlpatterns = [
     path('historial_pagos/', views.historial_pagos, name='historial_pagos'),
     path('historial_pagos/<int:miembro_id>/', views.historial_pagos, name='historial_pagos'),
     path('historial-cuotas-todos-miembros/', views.historial_cuotas_todos_miembros, name='historial_cuotas_todos_miembros'),
+    
+    path('stock/<int:product_id>/', views.stock_detail, name='stock_detail'),
+    path('stock/', views.lista_stock, name='lista_stock'),
+    path('add-product-to-stock/', views.add_product_to_stock, name='add_product_to_stock'),
+    path('stock/<int:product_id>/eliminar/', views.eliminar_stock, name='eliminar_stock'),
     
     path('plants/', views.plant_list, name='plant_list'),
         

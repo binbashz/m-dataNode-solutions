@@ -144,17 +144,47 @@ class ResultadoAnalisis(models.Model):
     fecha_analisis = models.DateTimeField()
     resultados = models.TextField() 
     observaciones = models.TextField(blank=True, null=True)
+    
 
-    # barcode model - codigo barras
+    #  Registro de Producto - barcode model - codigo barras
+
 class Product(models.Model):
-    name = models.CharField(max_length=36)
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=100)
     code = models.CharField(max_length=15, unique=True)
     is_favorite = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        variedad_nombre = self.variedad.nombre if self.variedad else "Sin variedad"
+        return f"{self.name} - {variedad_nombre} - {self.code}"
 
+class Stock(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='stock')
+    quantity = models.PositiveIntegerField(default=0)
+    low_stock_threshold = models.PositiveIntegerField(default=10)
+
+    def __str__(self):
+        return f"{self.product.name} - Quantity: {self.quantity}"
+
+    def is_low_stock(self):
+        return self.quantity <= self.low_stock_threshold
+
+    def __str__(self):
+        return f"{self.product.name} - Quantity: {self.quantity}"
+
+    def is_low_stock(self):
+        return self.quantity <= self.low_stock_threshold
+
+    
+class Sale(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='sales')
+    quantity_sold = models.PositiveIntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.quantity_sold} units - ${self.unit_price} each"
 
 
 
@@ -174,29 +204,6 @@ class GastoOperativo(models.Model):
 
     def __str__(self):
         return f'{self.tipo_gasto} - ${self.monto} ({self.variedad.nombre})'
-
-   
-
-class Venta(models.Model):
-    producto = models.CharField(max_length=100)
-    cantidad = models.IntegerField()
-    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha = models.DateField()
-    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
-
-
-    def __str__(self):
-        return f'{self.producto} - {self.cantidad} unidades ({self.variedad.nombre})'
-
-class Pedido(models.Model):
-    producto = models.CharField(max_length=100)
-    cantidad = models.IntegerField()
-    fecha_pedido = models.DateField()
-    fecha_entrega = models.DateField()
-    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
-
-    def __str__(self):
-        return f'{self.producto} - {self.cantidad} unidades ({self.variedad.nombre})'
 
 
 class Material(models.Model):
@@ -284,6 +291,36 @@ class Pago(models.Model):
     
     def __str__(self):
         return f"Pago de {self.miembro} - {self.fecha}"
+
+
+
+class Venta(models.Model):
+    producto = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha = models.DateField()
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.producto} - {self.cantidad} - {self.fecha}'
+    
+
+class Pedido(models.Model):
+    producto = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
+    fecha_pedido = models.DateField()
+    fecha_entrega = models.DateField()
+    descripcion = models.TextField(blank=True, null=True)
+    direccion = models.CharField(max_length=200, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
+    miembro = models.ForeignKey(Miembro, on_delete=models.SET_NULL, null=True, blank=True)
+    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f'{self.producto} - {self.cantidad} unidades ({self.fecha_entrega})'
+
 
 
 # modelo para base de datos tipo CSV

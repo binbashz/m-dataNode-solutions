@@ -17,7 +17,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
-
+from .models import Product, Stock
+from .forms import StockForm
 # Barcode y PIL
 import barcode
 from barcode.writer import ImageWriter
@@ -37,7 +38,7 @@ from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado, 
-    ResultadoAnalisis, Product, Miembro, Cuota,Pago,
+    ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,
     GastoOperativo, Venta, Pedido, PlanProduccion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
@@ -46,7 +47,7 @@ from .forms import (
     AnalisisCalidadForm, CultivoForm, AnalisisCostosForm, ClienteForm,
     MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm, GastoOperativoForm,
     VentaForm, PedidoForm, PlanProduccionForm, TareaProduccionForm,
-    ListaMaterialesForm, ItemListaMaterialesForm, BarcodeForm,
+    ListaMaterialesForm, ItemListaMaterialesForm, BarcodeForm, AddToStockForm,
     MiembroForm, CuotaForm
 )
 from .simulacion import calcular_rendimiento
@@ -879,6 +880,9 @@ def barcode_form2(request):
         form = BarcodeForm()
     return render(request, 'core/barcode_form2.html', {'form': form})
 
+
+
+
 @login_required
 def decode_barcode_view(request):
     if request.method == 'GET':
@@ -1051,23 +1055,32 @@ def visualizacion_graficos(request):
 @login_required
 def dashboard(request):
     gasto_form = GastoOperativoForm()
-    venta_form = VentaForm()
+    venta_form = VentaForm(user=request.user)
     pedido_form = PedidoForm()
+
+    clientes = Cliente.objects.all().order_by('nombre')
+    miembros = Miembro.objects.all().order_by('nombre')
 
     if request.method == 'POST':
         form_type = request.POST.get('form_type')
         if form_type == 'gasto_form':
             gasto_form = GastoOperativoForm(request.POST)
             if gasto_form.is_valid():
-                gasto_form.save()
-                messages.success(request, 'Gasto guardado correctamente.')
-                return redirect('dashboard')
+                gasto = gasto_form.save(commit=False)
+                if gasto.variedad.user == request.user:
+                    gasto.save()
+                    messages.success(request, 'Gasto guardado correctamente.')
+                    return redirect('dashboard')
+                else:
+                    messages.error(request, 'No tienes permiso para crear un gasto para esta variedad.')
             else:
                 messages.error(request, f'Error en el formulario de gasto: {gasto_form.errors}')
         elif form_type == 'venta_form':
-            venta_form = VentaForm(request.POST)
+            venta_form = VentaForm(request.POST, user=request.user)
             if venta_form.is_valid():
-                venta_form.save()
+                venta = venta_form.save(commit=False)
+                venta.user = request.user
+                venta.save()
                 messages.success(request, 'Venta guardada correctamente.')
                 return redirect('dashboard')
             else:
@@ -1075,7 +1088,10 @@ def dashboard(request):
         elif form_type == 'pedido_form':
             pedido_form = PedidoForm(request.POST)
             if pedido_form.is_valid():
-                pedido_form.save()
+                pedido = pedido_form.save(commit=False)
+                # Asigna el usuario actual al pedido si es necesario
+                pedido.user = request.user
+                pedido.save()
                 messages.success(request, 'Pedido guardado correctamente.')
                 return redirect('dashboard')
             else:
@@ -1085,12 +1101,29 @@ def dashboard(request):
         'gasto_form': gasto_form,
         'venta_form': venta_form,
         'pedido_form': pedido_form,
-        'gastos': GastoOperativo.objects.all(),  
-        'ventas': Venta.objects.all(),  
-        'pedidos': Pedido.objects.all(),
-        'variedades': Variedad.objects.all(),
+        'clientes': clientes,
+        'miembros': miembros,
+        'gastos': GastoOperativo.objects.filter(variedad__user=request.user),
+        'ventas': Venta.objects.filter(user=request.user),
+        'pedidos': Pedido.objects.filter(variedad__user=request.user),  
+        'variedades': Variedad.objects.filter(user=request.user),
+        'productos': Product.objects.filter(user=request.user),
+        'productos_en_stock': Stock.objects.filter(quantity__gt=0),
     }
     return render(request, 'core/dashboard.html', context)
+
+
+
+def add_venta(request):
+    if request.method == 'POST':
+        form = VentaForm(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = VentaForm(user=request.user)
+    return render(request, 'core/add_venta.html', {'form': form})
+
 
 def borrar_gasto(request, gasto_id):
     gasto = get_object_or_404(GastoOperativo, id=gasto_id)
@@ -1160,6 +1193,19 @@ def graficar_datos(request):
         'imagen_png_base64': imagen_png_base64,
     }
     return render(request, 'core/graficos_dashboard.html', context)
+
+
+def add_product_to_stock(request):
+    if request.method == 'POST':
+        form = AddToStockForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('stock_list')  
+    else:
+        form = AddToStockForm()
+    
+    return render(request, 'core/add_product_to_stock.html', {'form': form})
+
 
 
 #BOM
@@ -1370,3 +1416,42 @@ def plant_list(request):
 
     return render(request, 'core/plant_list.html', {'page_obj': page_obj, 'query': query})
 
+
+def stock_detail(request, product_id):
+    stock = get_object_or_404(Stock, product_id=product_id)
+    if 'added' in request.GET:
+        messages.success(request, 'Producto añadido al stock correctamente.')
+    context = {
+        'stock': stock,
+    }
+    return render(request, 'core/stock_detail.html', context)
+
+
+
+def add_product_to_stock(request):
+    if request.method == 'POST':
+        form = StockForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['product']
+            quantity = form.cleaned_data['quantity']
+            stock, created = Stock.objects.get_or_create(product=product, defaults={'quantity': quantity})
+            if not created:
+                stock.quantity += quantity
+                stock.save()
+            return redirect(reverse('stock_detail', kwargs={'product_id': stock.product.id}) + '?added=true')
+    else:
+        form = StockForm()
+    
+    return render(request, 'core/add_product_to_stock.html', {'form': form})
+
+
+def lista_stock(request):
+    stocks = Stock.objects.all()  # Consulta todos los productos en stock
+    return render(request, 'core/lista_stock.html', {'stocks': stocks})
+
+def eliminar_stock(request, product_id):
+    if request.method == 'POST':
+        stock = get_object_or_404(Stock, product_id=product_id)
+        stock.delete()
+        return redirect('lista_stock')
+    return redirect('stock_detail', product_id=product_id)

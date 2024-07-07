@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+    .container {
+        padding: 20px;
+    }
+    .stock-detail {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .btn8 {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 20px 12px 31px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px 2px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    .alert {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .alert-warning {
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        color: #856404;
+    }
+    @media (max-width: 768px) {
+        .btn8 {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+</style>
+
+<div class="container">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<br>
+    <div class="stock-detail">
+        <h2>{{ stock.product.name }}</h2>
+        <p>Stock disponible: {{ stock.quantity }}</p>
+
+        {% if stock.is_low_stock %}
+        <div class="alert alert-warning" role="alert">
+            ¡Alerta! Este producto tiene un bajo stock.
+        </div>
+        {% endif %}
+
+        <form action="{% url 'eliminar_stock' stock.product.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto del stock?');">
+            {% csrf_token %}
+            <button type="submit" class="btn8 btn-sm btn-danger">Eliminar del Stock</button>
+        </form>
+    </div>
+    
+    <a href="{% url 'lista_stock' %}" class="btn8">Lista de stock</a>
+</div>
+{% endblock %}

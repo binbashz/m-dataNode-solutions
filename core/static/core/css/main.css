@@ -839,6 +839,7 @@ nav.active ul li a:hover span {
   color: #aed581; 
 }
 
+
 /* Media query para pantallas pequeñas */
 @media (max-width: 768px) {
   .custom-navbar {
@@ -3316,6 +3317,11 @@ transform: translateY(-10px);
   background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 16%, rgba(255,244,0,1) 100%);
   transition: background 2.5s ease;
 }
+
+.btn8.btn8:hover {
+  background: linear-gradient(135deg, rgb(163, 250, 137) 0%, rgba(205, 190, 228, 0.9) 16%, rgb(162, 240, 192) 100%);
+  transition: background 2.5s ease;
+}
 .star-checkbox {
   display: none;
 }
@@ -3465,6 +3471,32 @@ transform: translateY(-10px);
 .green-link .nav-link {
   color: green;
 }
+
+
+.linkrp {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+
+/* Estilo para el checkbox cuando está marcado */
+.form-check-input:checked + .form-check-label::before {
+  background-color: #4CAF50; /* Verde */
+  border-color: #4CAF50; /* Borde verde */
+}
+
+/* Estilo para el checkbox antes de ser marcado */
+.form-check-input:not(:checked) + .form-check-label::before {
+  background-color: #fff; /* Fondo blanco */
+  border-color: #adb5bd; /* Borde gris */
+}
+
+/* Estilo del checkbox mismo */
+.form-check-input:checked {
+  background-color: #4CAF50; /* Verde */
+  border-color: #4CAF50; /* Borde verde */
+}
+
 
 
 /* estilo tabs */
@@ -3859,7 +3891,7 @@ transform: translateY(-10px);
   border-radius: 20px 12px 31px;
   padding: 0.4rem; 
   background-color: rgba(255, 255, 255, 0.155); 
-  color: #fff;
+  color: #2a7510;
 }
 
 
