@@ -221,8 +221,6 @@ class VentaForm(forms.ModelForm):
             venta.save()
         return venta
 
-
-
 class PedidoForm(forms.ModelForm):
     producto = forms.ModelChoiceField(
         queryset=Product.objects.filter(stock__quantity__gt=0).order_by('name'),
@@ -233,7 +231,7 @@ class PedidoForm(forms.ModelForm):
         queryset=Variedad.objects.all(),
         label="Variedad",
         empty_label="Seleccione una variedad",
-        required=False  # Puedes ajustar esto según tus necesidades
+        required=False 
     )
     descripcion = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 3}),
@@ -278,29 +276,22 @@ class PedidoForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        producto = cleaned_data.get('producto')
-        cantidad = cleaned_data.get('cantidad')
         asociar_cliente = cleaned_data.get('asociar_cliente')
         cliente = cleaned_data.get('cliente')
         miembro = cleaned_data.get('miembro')
 
-        if producto and cantidad:
-            stock_disponible = producto.stock.quantity
-            if cantidad > stock_disponible:
-                raise ValidationError(f"La cantidad pedida ({cantidad}) excede el stock disponible ({stock_disponible}).")
-
-        fecha_pedido = cleaned_data.get('fecha_pedido')
-        fecha_entrega = cleaned_data.get('fecha_entrega')
-        if fecha_pedido and fecha_entrega and fecha_entrega < fecha_pedido:
-            raise ValidationError("La fecha de entrega no puede ser anterior a la fecha de pedido.")
-
-        if asociar_cliente and not (cliente or miembro):
-            raise ValidationError("Si desea asociar el pedido, debe seleccionar un cliente o un miembro.")
-
-        if cliente and miembro:
-            raise ValidationError("No puede seleccionar tanto un cliente como un miembro. Elija solo uno.")
+        if asociar_cliente:
+            if not cliente and not miembro:
+                raise forms.ValidationError("Debe seleccionar un cliente o un miembro si desea asociar el pedido.")
+            if cliente and miembro:
+                raise forms.ValidationError("No puede seleccionar tanto un cliente como un miembro. Elija uno.")
+        else:
+            # Si no se asocia, limpiamos los campos de cliente y miembro
+            cleaned_data['cliente'] = None
+            cleaned_data['miembro'] = None
 
         return cleaned_data
+
 
         
 class AddToStockForm(forms.Form):

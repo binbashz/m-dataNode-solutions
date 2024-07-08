@@ -1089,7 +1089,14 @@ def dashboard(request):
             pedido_form = PedidoForm(request.POST)
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit=False)
-                pedido.user = request.user
+                
+                # Manejar la asociación de cliente/miembro
+                if pedido_form.cleaned_data['asociar_cliente']:
+                    if pedido_form.cleaned_data['cliente']:
+                        pedido.cliente = pedido_form.cleaned_data['cliente']
+                    elif pedido_form.cleaned_data['miembro']:
+                        pedido.miembro = pedido_form.cleaned_data['miembro']
+                
                 pedido.save()
                 messages.success(request, 'Pedido guardado correctamente.')
                 return redirect('dashboard')
@@ -1104,17 +1111,16 @@ def dashboard(request):
         'miembros': miembros,
         'gastos': GastoOperativo.objects.filter(variedad__user=request.user),
         'ventas': Venta.objects.filter(user=request.user),
-        'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),  # Obtiene todos los pedidos
+        'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),
         'variedades': Variedad.objects.filter(user=request.user),
         'productos': Product.objects.filter(user=request.user),
         'productos_en_stock': Stock.objects.filter(quantity__gt=0),
     }
     return render(request, 'core/dashboard.html', context)
+
 def lista_pedidos(request):
     pedidos = Pedido.objects.all().order_by('-fecha_pedido')
     return render(request, 'core/dashboard.html', {'pedidos': pedidos})
-
-
 
 def borrar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
@@ -1122,7 +1128,6 @@ def borrar_pedido(request, pedido_id):
         pedido.delete()
         messages.success(request, 'Pedido eliminado correctamente.')
     return redirect('dashboard')
-
 
 def add_venta(request):
     if request.method == 'POST':
@@ -1133,7 +1138,6 @@ def add_venta(request):
     else:
         form = VentaForm(user=request.user)
     return render(request, 'core/add_venta.html', {'form': form})
-
 
 def borrar_gasto(request, gasto_id):
     gasto = get_object_or_404(GastoOperativo, id=gasto_id)
@@ -1148,7 +1152,6 @@ def borrar_venta(request, venta_id):
         venta.delete()
         messages.success(request, 'Venta eliminada correctamente.')
     return redirect('dashboard')
-
 
 # graficar dashboard info 
 from django.db.models import Sum, F

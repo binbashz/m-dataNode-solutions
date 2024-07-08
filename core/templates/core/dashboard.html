@@ -127,7 +127,6 @@
             <div class="list-group">
                 {% for pedido in pedidos %}
 
-
                 <hr>
                     <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         <div>
@@ -137,8 +136,10 @@
                             <p class="mb-1">Dirección de entrega: {{ pedido.direccion }}</p>
                             <p class="mb-1">Teléfono de contacto: {{ pedido.telefono }}</p>
                             <p class="mb-1">
-                                {% if pedido.asociar_cliente %}
-                                    Asociado a: {{ pedido.cliente.nombre }} o {{ pedido.miembro.nombre }}
+                                {% if pedido.cliente %}
+                                    Asociado al cliente: {{ pedido.cliente.nombre }}
+                                {% elif pedido.miembro %}
+                                    Asociado al miembro: {{ pedido.miembro.nombre }}
                                 {% else %}
                                     No asociado a ningún cliente/miembro
                                 {% endif %}
@@ -154,6 +155,7 @@
                 {% endfor %}
             </div>
         </div>
+
     <!-- Modal para agregar nuevo gasto -->
     <div class="modal fade" id="gastoModal" tabindex="-1" role="dialog" aria-labelledby="gastoModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -251,4 +253,30 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var pedidoModal = document.getElementById('pedidoModal');
+        if (pedidoModal) {
+            pedidoModal.addEventListener('show.bs.modal', function () {
+                var asociarCheckbox = document.getElementById('id_asociar_cliente');
+                var clienteField = document.getElementById('id_cliente').closest('.form-group');
+                var miembroField = document.getElementById('id_miembro').closest('.form-group');
+    
+                function toggleFields() {
+                    if (asociarCheckbox.checked) {
+                        clienteField.style.display = 'block';
+                        miembroField.style.display = 'block';
+                    } else {
+                        clienteField.style.display = 'none';
+                        miembroField.style.display = 'none';
+                    }
+                }
+    
+                asociarCheckbox.addEventListener('change', toggleFields);
+                toggleFields(); // Llamar al inicio para establecer el estado inicial
+            });
+        }
+    });
+    </script>
 {% endblock %}
