@@ -3472,10 +3472,19 @@ transform: translateY(-10px);
   color: green;
 }
 
-
 .linkrp {
   text-decoration: none;
   font-size: 14px;
+}
+
+
+.list-group-item p {
+  margin-bottom: 0.2rem; 
+  font-size: 0.9rem; 
+}
+.list-group-item h5 {
+  margin-bottom: 0.5rem; 
+  font-size: 1.1rem; 
 }
 
 

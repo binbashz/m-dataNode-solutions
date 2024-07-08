@@ -1089,7 +1089,6 @@ def dashboard(request):
             pedido_form = PedidoForm(request.POST)
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit=False)
-                # Asigna el usuario actual al pedido si es necesario
                 pedido.user = request.user
                 pedido.save()
                 messages.success(request, 'Pedido guardado correctamente.')
@@ -1105,13 +1104,24 @@ def dashboard(request):
         'miembros': miembros,
         'gastos': GastoOperativo.objects.filter(variedad__user=request.user),
         'ventas': Venta.objects.filter(user=request.user),
-        'pedidos': Pedido.objects.filter(variedad__user=request.user),  
+        'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),  # Obtiene todos los pedidos
         'variedades': Variedad.objects.filter(user=request.user),
         'productos': Product.objects.filter(user=request.user),
         'productos_en_stock': Stock.objects.filter(quantity__gt=0),
     }
     return render(request, 'core/dashboard.html', context)
+def lista_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    return render(request, 'core/dashboard.html', {'pedidos': pedidos})
 
+
+
+def borrar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    if request.method == 'POST':
+        pedido.delete()
+        messages.success(request, 'Pedido eliminado correctamente.')
+    return redirect('dashboard')
 
 
 def add_venta(request):
@@ -1137,13 +1147,6 @@ def borrar_venta(request, venta_id):
     if request.method == 'POST':
         venta.delete()
         messages.success(request, 'Venta eliminada correctamente.')
-    return redirect('dashboard')
-
-def borrar_pedido(request, pedido_id):
-    pedido = get_object_or_404(Pedido, id=pedido_id)
-    if request.method == 'POST':
-        pedido.delete()
-        messages.success(request, 'Pedido eliminado correctamente.')
     return redirect('dashboard')
 
 

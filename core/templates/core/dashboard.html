@@ -2,21 +2,25 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-    <div class="row">
-        <h1>Controla tus Gastos, Ventas y Pedidos</h1>
-        <div class="d-flex justify-content-left mt-2 mb-2">
-            <a href="{% url 'barcodes' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Registrar Producto</a>
-            <a href="{% url 'add_product_to_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Agregar Producto a Stock</a>
-            <a href="{% url 'lista_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Lista de Productos en Stock</a>
-            <a href="{% url 'graficar_datos' %}" class="btn btn-primary" style="margin-left: 20px; padding: 5px 10px; font-size: 15px;">Ver Gráficos</a>
-        </div>
+
+
+        <div class="container mt-4 ">
+            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+            <div class="row">
+                <h1>Controla tus Gastos, Ventas y Pedidos</h1>
+<div class="d-flex justify-content-left mt-2 mb-2">
+    <a href="{% url 'barcodes' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Registrar Producto</a>
+    <a href="{% url 'add_product_to_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Agregar Producto a Stock</a>
+    <a href="{% url 'lista_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Lista de Productos en Stock</a>
+    <a href="{% url 'graficar_datos' %}" class="btn btn-primary" style="margin-left: 20px; padding: 5px 10px; font-size: 15px;">Ver Gráficos</a>
+</div>
+
+
     </div>
     
     <hr>
     
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs" id="myTab" role="tablist" >
         <li class="nav-item green-tab active" role="presentation">
             <a class="nav-link" id="home-tab" href="{% url 'dashboard' %}" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
         </li>
@@ -34,7 +38,7 @@
     <div class="tab-content" style="border: 1px solid #cae9be; padding: 10px; margin: 10px; border-radius: 20px 12px 31px;" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row mt-4">
-                <div class="mx-auto">
+                <div class="mx-auto ">
                     <div class="var">
                         <div class="card-header">
                             <div class="container-fluid">
@@ -54,7 +58,7 @@
                         </ul>
                     </div>
                 </div>
-            
+                <!-- Aquí puedes agregar más tarjetas de resumen si lo deseas -->
             </div>
         </div>
 
@@ -118,13 +122,27 @@
                     <i class="fas fa-plus"></i> Nuevo Pedido
                 </button>
             </div>
+
+            <!-- listar detalle de pedidos, si los hay -->
             <div class="list-group">
                 {% for pedido in pedidos %}
+
+
+                <hr>
                     <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ pedido.producto }}</h5>
                             <p class="mb-1">{{ pedido.variedad.nombre }} - {{ pedido.cantidad }} unidades</p>
                             <p class="mb-1">Pedido: {{ pedido.fecha_pedido }} - Entrega: {{ pedido.fecha_entrega }}</p>
+                            <p class="mb-1">Dirección de entrega: {{ pedido.direccion }}</p>
+                            <p class="mb-1">Teléfono de contacto: {{ pedido.telefono }}</p>
+                            <p class="mb-1">
+                                {% if pedido.asociar_cliente %}
+                                    Asociado a: {{ pedido.cliente.nombre }} o {{ pedido.miembro.nombre }}
+                                {% else %}
+                                    No asociado a ningún cliente/miembro
+                                {% endif %}
+                            </p>
                         </div>
                         <form action="{% url 'borrar_pedido' pedido.id %}" method="post" class="d-inline">
                             {% csrf_token %}
@@ -136,8 +154,6 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
-
     <!-- Modal para agregar nuevo gasto -->
     <div class="modal fade" id="gastoModal" tabindex="-1" role="dialog" aria-labelledby="gastoModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -152,30 +168,17 @@
                     <form method="POST" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <input type="hidden" name="form_type" value="gasto_form">
-                        <div class="form-group">
-                            <label for="id_tipo_gasto">Tipo de Gasto</label>
-                            <input type="text" id="id_tipo_gasto" name="tipo_gasto" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_descripcion">Descripción</label>
-                            <input type="text" id="id_descripcion" name="descripcion" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_variedad">Variedad</label>
-                            <select id="id_variedad" name="variedad" class="form-control">
-                                {% for variedad in variedades %}
-                                    <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_monto">Monto ($)</label>
-                            <input type="number" id="id_monto" name="monto" class="form-control" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_fecha">Fecha</label>
-                            <input type="date" id="id_fecha" name="fecha" class="form-control" required>
-                        </div>
+                        {% for field in gasto_form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ field.errors|join:", " }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                         <button type="submit" class="btn btn-primary">Agregar Gasto</button>
                     </form>
                 </div>
@@ -196,29 +199,18 @@
                 <div class="modal-body">
                     <form method="POST" class="needs-validation" novalidate>
                         {% csrf_token %}
-                        <input type="hidden" name="form_type" value="pedido_form">
-                        <div class="form-group">
-                            <label for="id_producto">Producto</label>
-                            <select id="id_producto" name="producto" class="form-control">
-                                {% for stock in productos_en_stock %}
-                                    <option value="{{ stock.product.id }}">{{ stock.product.name }} (Disponible: {{ stock.quantity }})</option>
-                                {% empty %}
-                                    <option value="">No hay productos en stock</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_cantidad">Cantidad</label>
-                            <input type="number" id="id_cantidad" name="cantidad" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_precio_unitario">Precio Unitario</label>
-                            <input type="number" id="id_precio_unitario" name="precio_unitario" class="form-control" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_fecha">Fecha</label>
-                            <input type="date" id="id_fecha" name="fecha" class="form-control" required>
-                        </div>
+                        <input type="hidden" name="form_type" value="venta_form">
+                        {% for field in venta_form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ field.errors|join:", " }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                         <button type="submit" class="btn btn-primary">Agregar Venta</button>
                     </form>
                 </div>
@@ -227,86 +219,36 @@
     </div>
 
     <!-- Modal para agregar nuevo pedido -->
-<div class="modal fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pedidoModalLabel">Agregar Nuevo Pedido</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pedidoModalLabel">Agregar Nuevo Pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="pedido_form">
+                        {% for field in pedido_form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ field.errors|join:", " }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Agregar Pedido</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                <form method="POST" class="needs-validation" novalidate>
-                    {% csrf_token %}
-                    <input type="hidden" name="form_type" value="pedido_form">
-                    <div class="form-group">
-                        <label for="id_producto">Producto</label>
-                        <select id="id_producto" name="producto" class="form-control">
-                            {% for stock in productos_en_stock %}
-                                <option value="{{ stock.product.id }}">{{ stock.product.name }} (Disponible: {{ stock.quantity }})</option>
-                            {% empty %}
-                                <option value="">No hay productos en stock</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_cantidad">Cantidad</label>
-                        <input type="number" id="id_cantidad" name="cantidad" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_fecha_pedido">Fecha de Pedido</label>
-                        <input type="date" id="id_fecha_pedido" name="fecha_pedido" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_fecha_entrega">Fecha de Entrega</label>
-                        <input type="date" id="id_fecha_entrega" name="fecha_entrega" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_descripcion">Descripción</label>
-                        <textarea id="id_descripcion" name="descripcion" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_direccion">Dirección de entrega</label>
-                        <input type="text" id="id_direccion" name="direccion" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="id_telefono">Teléfono de contacto</label>
-                        <input type="text" id="id_telefono" name="telefono" class="form-control">
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" id="id_asociar_cliente" name="asociar_cliente" class="form-check-input">
-                        <label for="id_asociar_cliente" class="form-check-label">¿Asociar con cliente/miembro registrado?</label>
-                    </div>                       
-                    <div class="form-group">
-                        <label for="id_cliente">Cliente</label>
-                        <select id="id_cliente" name="cliente" class="form-control">
-                            <option value="">Seleccione un cliente</option>
-                            {% for cliente in clientes %}
-                                <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_miembro">Miembro</label>
-                        <select id="id_miembro" name="miembro" class="form-control">
-                            <option value="">Seleccione un miembro</option>
-                            {% for miembro in miembros %}
-                                <option value="{{ miembro.id }}">{{ miembro.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_variedad">Variedad</label>
-                        <select id="id_variedad" name="variedad" class="form-control">
-                            <option value="">Seleccione una variedad</option>
-                            {% for variedad in variedades %}
-                                <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar Pedido</button>
-                </form>
-            </div>
-            
+        </div>
+    </div>
+
+</div>
 {% endblock %}
