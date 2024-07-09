@@ -2,80 +2,65 @@
 {% load static %}
 
 {% block content %}
-
-
-        <div class="container mt-4 ">
-            <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
-            <div class="row">
-                <h1>Controla tus Gastos, Ventas y Pedidos</h1>
-<div class="d-flex justify-content-left mt-2 mb-2">
-    <a href="{% url 'barcodes' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Registrar Producto</a>
-    <a href="{% url 'add_product_to_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Agregar Producto a Stock</a>
-    <a href="{% url 'lista_stock' %}" class="btn btn-primary" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Lista de Productos en Stock</a>
-    <a href="{% url 'graficar_datos' %}" class="btn btn-primary" style="margin-left: 20px; padding: 5px 10px; font-size: 15px;">Ver Gráficos</a>
-</div>
-
-
+<div class="container mt-4">
+    <input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+    <div class="row hero">
+        <div class="col-12">
+            <h2>Controla tus Gastos, Ventas y Pedidos</h2>
+            <br>
+            <div class="d-flex justify-content-center mt-2 mb-2">
+                <a href="{% url 'barcodes' %}" class="btn btn-primary btn-sm" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Registrar Producto</a>
+                <a href="{% url 'add_product_to_stock' %}" class="btn btn-primary btn-sm" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Agregar Producto a Stock</a>
+                <a href="{% url 'lista_stock' %}" class="btn btn-primary btn-sm" style="margin-right: 20px; padding: 5px 10px; font-size: 15px;">Lista de Productos en Stock</a>
+                <a href="{% url 'graficar_datos' %}" class="btn btn-primary btn-sm" style="margin-left: 20px; padding: 5px 10px; font-size: 15px;">Ver Gráficos</a>
+            </div>
+        </div>
     </div>
-    
-    <hr>
-    
-    <ul class="nav nav-tabs" id="myTab" role="tablist" >
-        <li class="nav-item green-tab active" role="presentation">
-            <a class="nav-link" id="home-tab" href="{% url 'dashboard' %}" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
+</div>
+ 
+    <hr>  
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active nav-link-green" id="home-tab" href="{% url 'dashboard' %}" role="tab" aria-controls="home" aria-selected="true">Resumen</a>
         </li>
-        <li class="nav-item green-tab" role="presentation">
-            <a class="nav-link" id="gastos-tab" data-toggle="tab" href="#gastos" role="tab" aria-controls="gastos" aria-selected="false"><strong>Gastos</strong></a>
+        <li class="nav-item">
+            <a class="nav-link nav-link-green" id="gastos-tab" data-toggle="tab" href="#gastos" role="tab" aria-controls="gastos" aria-selected="false">Gastos</a>
         </li>
-        <li class="nav-item green-tab" role="presentation">
-            <a class="nav-link" id="ventas-tab" data-toggle="tab" href="#ventas" role="tab" aria-controls="ventas" aria-selected="false"><strong>Ventas</strong></a>
+        <li class="nav-item">
+            <a class="nav-link nav-link-green" id="ventas-tab" data-toggle="tab" href="#ventas" role="tab" aria-controls="ventas" aria-selected="false">Ventas</a>
         </li>
-        <li class="nav-item green-tab" role="presentation">
-            <a class="nav-link" id="pedidos-tab" data-toggle="tab" href="#pedidos" role="tab" aria-controls="pedidos" aria-selected="false"><strong>Pedidos</strong></a>
+        <li class="nav-item">
+            <a class="nav-link nav-link-green" id="pedidos-tab" data-toggle="tab" href="#pedidos" role="tab" aria-controls="pedidos" aria-selected="false">Pedidos</a>
         </li>
     </ul>
     
-    <div class="tab-content" style="border: 1px solid #cae9be; padding: 10px; margin: 10px; border-radius: 20px 12px 31px;" id="myTabContent">
+    
+    
+    <div class="tab-content mt-3" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <div class="row mt-4">
-                <div class="mx-auto ">
-                    <div class="var">
-                        <div class="card-header">
-                            <div class="container-fluid">
-                                
-                            </div>
-                            <div class="text-center">
-                                <h4>Mis variedades</h4>
-                            </div>                            
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            {% for variedad in variedades %}
-                                <li class="list-group-item">{{ variedad.nombre }}</li>
-                                <hr>
-                            {% empty %}
-                                <li class="list-group-item">No hay variedades registradas.</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                <!-- Aquí puedes agregar más tarjetas de resumen si lo deseas -->
-            </div>
+            <h4>Mis variedades</h4>
+            <ul class="list-group">
+                {% for variedad in variedades %}
+                    <li class="list-group-item">{{ variedad.nombre }}</li>
+                {% empty %}
+                    <li class="list-group-item">No hay variedades registradas.</li>
+                {% endfor %}
+            </ul>
         </div>
 
         <div class="tab-pane fade" id="gastos" role="tabpanel" aria-labelledby="gastos-tab">
-            <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <div><h3>Gastos</h3>
-                <p>Registra y controla tus gastos.</p></div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#gastoModal">
-                    <i class="fas fa-plus"></i> Nuevo Gasto
-                </button>
-            </div>
+            <h3>Gastos</h3>
+            <p>Registra y controla tus gastos.</p>
+            
+            <button type="button" class="btndash  btn-sm " data-toggle="modal" data-target="#gastoModal">
+             Nuevo Gasto &nbsp;<i class="fas fa-plus"></i>
+            </button>
             <div class="list-group">
                 {% for gasto in gastos %}
-                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ gasto.tipo_gasto }}</h5>
-                            <p class="mb-1">{{ gasto.descripcion }} - {{ gasto.variedad.nombre }} - ${{ gasto.monto }} - {{ gasto.fecha }} </p>
+                            <p class="mb-1">{{ gasto.descripcion }} - {{ gasto.variedad.nombre }} - ${{ gasto.monto }} - {{ gasto.fecha }}</p>
                         </div>
                         <form action="{% url 'borrar_gasto' gasto.id %}" method="post" class="d-inline">
                             {% csrf_token %}
@@ -89,19 +74,17 @@
         </div>
 
         <div class="tab-pane fade" id="ventas" role="tabpanel" aria-labelledby="ventas-tab">
-            <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <div><h3>Ventas</h3>
-                <p>Gestiona tus ventas y productos.</p></div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ventaModal">
-                    <i class="fas fa-plus"></i> Nueva Venta
-                </button>
-            </div>
+            <h3>Ventas</h3>
+            <p>Gestiona tus ventas y productos.</p>
+            <button type="button" class="btn8 btn-primary mb-2" data-toggle="modal" data-target="#ventaModal">
+                Nueva Venta &nbsp;<i class="fas fa-plus"></i> 
+            </button>
             <div class="list-group">
                 {% for venta in ventas %}
-                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ venta.producto }}</h5>
-                            <p class="mb-1">{{ venta.variedad.nombre }} - {{ venta.cantidad }} unidades - ${{ venta.precio_unitario }} c/u - {{ venta.fecha }}</p>
+                            <p class="mb-1">{{ venta.variedad.nombre }} &nbsp; {{ venta.cantidad }} unidades &nbsp; ${{ venta.precio_unitario }} c/u &nbsp; {{ venta.fecha }}</p>
                         </div>
                         <form action="{% url 'borrar_venta' venta.id %}" method="post" class="d-inline">
                             {% csrf_token %}
@@ -115,20 +98,14 @@
         </div>
 
         <div class="tab-pane fade" id="pedidos" role="tabpanel" aria-labelledby="pedidos-tab">
-            <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-                <div><h3>Pedidos</h3>
-                <p>Administra tus pedidos y entregas.</p></div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pedidoModal">
-                    <i class="fas fa-plus"></i> Nuevo Pedido
-                </button>
-            </div>
-
-            <!-- listar detalle de pedidos, si los hay -->
+            <h3>Pedidos</h3>
+            <p>Administra tus pedidos y entregas.</p>
+            <button type="button" class="btn8 btn-primary mb-2" data-toggle="modal" data-target="#pedidoModal">
+               Nuevo Pedido &nbsp;<i class="fas fa-plus"></i> 
+            </button>
             <div class="list-group">
                 {% for pedido in pedidos %}
-
-                <hr>
-                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ pedido.producto }}</h5>
                             <p class="mb-1">{{ pedido.variedad.nombre }} - {{ pedido.cantidad }} unidades</p>
@@ -155,128 +132,129 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
+</div>
 
-    <!-- Modal para agregar nuevo gasto -->
-    <div class="modal fade" id="gastoModal" tabindex="-1" role="dialog" aria-labelledby="gastoModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gastoModalLabel">Agregar Nuevo Gasto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        <input type="hidden" name="form_type" value="gasto_form">
-                        {% for field in gasto_form %}
-                            <div class="form-group">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ field.errors|join:", " }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary">Agregar Gasto</button>
-                    </form>
-                </div>
+<!-- Modal para agregar nuevo gasto -->
+<div class="modal fade" id="gastoModal" tabindex="-1" role="dialog" aria-labelledby="gastoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gastoModalLabel">Agregar Nuevo Gasto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="gasto_form">
+                    {% for field in gasto_form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Agregar Gasto</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal para agregar nueva venta -->
-    <div class="modal fade" id="ventaModal" tabindex="-1" role="dialog" aria-labelledby="ventaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ventaModalLabel">Agregar Nueva Venta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        <input type="hidden" name="form_type" value="venta_form">
-                        {% for field in venta_form %}
-                            <div class="form-group">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ field.errors|join:", " }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary">Agregar Venta</button>
-                    </form>
-                </div>
+<!-- Modal para agregar nueva venta -->
+<div class="modal fade" id="ventaModal" tabindex="-1" role="dialog" aria-labelledby="ventaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventaModalLabel">Agregar Nueva Venta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="venta_form">
+                    {% for field in venta_form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Agregar Venta</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal para agregar nuevo pedido -->
-    <div class="modal fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pedidoModalLabel">Agregar Nuevo Pedido</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        <input type="hidden" name="form_type" value="pedido_form">
-                        {% for field in pedido_form %}
-                            <div class="form-group">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ field.errors|join:", " }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary">Agregar Pedido</button>
-                    </form>
-                </div>
+<!-- Modal para agregar nuevo pedido -->
+<div class="modal fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="pedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pedidoModalLabel">Agregar Nuevo Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="pedido_form">
+                    {% for field in pedido_form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Agregar Pedido</button>
+                </form>
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var pedidoModal = document.getElementById('pedidoModal');
-        if (pedidoModal) {
-            pedidoModal.addEventListener('show.bs.modal', function () {
-                var asociarCheckbox = document.getElementById('id_asociar_cliente');
-                var clienteField = document.getElementById('id_cliente').closest('.form-group');
-                var miembroField = document.getElementById('id_miembro').closest('.form-group');
-    
-                function toggleFields() {
-                    if (asociarCheckbox.checked) {
-                        clienteField.style.display = 'block';
-                        miembroField.style.display = 'block';
-                    } else {
-                        clienteField.style.display = 'none';
-                        miembroField.style.display = 'none';
-                    }
-                }
-    
-                asociarCheckbox.addEventListener('change', toggleFields);
-                toggleFields(); // Llamar al inicio para establecer el estado inicial
-            });
-        }
+    $(document).ready(function() {
+        // To prevent repeating modal on a focus
+        $('#gastoModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
     });
-    </script>
+</script>
+
+<script>
+    $(document).ready(function() {
+        // To prevent repeating modal on a focus
+        $('#ventaModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // To prevent repeating modal on a focus
+        $('#pedidoModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
+    });
+</script>
 {% endblock %}

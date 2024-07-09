@@ -197,29 +197,22 @@ class BarcodeForm(forms.Form):
 class GastoOperativoForm(forms.ModelForm):
     class Meta:
         model = GastoOperativo
-        fields = ['tipo_gasto', 'descripcion', 'monto', 'fecha', 'variedad']
+        fields = ['tipo_gasto', 'descripcion', 'monto', 'fecha']
         widgets = {
-            'fecha': forms.DateInput(attrs={'placeholder': 'AAAA-MM-DD'}),
-        }
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
+        }       
 
 class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
-        fields = ['producto', 'cantidad', 'precio_unitario', 'fecha', 'variedad']
+        fields = ['producto', 'variedad', 'cantidad', 'precio_unitario', 'fecha']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        if user:
-            self.fields['producto'].queryset = Product.objects.filter(user=user)
-
-    def save(self, commit=True):
-        venta = super(VentaForm, self).save(commit=False)
-        if self.user:
-            venta.user = self.user
-        if commit:
-            venta.save()
-        return venta
+        super(VentaForm, self).__init__(*args, **kwargs)
+        self.fields['variedad'].required = False
 
 class PedidoForm(forms.ModelForm):
     producto = forms.ModelChoiceField(
@@ -305,7 +298,7 @@ class AddToStockForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['product'].queryset = Product.objects.all().order_by('name')
-        self.fields['product'].label_from_instance = lambda obj: f"{obj.name} - {obj.variedad.nombre if obj.variedad else 'Sin variedad'} - {obj.code}"
+        self.fields['product'].label_from_instance = lambda obj: f"{obj.name} - {obj.variedad.nombre if obj.variedad else ''} - {obj.code}"
         
 class PlanProduccionForm(forms.ModelForm):
     class Meta:

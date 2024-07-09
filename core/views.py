@@ -1055,7 +1055,7 @@ def visualizacion_graficos(request):
 @login_required
 def dashboard(request):
     gasto_form = GastoOperativoForm()
-    venta_form = VentaForm(user=request.user)
+    venta_form = VentaForm()
     pedido_form = PedidoForm()
 
     clientes = Cliente.objects.all().order_by('nombre')
@@ -1067,16 +1067,14 @@ def dashboard(request):
             gasto_form = GastoOperativoForm(request.POST)
             if gasto_form.is_valid():
                 gasto = gasto_form.save(commit=False)
-                if gasto.variedad.user == request.user:
-                    gasto.save()
-                    messages.success(request, 'Gasto guardado correctamente.')
-                    return redirect('dashboard')
-                else:
-                    messages.error(request, 'No tienes permiso para crear un gasto para esta variedad.')
+                gasto.user = request.user
+                gasto.save()
+                messages.success(request, 'Gasto guardado correctamente.')
+                return redirect('dashboard')
             else:
                 messages.error(request, f'Error en el formulario de gasto: {gasto_form.errors}')
         elif form_type == 'venta_form':
-            venta_form = VentaForm(request.POST, user=request.user)
+            venta_form = VentaForm(request.POST)
             if venta_form.is_valid():
                 venta = venta_form.save(commit=False)
                 venta.user = request.user
@@ -1109,7 +1107,7 @@ def dashboard(request):
         'pedido_form': pedido_form,
         'clientes': clientes,
         'miembros': miembros,
-        'gastos': GastoOperativo.objects.filter(variedad__user=request.user),
+        'gastos': GastoOperativo.objects.filter(user=request.user),  # Filtrar por usuario
         'ventas': Venta.objects.filter(user=request.user),
         'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),
         'variedades': Variedad.objects.filter(user=request.user),
@@ -1118,9 +1116,15 @@ def dashboard(request):
     }
     return render(request, 'core/dashboard.html', context)
 
+
+
 def lista_pedidos(request):
     pedidos = Pedido.objects.all().order_by('-fecha_pedido')
     return render(request, 'core/dashboard.html', {'pedidos': pedidos})
+
+def lista_gastos(request):
+    pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
+    return render(request, 'core/dashboard.html', {'gastos': lista_gastos})
 
 def borrar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)

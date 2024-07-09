@@ -156,7 +156,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        variedad_nombre = self.variedad.nombre if self.variedad else "Sin variedad"
+        variedad_nombre = self.variedad.nombre if self.variedad else ""
         return f"{self.name} - {variedad_nombre} - {self.code}"
 
 class Stock(models.Model):
@@ -200,10 +200,10 @@ class GastoOperativo(models.Model):
     descripcion = models.TextField()
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateField()
-    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.tipo_gasto} - ${self.monto} ({self.variedad.nombre})'
+        return f'{self.tipo_gasto} - ${self.monto}'
 
 
 class Material(models.Model):
@@ -299,7 +299,7 @@ class Venta(models.Model):
     cantidad = models.IntegerField()
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateField()
-    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE)
+    variedad = models.ForeignKey('Variedad', on_delete=models.SET_NULL, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -697,8 +697,8 @@ nav.active ul li a:hover span {
 .hero h1, 
 .hero h2   {
   background: 
-  linear-gradient(to bottom right, white, #3c0288 30%, #0e6e94 36%, #61e081 50%),
-  linear-gradient(to left, #7ae061, #1b8a1b); 
+  linear-gradient(to bottom right, white, #3c0288 30%, #0e6e94 36%, #54d474 50%),
+  linear-gradient(to left, #68ce4f, #1b8a1b); 
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -3319,7 +3319,7 @@ transform: translateY(-10px);
 }
 
 .btn8.btn8:hover {
-  background: linear-gradient(135deg, rgb(163, 250, 137) 0%, rgba(205, 190, 228, 0.9) 16%, rgb(162, 240, 192) 100%);
+  background: linear-gradient(135deg, rgb(163, 250, 137) 0%, rgba(7, 104, 47, 0.9) 16%, rgb(113, 245, 163) 100%);
   transition: background 2.5s ease;
 }
 .star-checkbox {
@@ -3371,6 +3371,7 @@ transform: translateY(-10px);
   cursor: pointer;
   position: relative;
   border-radius: 20px 12px 31px;
+  border: 1px;
   isolation: isolate;
   display: inline-grid;
   place-content: center;
@@ -3395,8 +3396,13 @@ transform: translateY(-10px);
   white-space: nowrap;
 }
 
+
+.btncode:hover {
+  border-color: #277e04;
+}
+
 .btncode:active {
-  border-color: #4a4a4a;
+  border-color: #ca6a6a;
   outline: 0;
 }
 
@@ -3405,9 +3411,7 @@ transform: translateY(-10px);
   outline: 0;
 }
 
-.btncode:hover {
-  border-color: #047e0e;
-}
+ 
 
 .btncode:focus:not(:active) {
   box-shadow: rgba(255, 0, 0, 0.842) 0 0 0 .125em;
@@ -3459,7 +3463,7 @@ transform: translateY(-10px);
   margin-right: 9px;
  
 }
-/* dashboar dtarjetas */
+
 
  /* Estilos para el contenedor personalizado */
  .custom-container {
@@ -3487,11 +3491,28 @@ transform: translateY(-10px);
   font-size: 1.1rem; 
 }
 
+/* gasto operativo pestanas */
+.nav-link-green {
+  color: #28a745;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #fff; 
+  border-color: #28a745; 
+}
+
+.nav-link-green:hover {
+  background-color: #2a9c3d9d;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+}
+
+
 
 /* Estilo para el checkbox cuando está marcado */
 .form-check-input:checked + .form-check-label::before {
-  background-color: #4CAF50; /* Verde */
-  border-color: #4CAF50; /* Borde verde */
+  background-color: #4caf4fe0; /* Verde */
+  border-color: #4caf4fd2; /* Borde verde */
 }
 
 /* Estilo para el checkbox antes de ser marcado */
@@ -3843,23 +3864,65 @@ transform: translateY(-10px);
   border-radius: 20px 12px 31px;
 }
 
-
-.btn8 {
+.btndash {
   align-items: center;
   appearance: none;
-  background-color: #c1fddb;
-  border: 1px solid #dbdbdb;
+  background-color: #4dbb7d;
+  border: 1px solid #50c72b;
   border-radius: 20px 12px 31px;
   margin-bottom: 0.2rem;
   box-shadow: none;
   margin: 1px;
   box-sizing: border-box;
-  color: #817a7a;
+  color: #ffffff;
   cursor: pointer;
   display: inline-flex;
   transition: background 1.5s ease; 
   font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 1rem;
+  font-weight: 500;
+  height: 2.5em;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) 1em;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+  margin-bottom: 0.8rem;
+  
+}
+
+
+.btndash.btndash:hover {
+  background: linear-gradient(135deg, rgb(163, 250, 137) 0%, rgba(240, 43, 43, 0.9) 16%, rgb(243, 232, 73) 100%);
+  transition: background 2.5s ease;
+  color: white;
+}
+
+
+
+.btn8 {
+  align-items: center;
+  appearance: none;
+  background-color: #4dbb7d;
+  border: 1px solid #50c72b;
+  border-radius: 20px 12px 31px;
+  margin-bottom: 0.2rem;
+  box-shadow: none;
+  margin: 1px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  transition: background 1.5s ease; 
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
   height: 2.5em;
   justify-content: center;
   text-decoration: none;
