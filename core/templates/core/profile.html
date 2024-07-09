@@ -1,0 +1,15 @@
+<!-- templates/core/profile.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<input type="button" class="btn-prev" value="↩" onClick="javascript:history.go(-1);">
+
+  <div class="container mt-5">
+    <h2>Perfil de Usuario</h2>
+    <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Nombre completo:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <a href="{% url 'edit_profile' %}" class="btn8 btn-primary">Editar Perfil</a>
+  </div>
+{% endblock %}

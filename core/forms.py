@@ -36,6 +36,30 @@ class RegisterForm(UserCreationForm):
         return user
 
 
+class ProfileEditForm(forms.ModelForm):
+    email = forms.EmailField(label="Email")
+    fullname = forms.CharField(label="Nombre completo")
+
+    class Meta:
+        model = User
+        fields = ("username", "fullname", "email")
+
+    def save(self, commit=True):
+        user = super(ProfileEditForm, self).save(commit=False)
+        full_name = self.cleaned_data["fullname"].split()
+        if len(full_name) > 1:
+            user.first_name = full_name[0]
+            user.last_name = " ".join(full_name[1:])
+        else:
+            user.first_name = full_name[0]
+            user.last_name = ""
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user
+
+
+
 class VariedadForm(forms.ModelForm):
     class Meta:
         model = Variedad

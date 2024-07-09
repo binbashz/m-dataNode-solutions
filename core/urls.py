@@ -23,6 +23,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('signup/', views.signup, name='signup'),
+    path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('delete_account/', views.delete_account, name='delete_account'),
     path('logout/', views.exit, name='exit'),
     path('products/', views.products, name='products'),
 

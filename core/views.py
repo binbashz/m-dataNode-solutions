@@ -37,13 +37,14 @@ import os
 from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
-    Muestra, TipoAnalisis, AnalisisProgramado, 
+    Muestra, TipoAnalisis, AnalisisProgramado,
     ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,
     GastoOperativo, Venta, Pedido, PlanProduccion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
 from .forms import (
-    RegisterForm, VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm,
+    RegisterForm,ProfileEditForm,
+    VariedadForm, CondicionesCultivoForm, TratamientoFitofarmaceuticoForm,
     AnalisisCalidadForm, CultivoForm, AnalisisCostosForm, ClienteForm,
     MuestraForm, AnalisisProgramadoForm, ResultadoAnalisisForm, GastoOperativoForm,
     VentaForm, PedidoForm, PlanProduccionForm, TareaProduccionForm,
@@ -148,6 +149,49 @@ def mi_vista(request):
         'nombre_usuario': request.user.get_username()
     }
     return render(request, 'base.html', context)
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu perfil ha sido actualizado.')
+            return redirect('profile')
+    else:
+        user = request.user
+        initial_data = {
+            'email': user.email,
+            'fullname': f'{user.first_name} {user.last_name}'
+        }
+        form = ProfileEditForm(instance=user, initial=initial_data)
+    return render(request, 'core/edit_profile.html', {'form': form})
+
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = authenticate(username=request.user.username, password=password)
+        
+        if user is not None:
+            # Autenticación correcta, eliminar cuenta
+            user.delete()
+            logout(request)  # Cerrar sesión después de eliminar la cuenta
+            messages.success(request, 'Tu cuenta ha sido eliminada exitosamente.')
+            return redirect('home')  
+        else:
+            # Contraseña incorrecta
+            messages.error(request, 'La contraseña ingresada no es válida. Inténtalo de nuevo.')
+            return redirect('profile')  
+
+    return redirect('profile') 
+
+
+@login_required
+def profile(request):
+    return render(request, 'core/profile.html')
 
 
 def exit(request):

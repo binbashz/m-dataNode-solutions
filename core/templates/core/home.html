@@ -75,7 +75,7 @@
                     </table>
                 </div>
                 
-            
+
                 <div class="exercise-table" onclick="window.location.href='plants'">
                     <h3><i class="fas fa-search"></i> Buscador de Plantas</h3>
                     <p>Nuestra plataforma te ofrece acceso a una extensa base de datos con más de 2300 variedades de cultivos de cannabis.</p>
@@ -103,15 +103,28 @@
                     </ul>
                 </div>
             
-                <div class="challenges"  onclick="window.location.href='bom/nuevo'">
-                    <h2>Creación de Lista de Materiales (BOM)
-                   </h2>
-                    <ul>
-                        <li>crear una nueva lista de materiales</li>
-                        <li>para tus productos</li>
-                       
-                    </ul>
-                </div>
+                <div class="challenges">
+                    <div class="half-card"  onclick="window.location.href='bom/nuevo'">
+                     <h2>Creación de Lista de Materiales (BOM)
+                 </h2>
+                  <span>
+                      crear una nueva lista de materiales
+                      para tus productos  
+                      </span>  
+                  </div>
+                  <hr>
+                  <div class="half-card" onclick="window.location.href='/planes-produccion'">
+                      <h2>Planes de Producción</h2>
+              <span>
+                gestionar tus planes de producción
+                para optimizar tu proceso
+              </span>
+                  </div>
+              </div>
+
+
+
+                
                 <div class="activity-feed">
                     <div class="half-card" onclick="window.location.href='programar-analisis'">
                         <br>
@@ -423,10 +436,12 @@
             
 
             <div class="calories">
-                    
-                    <a href="{% url 'exit' %}" class="btnexit btn-outline-primary" id="exit">Salir</a>
-                </div>
-                
+                    <a href="{% url 'profile' %}" class="btn8 btn-outline-primary" id="profile">Ver Perfil</a>
+                <br> <br>
+                    <a href="{% url 'edit_profile' %}" class="btn8 btn-outline-secondary" id="edit-profile">Editar Perfil</a>
+                    <br> <br><br> <br><br> 
+                    <a href="{% url 'exit' %}" class="btnexit btn-outline-primary" id="exit">Salir</a> 
+
             </div>
         
             

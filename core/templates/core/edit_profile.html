@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<input type="button" class="btn-prev" value="↩" onClick="javascript:history.go(-1);">
+
+<div class="container mt-5">
+  <h2>Editar Perfil</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn8 btn-primary">Guardar Cambios</button>
+  </form>
+  <a href="{% url 'profile' %}" class="btn8 btn-secondary btn-sm mt-3">Cancelar</a>
+
+  <!-- Botón para eliminar cuenta -->
+  <button type="button" class="btn8 btn-danger btn-sm mt-3" data-toggle="modal" data-target="#confirmDeleteModal"
+  style="background-color: #dc3545; border-color: #dc3545; padding: 0.25rem 0.5rem;"
+  onmouseover="this.style.backgroundColor='#c82333'; this.style.borderColor='#c82333';"
+  onmouseout="this.style.backgroundColor='#dc3545'; this.style.borderColor='#dc3545';">
+  Eliminar Cuenta
+</button>
+
+
+
+  <!-- Modal de confirmación para eliminar cuenta -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación de Cuenta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Para confirmar, ingresa tu contraseña:</p>
+          <form method="post" action="{% url 'delete_account' %}">
+            {% csrf_token %}
+            <input type="password" name="password" class="form-control" required>
+            <button type="submit" class="btncode btn-danger mt-3"
+            style="background-color: #dc3545; border-color: #dc3545; color: #FFFFFF; display: flex; align-items: center;"
+            onmouseover="this.style.backgroundColor='#801B25'; this.style.borderColor='#c82333';"
+            onmouseout="this.style.backgroundColor='#dc3545'; this.style.borderColor='#dc3545';">
+      Eliminar Cuenta &nbsp; <i class="fa fa-trash" style="margin-left: 5px;"></i>
+    </button> 
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
