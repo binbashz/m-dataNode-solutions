@@ -52,24 +52,24 @@
                     <h2> Servicios Avanzados</h2>
                     <table>
                         <tr>
-                            <th>Simulación de rendimiento</th>
+                            <th>Simulación de rendimiento de tus Cultivos </th>
                             <th> Gestión de Clientes y Miembros</th>
                             <th>Análisis de Costos y Presupuestos</th>
                         </tr>
                         <tr>
                             <td> Recomendaciones de cultivo personalizadas </td>
-                            <td>Crear o Listar Clientes</td>
-                            <td>Controla tus Gastos, Ventas y Pedidos</td>
+                            <td>Registrar nuevos clientes</td>
+                            <td>Controla tus Gastos y Ventas</td>
                         </tr>
                         <tr>
-                            <td> Análisis de costos y presupuestos</td>
-                            <td>Seguimiento cuota de Miembros</td>
-                            <td>Historial de pagos </td>
+                            <td>Análisis de costos y presupuestos</td>
+                            <td>Recepción de Muestra</td>
+                            <td>Seguimiento de Ingresos</td>
                         </tr>
                         <tr>
                             <td>Variables de Condiciones de Cultivo</td>
-                            <td>Agenda Pedidos.</td>
-                            <td>Grafica Ingresos , Egresos y Pedidos</td>
+                            <td>Registro de Resultados</td>
+                            <td>Gráficas de Finanzas</td>
                         </tr>
                        
                     </table>
@@ -84,15 +84,17 @@
                 </div>
                             
 
-                <div class="calories"  onclick="window.location.href='dashboard'">
-                    <h5>Gestion de Operaciones</h5>
-                    <div><strong>Gastos</strong> </div>
-                    <div><strong>Ventas</strong> </div>
-                    <div><strong> Pedidos</strong></div>
+                <div class="calories" onclick="window.location.href='dashboard'">
+                    <h5>Gestión de Operaciones</h5>
+                    <div style="margin: 2.2rem; font-size: 17px; color: rgba(34, 58, 63, 0.904);"><ion-icon name="cash-outline"></ion-icon> <strong>Gastos</strong></div>
+                    <div style="margin: 2.5rem; font-size: 17px; color: rgba(34, 58, 63, 0.904);"><ion-icon name="cart-outline"></ion-icon> <strong>Ventas</strong></div>
+                    <div style="margin: 3rem; font-size: 17px; color: rgba(34, 58, 63, 0.904);"><ion-icon name="cube-outline"></ion-icon> <strong>Pedidos</strong></div>
                 </div>
+                
+                
             
                 <div class="personal-bests" onclick="window.location.href='graficos'">
-                    <h2><h5>Mis Cultivos</h5></h2>
+                    <h2>Mis Cultivos</h2>
                     <ul>
                         <li>Visualización gráfica de Datos.</li>
                         <li>Humedad</li>
@@ -402,17 +404,25 @@
                     </tr>
                 </table>
             </div>
-            
+               
             
             <div class="calories">
-                <h5>Lorem ipsum </h5>
-                <div><strong>Ver resumen</strong> </div>
-                <div><strong>ver pagos pendientes</strong> </div>
-                <div><strong> ver flujos </strong></div>
-                <p>Ver Reporte de Cuotas Pendientes</p>
+                <div onclick="window.location.href='/barcodes'">
+                    <strong><h5>Registrar Producto</h5></strong>
+                    <p>Crear código de barras y producto</p>
+                </div>
+                <hr>
+                <div onclick="window.location.href='/add-product-to-stock'">
+                    <strong>Agregar Producto a stock</strong>
+                </div>
+                <hr class="no-space"/>
+                <div onclick="window.location.href='/reporte-cuotas'">
+                    <p>Ver Cuotas Pendientes</p>
+                </div>
             </div>
+            
 
-            <div class="calories profilex">
+            <div class="calories">
                     
                     <a href="{% url 'exit' %}" class="btnexit btn-outline-primary" id="exit">Salir</a>
                 </div>

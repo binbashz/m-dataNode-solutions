@@ -2,7 +2,7 @@
 
 {% block content %}
 <br>
-<input type="button" class="btn-prev" value="<" onClick="javascript:history.go(-1);">
+<input type="button" class="btn-prev" value="↩" onClick="javascript:history.go(-1);">
 <br>
 <div class="container">
     <div class="row">
@@ -23,12 +23,12 @@
                     <tbody>
                         {% for cuota in cuotas_pendientes %}
                         <tr class="cuotasfondo">
-                            <td><span class="">{{ cuota.miembro.nombre_completo }}</span></td>
+                            <td><span class="coutapendiente">{{ cuota.miembro.nombre_completo }}</span></td>
                             <td>{{ cuota.miembro.numero_socio }}</td>
                             <td>{{ cuota.fecha_pago }}</td>
                             <td><span class="monto-tachado">{{ cuota.monto }}</span></td>
                             <td>{{ cuota.get_periodo_display }}</td>
-                        </tr>
+                        </tr>                        
                         {% empty %}
                         <tr>
                             <td colspan="5">No hay cuotas pendientes.</td>
