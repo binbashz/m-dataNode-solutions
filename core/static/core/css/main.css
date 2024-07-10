@@ -4449,12 +4449,52 @@ cursor: pointer;
   }
 }
 
+
+/* dashboard - pedidos */
+.pedidolist {
+  border: 1px solid rgba(191, 247, 191, 0.932);
+  border-radius: 20px 12px 31px; 
+  padding: 5px; 
+  margin-bottom: 3px; 
+}
+
+.vpc {
+color: #1a1919be;
+}
+
+.smallclass {
+  color: #1e521ead;
+}
+
+
+.badge {
+  padding: 0.5em 1em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+.badge.bg-success {
+  background-color: #28a745; /* Verde */
+  color: white;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545; /* Rojo */
+  color: white;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107; /* Amarillo */
+  color: black;
+}
+
 /* footer */
 
 .mainfooter  {
   margin-top: 10rem;
   
 }
+
 .mainfooter a {
   margin-top: 5rem;
   color: #2a6b3a;

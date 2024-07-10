@@ -57,9 +57,9 @@
             </button>
             <div class="list-group">
                 {% for gasto in gastos %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center pedidolist">
                         <div>
-                            <h5 class="mb-1">{{ gasto.tipo_gasto }}</h5>
+                            <h5 class="mb-1 vpc">{{ gasto.tipo_gasto }}</h5>
                             <p class="mb-1">{{ gasto.descripcion }} - {{ gasto.variedad.nombre }} - ${{ gasto.monto }} - {{ gasto.fecha }}</p>
                         </div>
                         <form action="{% url 'borrar_gasto' gasto.id %}" method="post" class="d-inline">
@@ -81,9 +81,9 @@
             </button>
             <div class="list-group">
                 {% for venta in ventas %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center pedidolist">
                         <div>
-                            <h5 class="mb-1">{{ venta.producto }}</h5>
+                            <h5 class="mb-1 vpc">{{ venta.producto }}</h5>
                             <p class="mb-1">{{ venta.variedad.nombre }} &nbsp; {{ venta.cantidad }} unidades &nbsp; ${{ venta.precio_unitario }} c/u &nbsp; {{ venta.fecha }}</p>
                         </div>
                         <form action="{% url 'borrar_venta' venta.id %}" method="post" class="d-inline">
@@ -105,19 +105,19 @@
             </button>
             <div class="list-group">
                 {% for pedido in pedidos %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="list-group-item d-flex justify-content-between align-items-center pedidolist">
                         <div>
-                            <h5 class="mb-1">{{ pedido.producto }}</h5>
-                            <p class="mb-1">{{ pedido.variedad.nombre }}  {{ pedido.cantidad }} unidades</p>
-                            <p class="mb-1">Pedido: {{ pedido.fecha_pedido }} - Entrega: {{ pedido.fecha_entrega }}</p>
-                            <p class="mb-1">Info: {{ pedido.descripcion }}</p>
-                            <p class="mb-1">Dirección de entrega: {{ pedido.direccion }}</p>
-                            <p class="mb-1">Teléfono de contacto: {{ pedido.telefono }}</p>
-                            <p class="mb-1">
+                            <h5 class="mb-2 vpc">{{ pedido.producto }}</h5>
+                            <p class="mb-2">{{ pedido.variedad.nombre }}  {{ pedido.cantidad }} unidades</p>
+                            <p class="mb-2">Pedido: {{ pedido.fecha_pedido }} - Entrega: {{ pedido.fecha_entrega }}</p>
+                            <p class="mb-2">Info: {{ pedido.descripcion }}</p>
+                            <p class="mb-2">Dirección de entrega: {{ pedido.direccion }}</p>
+                            <p class="mb-2">Teléfono de contacto: {{ pedido.telefono }}</p>
+                            <p class="mb-2">
                                 {% if pedido.cliente %}
-                                  <strong><small> Asociado al cliente: {{ pedido.cliente.nombre }}  </small></strong>
+                                  <strong><small class="smallclass"> Asociado al cliente: {{ pedido.cliente.nombre }}  </small></strong>
                                 {% elif pedido.miembro %}
-                                <strong><small> Asociado al miembro: {{ pedido.miembro.nombre }}  </small></strong>
+                                <strong><small class="smallclass"> Asociado al miembro: {{ pedido.miembro.nombre }}  </small></strong>
                                 {% else %}
                                     No asociado a ningún cliente/miembro
                                 {% endif %}
