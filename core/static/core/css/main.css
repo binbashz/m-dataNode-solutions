@@ -4467,25 +4467,45 @@ color: #1a1919be;
 }
 
 
+.link-btn.disabled {
+  opacity: 0.3; /* Ejemplo de reducción de opacidad */
+  cursor: not-allowed; /* Cambia el cursor a no permitido */
+  pointer-events: none; /* Desactiva eventos de puntero */
+}
+
 .badge {
+  opacity: 0.8;
   padding: 0.5em 1em;
-  border-radius: 0.25rem;
-  font-size: 0.9em;
+  border-radius: 20px 12px 31px;
+  font-size: 0.7em;
 }
 
 .badge.bg-success {
-  background-color: #28a745; /* Verde */
+  background-color: #28a746a4;
   color: white;
 }
 
+.link-btn.pendiente {
+  background-color: #ffc107dc; 
+}
+
+
 .badge.bg-danger {
-  background-color: #dc3545; /* Rojo */
+  background-color: #dc354685; 
   color: white;
+}
+
+.badge.bg-secondary {
+  background-color: #ffc107c4;
 }
 
 .badge.bg-warning {
-  background-color: #ffc107; /* Amarillo */
-  color: black;
+  background-color: #fff8e7; /* Amarillo más claro */
+  color: #5a3e0a; /* Color de texto más oscuro para mejor contraste */
+}
+
+.soft-strong {
+  font-weight: 500;  
 }
 
 /* footer */

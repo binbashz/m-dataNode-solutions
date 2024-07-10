@@ -1201,6 +1201,19 @@ def lista_pedidos(request):
     pedidos = Pedido.objects.all().order_by('-fecha_pedido')
     return render(request, 'core/dashboard.html', {'pedidos': pedidos})
 
+@login_required
+def actualizar_estado_pedido(request, pedido_id):
+    if request.method == 'POST':
+        pedido = get_object_or_404(Pedido, id=pedido_id)
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado in dict(Pedido.ESTADO_CHOICES):
+            pedido.estado = nuevo_estado
+            pedido.save()
+            messages.success(request, f'Estado del pedido actualizado a {pedido.get_estado_display()}.')
+        else:
+            messages.error(request, 'Estado no válido.')
+    return redirect('dashboard')
+
 def lista_gastos(request):
     pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
     return render(request, 'core/dashboard.html', {'gastos': lista_gastos})

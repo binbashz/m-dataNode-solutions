@@ -317,6 +317,14 @@ class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
     miembro = models.ForeignKey(Miembro, on_delete=models.SET_NULL, null=True, blank=True)
     variedad = models.ForeignKey(Variedad, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('completado', 'Completado'),
+        ('cancelado', 'Cancelado'),
+    ]
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
+
 
     def __str__(self):
         return f'{self.producto} - {self.cantidad} unidades ({self.fecha_entrega})'

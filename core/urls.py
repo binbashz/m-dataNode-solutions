@@ -94,6 +94,7 @@ urlpatterns = [
     path('graficar-datos/', views.graficar_datos, name='graficar_datos'),
     path('borrar_gasto/<int:gasto_id>/', views.borrar_gasto, name='borrar_gasto'),
     path('borrar_venta/<int:venta_id>/', views.borrar_venta, name='borrar_venta'),
+    path('actualizar-estado-pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
     path('borrar_pedido/<int:pedido_id>/', views.borrar_pedido, name='borrar_pedido'),
     
     path('search/', views.search_results, name='search_results'),
