@@ -125,7 +125,7 @@ AUTH_USER_MODEL = 'auth.User'
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d', '%d-%m-%Y')
 
-
+LANGUAGE_CODE = 'es'
 
 USE_I18N = True
 USE_L10N = False # Here

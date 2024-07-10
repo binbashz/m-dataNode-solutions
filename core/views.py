@@ -38,7 +38,7 @@ from .models import (
     Variedad, CondicionesCultivo, Cultivo, AnalisisCostos,
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado,
-    ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,
+    ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,Sale,
     GastoOperativo, Venta, Pedido, PlanProduccion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
@@ -925,8 +925,6 @@ def barcode_form2(request):
     return render(request, 'core/barcode_form2.html', {'form': form})
 
 
-
-
 @login_required
 def decode_barcode_view(request):
     if request.method == 'GET':
@@ -957,128 +955,165 @@ def decode_barcode(barcode_data):
     return product_name, product_code
 
 
-@login_required
+
 # Barra de Busqueda
+@login_required
 def search_results(request):
     query = request.GET.get('q')
     results = {}
 
     if query:
+        # Search in Variedad model
         variedades = Variedad.objects.filter(
             Q(nombre__icontains=query) | Q(descripcion__icontains=query)
         )
         results['variedades'] = variedades
 
-        tipos_analisis = TipoAnalisis.objects.filter(
-            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(metodo__icontains=query)
-        )
-        results['tipos_analisis'] = tipos_analisis
-
+        # Search in CondicionesCultivo model
         condiciones_cultivo = CondicionesCultivo.objects.filter(
             Q(variedad__nombre__icontains=query) | Q(tipo_suelo__icontains=query)
         )
         results['condiciones_cultivo'] = condiciones_cultivo
 
+        # Search in Cultivo model
         cultivos = Cultivo.objects.filter(
             Q(variedad__nombre__icontains=query) | Q(cantidad_plantas__icontains=query)
         )
         results['cultivos'] = cultivos
 
+        # Search in AnalisisCostos model
         analisis_costos = AnalisisCostos.objects.filter(
             Q(id__icontains=query) | Q(costo_semilla__icontains=query)
         )
         results['analisis_costos'] = analisis_costos
 
+        # Search in TratamientoFitofarmaceutico model
         tratamientos_fitofarmaceuticos = TratamientoFitofarmaceutico.objects.filter(
             Q(variedad__nombre__icontains=query) | Q(tratamiento__icontains=query)
         )
         results['tratamientos_fitofarmaceuticos'] = tratamientos_fitofarmaceuticos
 
+        # Search in AnalisisCalidad model
         analisis_calidad = AnalisisCalidad.objects.filter(
             Q(variedad__nombre__icontains=query) | Q(tipo_analisis__icontains=query) | Q(resultado__icontains=query)
         )
         results['analisis_calidad'] = analisis_calidad
 
+        # Search in Cliente model
         clientes = Cliente.objects.filter(
             Q(nombre__icontains=query) | Q(direccion__icontains=query) | Q(telefono__icontains=query) | Q(email__icontains=query)
         )
         results['clientes'] = clientes
 
+        # Search in TipoAnalisis model
+        tipos_analisis = TipoAnalisis.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(metodo__icontains=query)
+        )
+        results['tipos_analisis'] = tipos_analisis
+
+        # Search in Muestra model
         muestras = Muestra.objects.filter(
             Q(codigo__icontains=query) | Q(cliente__nombre__icontains=query)
         )
         results['muestras'] = muestras
 
+        # Search in AnalisisProgramado model
         analisis_programados = AnalisisProgramado.objects.filter(
-            Q(tipo_analisis__nombre__icontains=query) | Q(prioridad__icontains=query)
+            Q(tipo_analisis__nombre__icontains=query) | Q(muestra__codigo__icontains=query)
         )
         results['analisis_programados'] = analisis_programados
 
+        # Search in ResultadoAnalisis model
         resultados_analisis = ResultadoAnalisis.objects.filter(
             Q(analisis_programado__tipo_analisis__nombre__icontains=query) | Q(observaciones__icontains=query)
         )
         results['resultados_analisis'] = resultados_analisis
 
+        # Search in Product model
         productos = Product.objects.filter(
-            Q(name__icontains=query) | Q(code__icontains=query)
+            Q(name__icontains=query) | Q(code__icontains=query) | Q(variedad__nombre__icontains=query)
         )
         results['productos'] = productos
 
+        # Search in Stock model
+        stocks = Stock.objects.filter(
+            Q(product__name__icontains=query) | Q(quantity__icontains=query)
+        )
+        results['stocks'] = stocks
+
+        # Search in Sale model
+        sales = Sale.objects.filter(
+            Q(product__name__icontains=query) | Q(quantity_sold__icontains=query)
+        )
+        results['sales'] = sales
+
+        # Search in GastoOperativo model
         gastos_operativos = GastoOperativo.objects.filter(
-            Q(tipo_gasto__icontains=query) | Q(descripcion__icontains=query) |
-            Q(variedad__nombre__icontains=query)
+            Q(tipo_gasto__icontains=query) | Q(descripcion__icontains=query)
         )
         results['gastos_operativos'] = gastos_operativos
 
-        # Añadir búsqueda para Venta
-        ventas = Venta.objects.filter(
-            Q(producto__icontains=query) | Q(variedad__nombre__icontains=query)
-        )
-        results['ventas'] = ventas
-
-        # Añadir búsqueda para Pedido
-        pedidos = Pedido.objects.filter(
-            Q(producto__icontains=query) | Q(variedad__nombre__icontains=query)
-        )
-        results['pedidos'] = pedidos        
-    
-        
+        # Search in Material model
         materiales = Material.objects.filter(
             Q(nombre__icontains=query) | Q(descripcion__icontains=query)
         )
         results['materiales'] = materiales
 
+        # Search in ListaMateriales model
         listas_materiales = ListaMateriales.objects.filter(
             Q(nombre_producto__icontains=query)
         )
         results['listas_materiales'] = listas_materiales
 
-        items_listas_materiales = ItemListaMateriales.objects.filter(
-            Q(material__nombre__icontains=query) | Q(lista_materiales__nombre_producto__icontains=query)
-        )
-        results['items_listas_materiales'] = items_listas_materiales
-
+        # Search in PlanProduccion model
         planes_produccion = PlanProduccion.objects.filter(
             Q(nombre__icontains=query) | Q(detalles__icontains=query)
         )
         results['planes_produccion'] = planes_produccion
 
+        # Search in TareaProduccion model
         tareas_produccion = TareaProduccion.objects.filter(
             Q(nombre__icontains=query) | Q(descripcion__icontains=query) | Q(asignado_a__icontains=query)
         )
         results['tareas_produccion'] = tareas_produccion
 
+        # Search in Miembro model
         miembros = Miembro.objects.filter(
             Q(nombre__icontains=query) | Q(apellido__icontains=query) | Q(email__icontains=query) | Q(numero_socio__icontains=query)
         )
         results['miembros'] = miembros
 
+        # Search in Cuota model
         cuotas = Cuota.objects.filter(
             Q(miembro__nombre__icontains=query) | Q(miembro__apellido__icontains=query)
         )
         results['cuotas'] = cuotas
 
-        return render(request, 'core/search_results.html', {'query': query, 'results': results})
+        # Search in Pago model
+        pagos = Pago.objects.filter(
+            Q(miembro__nombre__icontains=query) | Q(miembro__apellido__icontains=query)
+        )
+        results['pagos'] = pagos
+
+        # Search in Venta model
+        ventas = Venta.objects.filter(
+            Q(producto__name__icontains=query) | Q(variedad__nombre__icontains=query)
+        )
+        results['ventas'] = ventas
+
+        # Search in Pedido model
+        pedidos = Pedido.objects.filter(
+            Q(producto__name__icontains=query) | Q(cliente__nombre__icontains=query) | Q(miembro__nombre__icontains=query)
+        )
+        results['pedidos'] = pedidos
+
+        # Search in CannabisPlant model
+        cannabis_plants = CannabisPlant.objects.filter(
+            Q(strain__icontains=query) | Q(plant_type__icontains=query) | Q(effects__icontains=query) | Q(flavor__icontains=query)
+        )
+        results['cannabis_plants'] = cannabis_plants
+
+    return render(request, 'core/search_results.html', {'query': query, 'results': results})
 
 
 # graficos 

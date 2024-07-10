@@ -1,4 +1,3 @@
-<!-- search_results.html -->
 {% extends 'core/base.html' %}
 
 {% block content %}
@@ -67,11 +66,11 @@
     </ul>
 {% endif %}
 
-{% if results.tipo_muestras %}
-    <h3>Tipos de Muestra</h3>
+{% if results.tipos_analisis %}
+    <h3>Tipos de Análisis</h3>
     <ul>
-    {% for result in results.tipo_muestras %}
-        <li>{{ result.nombre }} - {{ result.descripcion }}</li>
+    {% for tipo in results.tipos_analisis %}
+        <li>{{ tipo.nombre }} - {{ tipo.descripcion }} - {{ tipo.metodo }}</li>
     {% endfor %}
     </ul>
 {% endif %}
@@ -80,34 +79,25 @@
     <h3>Muestras</h3>
     <ul>
     {% for result in results.muestras %}
-        <li>{{ result.codigo }} - {{ result.cliente.nombre }} - {{ result.tipo.nombre }}</li>
+        <li>{{ result.codigo }} - {{ result.cliente.nombre }} - {{ result.tipo_analisis.nombre }}</li>
     {% endfor %}
     </ul>
 {% endif %}
 
-{% if results.tipo_analisis %}
-    <h3>Tipos de Análisis</h3>
-    <ul>
-    {% for result in results.tipo_analisis %}
-        <li>{{ result.nombre }} - {{ result.descripcion }} - {{ result.metodo }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-
-{% if results.analisis_programado %}
+{% if results.analisis_programados %}
     <h3>Análisis Programados</h3>
     <ul>
-    {% for result in results.analisis_programado %}
-        <li>{{ result.muestra.codigo }} - {{ result.tipo_analisis.nombre }} - Prioridad: {{ result.prioridad }}</li>
+    {% for analisis in results.analisis_programados %}
+        <li>{{ analisis.muestra.codigo }} - {{ analisis.tipo_analisis.nombre }} - Prioridad: {{ analisis.prioridad }}</li>
     {% endfor %}
     </ul>
 {% endif %}
 
-{% if results.resultado_analisis %}
+{% if results.resultados_analisis %}
     <h3>Resultados de Análisis</h3>
     <ul>
-    {% for result in results.resultado_analisis %}
-        <li>{{ result.analisis_programado.muestra.codigo }} - {{ result.resultados }}</li>
+    {% for resultado in results.resultados_analisis %}
+        <li>{{ resultado.analisis_programado.muestra.codigo }} - {{ resultado.resultados }}</li>
     {% endfor %}
     </ul>
 {% endif %}
@@ -121,13 +111,31 @@
     </ul>
 {% endif %}
 
+{% if results.stocks %}
+    <h3>Stocks</h3>
+    <ul>
+    {% for stock in results.stocks %}
+        <li>{{ stock.product.name }} - Cantidad: {{ stock.quantity }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.sales %}
+    <h3>Ventas</h3>
+    <ul>
+    {% for sale in results.sales %}
+        <li>{{ sale.product.name }} - Cantidad: {{ sale.quantity_sold }} - Precio: ${{ sale.unit_price }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
 {% if results.gastos_operativos %}
     <h3>Gastos Operativos</h3>
     <ul>
     {% for gasto in results.gastos_operativos %}
         <li>
             {{ gasto.tipo_gasto }} - {{ gasto.descripcion }} 
-            ({{ gasto.variedad.nombre }}) - ${{ gasto.monto }}
+            {% if gasto.variedad %}({{ gasto.variedad.nombre }}){% endif %} - ${{ gasto.monto }}
         </li>
     {% endfor %}
     </ul>
@@ -138,8 +146,8 @@
     <ul>
     {% for venta in results.ventas %}
         <li>
-            {{ venta.producto }} - {{ venta.cantidad }} unidades 
-            ({{ venta.variedad.nombre }}) - ${{ venta.precio_unitario }} por unidad
+            {{ venta.producto.name }} - {{ venta.cantidad }} unidades 
+            {% if venta.variedad %}({{ venta.variedad.nombre }}){% endif %} - ${{ venta.precio_unitario }} por unidad
         </li>
     {% endfor %}
     </ul>
@@ -150,8 +158,8 @@
     <ul>
     {% for pedido in results.pedidos %}
         <li>
-            <strong>{{ pedido.producto }}</strong>
-            {{ pedido.variedad.nombre }} - {{ pedido.cantidad }} unidades
+            <strong>{{ pedido.producto.name }}</strong>
+            {% if pedido.variedad %}{{ pedido.variedad.nombre }}{% endif %} - {{ pedido.cantidad }} unidades
             <br>
             Pedido: {{ pedido.fecha_pedido|date:"F d, Y" }} - Entrega: {{ pedido.fecha_entrega|date:"F d, Y" }}
         </li>
@@ -168,29 +176,20 @@
     </ul>
 {% endif %}
 
-{% if results.lista_materiales %}
+{% if results.listas_materiales %}
     <h3>Listas de Materiales</h3>
     <ul>
-    {% for lista in results.lista_materiales %}
-        <li>{{ lista.nombre }} - {{ lista.descripcion }}</li>
+    {% for lista in results.listas_materiales %}
+        <li>{{ lista.nombre_producto }}</li>
     {% endfor %}
     </ul>
 {% endif %}
 
-{% if results.items_lista_materiales %}
-    <h3>Items de Lista de Materiales</h3>
-    <ul>
-    {% for item in results.items_lista_materiales %}
-        <li>{{ item.nombre }} - {{ item.cantidad }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-
-{% if results.plan_produccion %}
+{% if results.planes_produccion %}
     <h3>Planes de Producción</h3>
     <ul>
-    {% for plan in results.plan_produccion %}
-        <li>{{ plan.nombre }} - {{ plan.descripcion }}</li>
+    {% for plan in results.planes_produccion %}
+        <li>{{ plan.nombre }} - {{ plan.detalles }}</li>
     {% endfor %}
     </ul>
 {% endif %}
@@ -209,7 +208,7 @@
     <ul>
     {% for miembro in results.miembros %}
         <li>
-            {{ miembro.nombre }} - {{ miembro.rol }}
+            {{ miembro.nombre }} {{ miembro.apellido }}
             <ul>
                 <li><strong>Número de Socio:</strong> {{ miembro.numero_socio }}</li>
                 <li><strong>Email:</strong> {{ miembro.email }}</li>
@@ -221,14 +220,37 @@
 {% endif %}
 
 {% if results.cuotas %}
-<h3>Cuotas</h3>
-<div>
+    <h3>Cuotas</h3>
+    <ul>
     {% for cuota in results.cuotas %}
-        <p>{{ cuota.monto }}</p>
-        <p>--------------</p>
+        <li>
+            {{ cuota.miembro.nombre }} {{ cuota.miembro.apellido }} - 
+            Monto: ${{ cuota.monto }} - 
+            Fecha de Pago: {{ cuota.fecha_pago }} - 
+            Periodo: {{ cuota.get_periodo_display }} - 
+            Estado: {% if cuota.pagado %}Pagado{% else %}Pendiente{% endif %}
+        </li>
     {% endfor %}
-</div>
+    </ul>
+{% endif %}
 
+{% if results.pagos %}
+    <h3>Pagos</h3>
+    <ul>
+    {% for pago in results.pagos %}
+        <li>{{ pago.miembro.nombre }} {{ pago.miembro.apellido }} - Monto: ${{ pago.monto }} - Fecha: {{ pago.fecha }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if results.cannabis_plants %}
+    <h3>Resultdados de la Biblioteca de Plantas</h3>
+    <ul>
+        <h5>Plantas de Cannabis</h5>
+    {% for plant in results.cannabis_plants %}
+        <li>{{ plant.strain }} - Tipo: {{ plant.plant_type }} - Efectos: {{ plant.effects }}</li>
+    {% endfor %}
+    </ul>
 {% endif %}
 
 {% endblock %}

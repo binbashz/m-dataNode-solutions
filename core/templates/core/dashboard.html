@@ -108,15 +108,16 @@
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">{{ pedido.producto }}</h5>
-                            <p class="mb-1">{{ pedido.variedad.nombre }} - {{ pedido.cantidad }} unidades</p>
+                            <p class="mb-1">{{ pedido.variedad.nombre }}  {{ pedido.cantidad }} unidades</p>
                             <p class="mb-1">Pedido: {{ pedido.fecha_pedido }} - Entrega: {{ pedido.fecha_entrega }}</p>
+                            <p class="mb-1">Info: {{ pedido.descripcion }}</p>
                             <p class="mb-1">Dirección de entrega: {{ pedido.direccion }}</p>
                             <p class="mb-1">Teléfono de contacto: {{ pedido.telefono }}</p>
                             <p class="mb-1">
                                 {% if pedido.cliente %}
-                                    Asociado al cliente: {{ pedido.cliente.nombre }}
+                                  <strong><small> Asociado al cliente: {{ pedido.cliente.nombre }}  </small></strong>
                                 {% elif pedido.miembro %}
-                                    Asociado al miembro: {{ pedido.miembro.nombre }}
+                                <strong><small> Asociado al miembro: {{ pedido.miembro.nombre }}  </small></strong>
                                 {% else %}
                                     No asociado a ningún cliente/miembro
                                 {% endif %}

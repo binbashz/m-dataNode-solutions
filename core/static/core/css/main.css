@@ -710,18 +710,16 @@ nav.active ul li a:hover span {
   background: linear-gradient(to bottom right, #058655, #5d4037, #aed581);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  font-size: 2rem; 
+  color: transparent; 
   font-weight: 500; 
   margin-bottom: 1px; 
 }
 
 
 .hero3 h2   {
-  background: linear-gradient(to left, #9e3504d3, #1b8a1b); 
+  background: linear-gradient(to bottom right, #ff2609, #6e2e7a, #06ff13);
   -webkit-background-clip: text;
   background-clip: text;
-  font-size: 50px;
   color: transparent;
   font-weight: 600;
 }
@@ -735,7 +733,6 @@ nav.active ul li a:hover span {
   font-size: 1.5rem; 
   margin-bottom: 1rem; 
 }
-
 
 
 
@@ -863,11 +860,13 @@ nav.active ul li a:hover span {
 
 .form-signin {
   margin-bottom: 5rem;
+  border-radius: 20px 12px 31px;
+
 }
 
 .custom-form-input {
-  background-color: #e2e2e2;
-  color: #fff;
+  background-color: #e2e2e2a8;
+  color: #0c3a0e;
   border: 1px solid #a3a3a3;
   margin: 0;
   border-radius: 20px 12px 31px;
@@ -944,7 +943,7 @@ form input[type="range"] {
 
 .card {
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 20px 12px 31px;
   overflow: hidden;
   width: auto;
   margin-bottom: 20px;
@@ -1126,7 +1125,7 @@ form input[type="range"] {
 }
 
 
-/* Clase para el color de fondo de las filas de la tabla */
+/* Clase para el color de fondo de las filas de la tabla - humedad - temp*/
 .humedadtemp-background {
   font-style: white;
   padding: 10px;
@@ -1935,7 +1934,7 @@ figcaption {
   justify-content: center;
   align-items: center;
   position: relative;
-  border-radius: 14px;
+  border-radius: 20px 12px 31px;
   animation: moveBackground 20s linear infinite alternate;
   clip-path: polygon(
     0% 0%,
@@ -1968,7 +1967,7 @@ background: rgba(255, 255, 255, 0.6);
 padding: 2rem;
 text-align: center;
 max-width: 500px;
-border-radius: 0.5rem;
+border-radius: 20px 12px 31px;
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 font-family: 'Montserrat', Helvetica, Arial, sans-serif; 
 color: #333; 
@@ -1986,7 +1985,7 @@ transform: translateY(-10px);
     width: 100%;
     background: linear-gradient(white, rgba(72, 255, 0, 0.6));
     padding: 2rem; 
-    border-radius: 0.5rem;
+    border-radius: 20px 12px 31px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 

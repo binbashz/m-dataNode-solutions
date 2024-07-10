@@ -316,7 +316,7 @@ class Pedido(models.Model):
     telefono = models.CharField(max_length=20, blank=True, null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
     miembro = models.ForeignKey(Miembro, on_delete=models.SET_NULL, null=True, blank=True)
-    variedad = models.ForeignKey(Variedad, on_delete=models.CASCADE, default=None)
+    variedad = models.ForeignKey(Variedad, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'{self.producto} - {self.cantidad} unidades ({self.fecha_entrega})'

@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+
 <body class="custombodyhome2">
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="form-signin custom-form-container p-4">
@@ -13,21 +14,24 @@
     <h1 class="h3 mb-3 text-center fw-normal">Bienvenido a CannaTech</h1>
     <p class="text-center">Por favor, inicia sesión para continuar</p>
 
+    {% if form.errors %}
+      <div class="alert alert-danger mb-3">
+        <ul class="mb-0">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
     <form action="" method="post">
       {% csrf_token %}
       
-      {% if form.errors %}
-        <div class="alert alert-danger">
-          <ul>
-            {% for field in form %}
-              {% for error in field.errors %}
-                <li>{{ error }}</li>
-              {% endfor %}
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-
       <div class="mb-3">
         <label for="username" class="form-label float-md-start">Nombre de Usuario</label>
         <input type="text" class="form-control custom-form-input" name="username" id="username" required>
@@ -53,7 +57,6 @@
 <br><br>
 
 <footer class="footer">
-
   <div class="container">
       <div class="row">
           <div class="col-md-4">
@@ -83,6 +86,19 @@
       </div>
   </div>
 </footer>
-</div>
+
+<style>
+  .custom-form-container {
+  max-width: 400px; 
+  margin: 0 auto; 
+}
+
+.alert.alert-danger {
+  max-height: 150px; 
+  overflow-y: auto; 
+}
+
+</style>
+
 </body>
 {% endblock %}
