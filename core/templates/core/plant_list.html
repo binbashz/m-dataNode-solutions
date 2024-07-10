@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
+
 <body class="custombody2">
 <div class="container">
     <div class="hero">
@@ -14,8 +15,11 @@
                 <input type="text" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Buscar plantas...">
                 <button type="submit" class="custom-search-btn"><i class="fa fa-search"></i> Buscar</button>
             </form>
-        </div>
-                
+            <div>
+                <p class="custom-plan-text" onclick="window.location.href='/plants'">Escribe nombre y busca.<br>
+                    24K-Gold. Alien-Rock-Candy. Blueberry-Cheesecake. Critical. Honey. Jack. Tuna.</p>
+            </div>
+        </div>  
         <div class="plant-list">
             {% if page_obj.object_list %}
                 {% for plant in page_obj.object_list %}
