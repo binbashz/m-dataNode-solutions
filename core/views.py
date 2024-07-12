@@ -17,6 +17,9 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
+from django.http import JsonResponse
+from .models import Notificacion
+
 from .models import Product, Stock
 from .forms import StockForm
 # Barcode y PIL
@@ -39,7 +42,7 @@ from .models import (
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado,
     ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,Sale,
-    GastoOperativo, Venta, Pedido, PlanProduccion,
+    GastoOperativo, Venta, Pedido, Notificacion, PlanProduccion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
 from .forms import (
@@ -316,7 +319,7 @@ def analisis_create(request, variedad_id):
         form = AnalisisCalidadForm(initial={'variedad': variedad}, user=request.user)
     return render(request, 'core/analisis_form.html', {'form': form, 'variedad': variedad})
 
-
+@login_required
 def analisis_detail(request, variedad_id, analisis_id):
     user = request.user  # Obtener el usuario actualmente autenticado
     variedad = get_object_or_404(Variedad, pk=variedad_id)
@@ -629,12 +632,12 @@ def home_view_facts(request):
     }
     return render(request, 'core/home.html', context)
 
-
+@login_required
 def condiciones_cultivo_view(request):
     condiciones = CondicionesCultivo.objects.all().order_by('variedad__nombre', 'registro_fecha')
     return render(request, 'core/home.html', {'condiciones': condiciones})
 
-
+@login_required
 def home_datos_usuario(request):
     if request.user.is_authenticated:
         # Obtener todas las variedades asociadas al usuario actual
@@ -803,12 +806,12 @@ def ver_informes(request):
 
     return render(request, 'core/ver_informes.html', {'informe_datos': informe_datos})
 
+@login_required
 def barcodes_view(request):
     # vista seleccion de codigo de barra para generar
     return render(request, 'core/barcodes.html')
 
 # Bar code
-
 @login_required
 def barcode_form(request):
     if request.method == 'POST':
@@ -947,6 +950,7 @@ def favorite_barcodes(request):
     favorites = Product.objects.filter(user=request.user, is_favorite=True)
     return render(request, 'core/favorite_barcodes.html', {'favorites': favorites})
 
+@login_required
 def decode_barcode(barcode_data):
     barcode_format = barcode.get_barcode_class('code128')
     barcode_object = barcode_format(barcode_data)
@@ -1123,20 +1127,23 @@ from .serializers import CondicionesCultivoSerializer
 class CondicionesCultivoViewSet(viewsets.ModelViewSet):
     queryset = CondicionesCultivo.objects.all()
     serializer_class = CondicionesCultivoSerializer
-    
+ 
+@login_required   
 def visualizacion_graficos(request):
     condiciones = CondicionesCultivo.objects.all()  # Obtener datos para los gráficos
     context = {'condiciones': condiciones}
     return render(request, 'core/visualizacion.html', context)
 
 
-#vista para dashboard cards
+#vista para dashboard 
 @login_required
 def dashboard(request):
+    # Formularios
     gasto_form = GastoOperativoForm()
     venta_form = VentaForm()
     pedido_form = PedidoForm()
 
+    # Datos para los selectores
     clientes = Cliente.objects.all().order_by('nombre')
     miembros = Miembro.objects.all().order_by('nombre')
 
@@ -1166,19 +1173,28 @@ def dashboard(request):
             pedido_form = PedidoForm(request.POST)
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit=False)
-                
-                # Manejar la asociación de cliente/miembro
+                pedido.usuario = request.user
                 if pedido_form.cleaned_data['asociar_cliente']:
                     if pedido_form.cleaned_data['cliente']:
                         pedido.cliente = pedido_form.cleaned_data['cliente']
                     elif pedido_form.cleaned_data['miembro']:
                         pedido.miembro = pedido_form.cleaned_data['miembro']
-                
                 pedido.save()
                 messages.success(request, 'Pedido guardado correctamente.')
                 return redirect('dashboard')
             else:
                 messages.error(request, f'Error en el formulario de pedido: {pedido_form.errors}')
+
+    # Obtener datos para mostrar en el dashboard
+    gastos = GastoOperativo.objects.filter(user=request.user)
+    ventas = Venta.objects.filter(user=request.user)
+    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    variedades = Variedad.objects.filter(user=request.user)
+    productos = Product.objects.filter(user=request.user)
+    productos_en_stock = Stock.objects.filter(quantity__gt=0)
+
+    # Obtener notificaciones no leídas
+    notificaciones = Notificacion.objects.filter(usuario=request.user, leido=False)
 
     context = {
         'gasto_form': gasto_form,
@@ -1186,17 +1202,18 @@ def dashboard(request):
         'pedido_form': pedido_form,
         'clientes': clientes,
         'miembros': miembros,
-        'gastos': GastoOperativo.objects.filter(user=request.user),  # Filtrar por usuario
-        'ventas': Venta.objects.filter(user=request.user),
-        'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),
-        'variedades': Variedad.objects.filter(user=request.user),
-        'productos': Product.objects.filter(user=request.user),
-        'productos_en_stock': Stock.objects.filter(quantity__gt=0),
+        'gastos': gastos,
+        'ventas': ventas,
+        'pedidos': pedidos,
+        'variedades': variedades,
+        'productos': productos,
+        'productos_en_stock': productos_en_stock,
+        'notificaciones': notificaciones,
     }
+
     return render(request, 'core/dashboard.html', context)
 
-
-
+@login_required
 def lista_pedidos(request):
     pedidos = Pedido.objects.all().order_by('-fecha_pedido')
     return render(request, 'core/dashboard.html', {'pedidos': pedidos})
@@ -1214,10 +1231,27 @@ def actualizar_estado_pedido(request, pedido_id):
             messages.error(request, 'Estado no válido.')
     return redirect('dashboard')
 
-def lista_gastos(request):
-    pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
-    return render(request, 'core/dashboard.html', {'gastos': lista_gastos})
 
+def obtener_notificaciones(request):
+    notificaciones = Notificacion.objects.filter(usuario=request.user).order_by('-fecha')
+    data = [{
+        'id': n.id,
+        'mensaje': n.mensaje,
+        'fecha': n.fecha.isoformat(),
+        'leido': n.leido,
+    } for n in notificaciones]
+    return JsonResponse(data, safe=False)
+
+@login_required
+def marcar_leida(request, notificacion_id):
+    if request.method == 'POST':
+        notificacion = get_object_or_404(Notificacion, id=notificacion_id, usuario=request.user)
+        notificacion.leido = True
+        notificacion.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+@login_required
 def borrar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
     if request.method == 'POST':
@@ -1225,6 +1259,32 @@ def borrar_pedido(request, pedido_id):
         messages.success(request, 'Pedido eliminado correctamente.')
     return redirect('dashboard')
 
+
+
+#Notifiacion pedido 
+@login_required
+def listar_notificaciones(request):
+    # Obtener las notificaciones no leídas del usuario actual
+    usuario_actual = request.user
+    notificaciones = Notificacion.objects.filter(usuario=usuario_actual, leido=False)
+    
+    # Marcar los pedidos asociados como notificados
+    for notificacion in notificaciones:
+        notificacion.leido = True
+        notificacion.save()
+        pedido = notificacion.pedido  # Si Notificacion tiene un campo 'pedido'
+        pedido.notificado = True
+        pedido.save()
+    
+    return render(request, 'notificaciones.html', {'notificaciones': notificaciones})
+
+@login_required
+def lista_gastos(request):
+    pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
+    return render(request, 'core/dashboard.html', {'gastos': lista_gastos})
+
+
+@login_required
 def add_venta(request):
     if request.method == 'POST':
         form = VentaForm(request.POST, user=request.user)
@@ -1235,6 +1295,7 @@ def add_venta(request):
         form = VentaForm(user=request.user)
     return render(request, 'core/add_venta.html', {'form': form})
 
+@login_required
 def borrar_gasto(request, gasto_id):
     gasto = get_object_or_404(GastoOperativo, id=gasto_id)
     if request.method == 'POST':
@@ -1242,6 +1303,7 @@ def borrar_gasto(request, gasto_id):
         messages.success(request, 'Gasto eliminado correctamente.')
     return redirect('dashboard')
 
+@login_required
 def borrar_venta(request, venta_id):
     venta = get_object_or_404(Venta, id=venta_id)
     if request.method == 'POST':
@@ -1250,6 +1312,7 @@ def borrar_venta(request, venta_id):
     return redirect('dashboard')
 
 # graficar dashboard info 
+
 from django.db.models import Sum, F
 import matplotlib.pyplot as plt
 import urllib.parse
@@ -1296,7 +1359,7 @@ def graficar_datos(request):
     }
     return render(request, 'core/graficos_dashboard.html', context)
 
-
+@login_required
 def add_product_to_stock(request):
     if request.method == 'POST':
         form = AddToStockForm(request.POST)
@@ -1311,15 +1374,18 @@ def add_product_to_stock(request):
 
 
 #BOM
+@login_required
 def lista_planes_produccion(request):
     planes = PlanProduccion.objects.all()
     return render(request, 'core/lista_planes_produccion.html', {'planes': planes})
 
+@login_required
 def detalle_plan_produccion(request, pk):
     plan = get_object_or_404(PlanProduccion, pk=pk)
     tareas = plan.tareaproduccion_set.all()
     return render(request, 'core/detalle_plan_produccion.html', {'plan': plan, 'tareas': tareas})
 
+@login_required
 def crear_plan_produccion(request):
     if request.method == 'POST':
         form = PlanProduccionForm(request.POST)
@@ -1330,21 +1396,24 @@ def crear_plan_produccion(request):
         form = PlanProduccionForm()
     return render(request, 'core/formulario_plan_produccion.html', {'form': form})
 
-
+@login_required
 def eliminar_plan_produccion(request, pk):
     plan = get_object_or_404(PlanProduccion, pk=pk)
     plan.delete()
     return redirect('lista_planes_produccion')
 
+@login_required
 def lista_bom(request):
     listas = ListaMateriales.objects.all()
     return render(request, 'core/lista_bom.html', {'listas': listas})
 
+@login_required
 def detalle_bom(request, pk):
     lista = get_object_or_404(ListaMateriales, pk=pk)
     items = lista.itemlistamateriales_set.all()
     return render(request, 'core/detalle_bom.html', {'lista': lista, 'items': items})
 
+@login_required
 def crear_bom(request):
     if request.method == 'POST':
         form = ListaMaterialesForm(request.POST)
@@ -1358,10 +1427,12 @@ def crear_bom(request):
     return render(request, 'core/formulario_bom.html', {'form': form})
 
 
+@login_required
 def lista_bom(request):
     listas = ListaMateriales.objects.all()
     return render(request, 'core/lista_bom.html', {'listas': listas})
 
+@login_required
 def eliminar_bom(request, pk):
     bom = get_object_or_404(ListaMateriales, pk=pk)
     if request.method == 'POST':
@@ -1369,6 +1440,7 @@ def eliminar_bom(request, pk):
         return redirect('lista_bom')
     return redirect('lista_bom')
 
+@login_required
 def panel_de_control(request):
     return render(request, 'core/panel.html')
 
@@ -1467,6 +1539,7 @@ def eliminar_miembro(request, miembro_id):
 
 
 # cuotas 
+@login_required
 def historial_pagos(request, miembro_id):
     miembro = get_object_or_404(Miembro, id=miembro_id)
     cuotas = Cuota.objects.filter(miembro=miembro)
@@ -1476,6 +1549,7 @@ def historial_pagos(request, miembro_id):
     }
     return render(request, 'core/historial_pagos.html', context)
 
+@login_required
 def eliminar_cuota(request, cuota_id):
     cuota = get_object_or_404(Cuota, id=cuota_id)
     if request.method == 'POST':
@@ -1483,6 +1557,7 @@ def eliminar_cuota(request, cuota_id):
         messages.success(request, 'La cuota ha sido eliminada correctamente.')
     return redirect('historial_pagos', miembro_id=cuota.miembro.id)
 
+@login_required
 def eliminar_todas_cuotas(request, miembro_id):
     if request.method == 'POST':
         miembro = get_object_or_404(Miembro, id=miembro_id)
@@ -1491,6 +1566,7 @@ def eliminar_todas_cuotas(request, miembro_id):
     return redirect('detalle_miembro', miembro_id=miembro_id)
 
 
+@login_required
 def marcar_pagado(request, cuota_id):
     cuota = get_object_or_404(Cuota, id=cuota_id)
     cuota.pagado = True
@@ -1498,6 +1574,7 @@ def marcar_pagado(request, cuota_id):
     messages.success(request, 'La cuota ha sido marcada como pagada.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required
 def historial_pagos(request, miembro_id):
     pagos = Pago.objects.filter(miembro_id=miembro_id)
     return render(request, 'core/historial_pagos.html', {'pagos': pagos})
@@ -1505,6 +1582,7 @@ def historial_pagos(request, miembro_id):
 
 #CSV database plants
 
+@login_required
 def plant_list(request):
     query = request.GET.get('q')
     if query:
@@ -1518,7 +1596,7 @@ def plant_list(request):
 
     return render(request, 'core/plant_list.html', {'page_obj': page_obj, 'query': query})
 
-
+@login_required
 def stock_detail(request, product_id):
     stock = get_object_or_404(Stock, product_id=product_id)
     if 'added' in request.GET:
@@ -1529,7 +1607,7 @@ def stock_detail(request, product_id):
     return render(request, 'core/stock_detail.html', context)
 
 
-
+@login_required
 def add_product_to_stock(request):
     if request.method == 'POST':
         form = StockForm(request.POST)
@@ -1546,11 +1624,12 @@ def add_product_to_stock(request):
     
     return render(request, 'core/add_product_to_stock.html', {'form': form})
 
-
+@login_required
 def lista_stock(request):
     stocks = Stock.objects.all()  # Consulta todos los productos en stock
     return render(request, 'core/lista_stock.html', {'stocks': stocks})
 
+@login_required
 def eliminar_stock(request, product_id):
     if request.method == 'POST':
         stock = get_object_or_404(Stock, product_id=product_id)

@@ -4500,13 +4500,109 @@ color: #1a1919be;
 }
 
 .badge.bg-warning {
-  background-color: #fff8e7; /* Amarillo más claro */
-  color: #5a3e0a; /* Color de texto más oscuro para mejor contraste */
+  background-color: #fff8e7; 
+  color: #5a3e0a; 
 }
 
 .soft-strong {
   font-weight: 500;  
 }
+
+/* Notificacion */
+.barra-lateral {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.notification-wrapper {
+  position: relative;
+  cursor: pointer;
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.notification-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative; 
+}
+
+.notification-count {
+  background-color: #ff4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.notification-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px); /* Ajusta la distancia desde el botón de activación */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000; 
+  width: 250px;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .notification-wrapper {
+      position: static; /* Cambiamos la posición para dispositivos móviles */
+      text-align: center; 
+      margin-top: 5.5rem;
+      cursor: pointer; 
+      padding: 3px; 
+  }
+
+  .notification-dropdown {
+      position: absolute;
+      top: calc(14% + 10px); 
+      right: 0;
+      display: none; 
+      margin-top: 2rem;
+  }
+
+  .notification-wrapper.active .notification-dropdown {
+      display: block;
+  }
+
+  .notification-toggle {
+      cursor: pointer; 
+  }
+}
+
+
+
+.navegacion {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+
+
+
 
 /* footer */
 

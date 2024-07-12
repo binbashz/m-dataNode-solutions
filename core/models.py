@@ -305,8 +305,10 @@ class Venta(models.Model):
     def __str__(self):
         return f'{self.producto} - {self.cantidad} - {self.fecha}'
     
-
+# modelo para Pedidos 
 class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    variedad = models.ForeignKey(Variedad, on_delete=models.SET_NULL, null=True, blank=True)
     producto = models.ForeignKey(Product, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     fecha_pedido = models.DateField()
@@ -316,7 +318,6 @@ class Pedido(models.Model):
     telefono = models.CharField(max_length=20, blank=True, null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
     miembro = models.ForeignKey(Miembro, on_delete=models.SET_NULL, null=True, blank=True)
-    variedad = models.ForeignKey(Variedad, on_delete=models.SET_NULL, null=True, blank=True)
     
     ESTADO_CHOICES = [
         ('pendiente', 'Pendiente'),
@@ -325,12 +326,23 @@ class Pedido(models.Model):
     ]
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
 
-
     def __str__(self):
         return f'{self.producto} - {self.cantidad} unidades ({self.fecha_entrega})'
 
 
+# Notificaciones
+class Notificacion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, null=True, blank=True)
+    mensaje = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    leido = models.BooleanField(default=False)
+    fecha = models.DateTimeField(auto_now=True)  
 
+    def __str__(self):
+        return f"Notificación para {self.usuario}: {self.mensaje}"
+
+    
 # modelo para base de datos tipo CSV
 class CannabisPlant(models.Model):
     strain = models.CharField(max_length=100)

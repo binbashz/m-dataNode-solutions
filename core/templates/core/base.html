@@ -25,24 +25,33 @@
 <body data-bs-theme="light">
     <div class="container-fluid">
         <div class="row">
-            {% if user.is_authenticated %}
-            
+            {% if user.is_authenticated %} 
+            <div class="notification-wrapper">
+                <div class="notification-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <ion-icon name="notifications-outline"></ion-icon>
+                    <span class="notification-count">0</span>
+                </div>
+                <div class="notification-dropdown dropdown-menu">
+                    <div id="notificaciones">
+                        <!-- Contenido de las notificaciones dinámico -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- barra lateral -->
             <div class="menu">
                 <ion-icon name="menu-outline"></ion-icon>
                 <ion-icon name="close-outline"></ion-icon>
             </div>
-        
             <div class="barra-lateral">
-                <div>
-                    
+                <div> 
                     <div class="nombre-pagina">
                         <a href="{% url 'home' %}">
                             <img src="{% static 'core/images/logo.png' %}" alt="CannaTech Logo" class="logo">
                         </a>
                         <p class="nombre">CannaTech</p>
-                    </div>
-                    
-                           <div class="alert alert-success mt-1 mb-1">
+                    </div>             
+                           <div class="alert alert-success mt-1 mb-1">                                 
                                 <form method="GET" action="{% url 'search_results' %}" class="form-inline my-2 my-lg-0">
                                    <strong> <ion-icon name="search-outline" class="search-outline"></ion-icon> </strong>
                                     <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="q">
@@ -52,14 +61,12 @@
                                 <a id="home" href="{% url 'home' %}" class="no-decoration">
                                     <ion-icon name="home-outline"></ion-icon>
                                     <span class="text-color"><small>Inicio</small></span>
-                                </a>
-                                
+                                </a>    
                             </div>
-                                    </div>
+                                  </div>
                         <nav class="navegacion">
                         <!--  -->                   
-
-                            <li>
+                             <li>
                                 <a id="products" href="{% url 'products' %}">
                                     <ion-icon name="leaf-outline"></ion-icon>
                                     <span>Gestion Cultivos</span>
@@ -100,7 +107,7 @@
                         <span class="text-color">Reg. Productos<br>Códigos</span>
                         </a>
                             </li> 
-                            <div style="border-top: 1px solid #9eb9abb2; margin: 8px 0;"></div>
+               <div style="border-top: 1px solid #9eb9abb2; margin: 8px 0;"></div>
             </div>
         </nav>
             {% endif %}
@@ -161,6 +168,7 @@
     <script type="text/javascript" src="{% static 'core/js/scrollbtn.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/favoritocode.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/filtrocuotas.js' %}"></script>
+    <script type="text/javascript" src="{% static 'core/js/actnot.js' %}"></script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
