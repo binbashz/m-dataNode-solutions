@@ -307,6 +307,7 @@ class Venta(models.Model):
     
 
 class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Product, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     fecha_pedido = models.DateField()
@@ -325,9 +326,18 @@ class Pedido(models.Model):
     ]
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
 
-
     def __str__(self):
         return f'{self.producto} - {self.cantidad} unidades ({self.fecha_entrega})'
+    
+class Notificacion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    mensaje = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    leido = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notificación para {self.usuario}: {self.mensaje}"
 
 
 

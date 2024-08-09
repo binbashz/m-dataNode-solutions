@@ -27,6 +27,18 @@
         <div class="row">
             {% if user.is_authenticated %}
             
+            <div class="notification-wrapper">
+                <div class="notification-toggle" aria-haspopup="true" aria-expanded="false">
+                    <ion-icon name="notifications-outline"></ion-icon>
+                    <span class="notification-count">0</span>
+                </div>
+                <div class="notification-dropdown">
+                    <div id="notificaciones">
+                        <!-- Contenido de las notificaciones dinámico -->
+                    </div>
+                </div>
+            </div>
+            
             <div class="menu">
                 <ion-icon name="menu-outline"></ion-icon>
                 <ion-icon name="close-outline"></ion-icon>
@@ -161,6 +173,7 @@
     <script type="text/javascript" src="{% static 'core/js/scrollbtn.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/favoritocode.js' %}"></script>
     <script type="text/javascript" src="{% static 'core/js/filtrocuotas.js' %}"></script>
+    <script type="text/javascript" src="{% static 'core/js/notificaciones.js' %}"></script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

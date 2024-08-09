@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Q
 from django.contrib import messages
+from django.http import JsonResponse
 from django.utils.timezone import make_aware, get_current_timezone
 from django.utils import timezone
 from django.core.paginator import Paginator
@@ -39,7 +40,7 @@ from .models import (
     TratamientoFitofarmaceutico, AnalisisCalidad, Cliente, 
     Muestra, TipoAnalisis, AnalisisProgramado,
     ResultadoAnalisis, Product, Miembro, Cuota,Pago,Stock,Sale,
-    GastoOperativo, Venta, Pedido, PlanProduccion,
+    GastoOperativo, Venta, Pedido, PlanProduccion, Notificacion,
     TareaProduccion, ListaMateriales, ItemListaMateriales, Material,CannabisPlant
 )
 from .forms import (
@@ -1130,13 +1131,15 @@ def visualizacion_graficos(request):
     return render(request, 'core/visualizacion.html', context)
 
 
-#vista para dashboard cards
+#vista para dashboard Gestion de Operaciones
 @login_required
 def dashboard(request):
+    # Formularios
     gasto_form = GastoOperativoForm()
     venta_form = VentaForm()
     pedido_form = PedidoForm()
 
+    # Datos para los selectores
     clientes = Cliente.objects.all().order_by('nombre')
     miembros = Miembro.objects.all().order_by('nombre')
 
@@ -1166,19 +1169,28 @@ def dashboard(request):
             pedido_form = PedidoForm(request.POST)
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit=False)
-                
-                # Manejar la asociación de cliente/miembro
+                pedido.usuario = request.user
                 if pedido_form.cleaned_data['asociar_cliente']:
                     if pedido_form.cleaned_data['cliente']:
                         pedido.cliente = pedido_form.cleaned_data['cliente']
                     elif pedido_form.cleaned_data['miembro']:
                         pedido.miembro = pedido_form.cleaned_data['miembro']
-                
                 pedido.save()
                 messages.success(request, 'Pedido guardado correctamente.')
                 return redirect('dashboard')
             else:
                 messages.error(request, f'Error en el formulario de pedido: {pedido_form.errors}')
+
+    # Obtener datos para mostrar en el dashboard
+    gastos = GastoOperativo.objects.filter(user=request.user)
+    ventas = Venta.objects.filter(user=request.user)
+    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    variedades = Variedad.objects.filter(user=request.user)
+    productos = Product.objects.filter(user=request.user)
+    productos_en_stock = Stock.objects.filter(quantity__gt=0)
+
+    # Obtener notificaciones no leídas
+    notificaciones = Notificacion.objects.filter(usuario=request.user, leido=False)
 
     context = {
         'gasto_form': gasto_form,
@@ -1186,20 +1198,36 @@ def dashboard(request):
         'pedido_form': pedido_form,
         'clientes': clientes,
         'miembros': miembros,
-        'gastos': GastoOperativo.objects.filter(user=request.user),  # Filtrar por usuario
-        'ventas': Venta.objects.filter(user=request.user),
-        'pedidos': Pedido.objects.all().order_by('-fecha_pedido'),
-        'variedades': Variedad.objects.filter(user=request.user),
-        'productos': Product.objects.filter(user=request.user),
-        'productos_en_stock': Stock.objects.filter(quantity__gt=0),
+        'gastos': gastos,
+        'ventas': ventas,
+        'pedidos': pedidos,
+        'variedades': variedades,
+        'productos': productos,
+        'productos_en_stock': productos_en_stock,
+        'notificaciones': notificaciones,
     }
+
     return render(request, 'core/dashboard.html', context)
 
+@login_required
+def obtener_notificaciones(request):
+    notificaciones = Notificacion.objects.filter(usuario=request.user).order_by('-fecha_creacion')
+    data = [{
+        'id': n.id,
+        'mensaje': n.mensaje,
+        'fecha': n.fecha_creacion.isoformat(),
+        'leido': n.leido,
+    } for n in notificaciones]
+    return JsonResponse(data, safe=False)
 
-
-def lista_pedidos(request):
-    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
-    return render(request, 'core/dashboard.html', {'pedidos': pedidos})
+@login_required
+def marcar_leida(request, notificacion_id):
+    if request.method == 'POST':
+        notificacion = get_object_or_404(Notificacion, id=notificacion_id, usuario=request.user)
+        notificacion.leido = True
+        notificacion.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
 
 @login_required
 def actualizar_estado_pedido(request, pedido_id):
@@ -1210,20 +1238,30 @@ def actualizar_estado_pedido(request, pedido_id):
             pedido.estado = nuevo_estado
             pedido.save()
             messages.success(request, f'Estado del pedido actualizado a {pedido.get_estado_display()}.')
+            # Eliminar notificaciones relacionadas si el pedido se completa o cancela
+            if nuevo_estado in ['completado', 'cancelado']:
+                Notificacion.objects.filter(pedido=pedido).delete()
         else:
             messages.error(request, 'Estado no válido.')
     return redirect('dashboard')
 
-def lista_gastos(request):
-    pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
-    return render(request, 'core/dashboard.html', {'gastos': lista_gastos})
 
+def lista_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    return render(request, 'core/dashboard.html', {'pedidos': pedidos})
+
+@login_required
 def borrar_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
     if request.method == 'POST':
         pedido.delete()
         messages.success(request, 'Pedido eliminado correctamente.')
     return redirect('dashboard')
+
+
+def lista_gastos(request):
+    pedidos = GastoOperativo.objects.all().order_by('-fecha_pedido')
+    return render(request, 'core/dashboard.html', {'gastos': lista_gastos})
 
 def add_venta(request):
     if request.method == 'POST':
@@ -1504,7 +1542,6 @@ def historial_pagos(request, miembro_id):
 
 
 #CSV database plants
-
 def plant_list(request):
     query = request.GET.get('q')
     if query:

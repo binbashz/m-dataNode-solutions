@@ -117,6 +117,7 @@ urlpatterns = [
     path('detalle_miembro/<int:miembro_id>/', views.detalle_miembro, name='detalle_miembro'),
     path('miembro/<int:miembro_id>/editar/', views.editar_miembro, name='editar_miembro'),
     path('miembro/<int:miembro_id>/eliminar/', views.eliminar_miembro, name='eliminar_miembro'),
+    
     path('reporte-cuotas/', views.reporte_cuotas, name='reporte_cuotas'), 
     path('eliminar_cuota/<int:cuota_id>/', views.eliminar_cuota, name='eliminar_cuota'),
     path('eliminar_todas_cuotas/<int:miembro_id>/', views.eliminar_todas_cuotas, name='eliminar_todas_cuotas'),
@@ -129,6 +130,10 @@ urlpatterns = [
     path('stock/', views.lista_stock, name='lista_stock'),
     path('add-product-to-stock/', views.add_product_to_stock, name='add_product_to_stock'),
     path('stock/<int:product_id>/eliminar/', views.eliminar_stock, name='eliminar_stock'),
+    
+    path('obtener-notificaciones/', views.obtener_notificaciones, name='obtener_notificaciones'),
+    path('marcar-leida/<int:notificacion_id>/', views.marcar_leida, name='marcar_leida'),
+    path('actualizar-estado-pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
     
     path('plants/', views.plant_list, name='plant_list'),
         
