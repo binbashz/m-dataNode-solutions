@@ -4500,8 +4500,8 @@ color: #1a1919be;
 }
 
 .badge.bg-warning {
-  background-color: #fff8e7; /* Amarillo más claro */
-  color: #5a3e0a; /* Color de texto más oscuro para mejor contraste */
+  background-color: #fff8e7; 
+  color: #5a3e0a; 
 }
 
 .soft-strong {
@@ -4509,6 +4509,12 @@ color: #1a1919be;
 }
 
 /* Notificacion */
+
+.barra-lateral {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
 .notification-wrapper {
   position: relative;
@@ -4553,9 +4559,11 @@ color: #1a1919be;
 }
 
 
+
 .notification-dropdown.show {
   display: block;
 }
+
 .notification-item {
   padding: 10px;
   border-bottom: 1px solid #eee;
@@ -4598,7 +4606,6 @@ color: #1a1919be;
   flex-grow: 1;
   overflow-y: auto;
 }
-
 
 
 /* footer */

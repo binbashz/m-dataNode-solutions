@@ -4,6 +4,7 @@ from .views import management_view
 from .views import generar_pdf_recomendaciones
 from .views import recomendar_cultivo_view
 from .views import graficar_datos
+from .tasks import iniciar_scheduler
 from django.contrib.auth import views as auth_views
 from .views import (
     VariedadListView,
@@ -14,6 +15,8 @@ from .views import (
 
 from rest_framework.routers import DefaultRouter
 from .views import CondicionesCultivoViewSet
+
+iniciar_scheduler()
 
 router = DefaultRouter()
 router.register(r'condiciones-cultivo', CondicionesCultivoViewSet)
@@ -95,6 +98,11 @@ urlpatterns = [
     path('borrar_gasto/<int:gasto_id>/', views.borrar_gasto, name='borrar_gasto'),
     path('borrar_venta/<int:venta_id>/', views.borrar_venta, name='borrar_venta'),
     path('actualizar-estado-pedido/<int:pedido_id>/', views.actualizar_estado_pedido, name='actualizar_estado_pedido'),
+    
+    path('notificaciones/', views.listar_notificaciones, name='listar_notificaciones'),
+    path('obtener-notificaciones/', views.obtener_notificaciones, name='obtener_notificaciones'),
+    path('marcar-leida/<int:notificacion_id>/', views.marcar_leida, name='marcar_leida'),
+    
     path('borrar_pedido/<int:pedido_id>/', views.borrar_pedido, name='borrar_pedido'),
     
     path('search/', views.search_results, name='search_results'),

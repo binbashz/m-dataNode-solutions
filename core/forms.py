@@ -248,7 +248,7 @@ class PedidoForm(forms.ModelForm):
         queryset=Variedad.objects.all(),
         label="Variedad",
         empty_label="Seleccione una variedad",
-        required=False 
+        required=False
     )
     descripcion = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 3}),
@@ -286,6 +286,7 @@ class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
         fields = ['producto', 'variedad', 'cantidad', 'fecha_pedido', 'fecha_entrega', 'descripcion', 'direccion', 'telefono', 'asociar_cliente', 'cliente', 'miembro']
+
         widgets = {
             'fecha_pedido': forms.DateInput(attrs={'type': 'date'}),
             'fecha_entrega': forms.DateInput(attrs={'type': 'date'}),
