@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 
-SCHEDULER_AUTOSTART = True # cambiar estado o no  para las migraciones
+
 
 
 ROOT_URLCONF = 'proyecto.urls'
