@@ -341,7 +341,6 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return f"Notificación para {self.usuario}: {self.mensaje}"
-
     
 # modelo para base de datos tipo CSV
 class CannabisPlant(models.Model):

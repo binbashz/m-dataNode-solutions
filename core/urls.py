@@ -4,7 +4,7 @@ from .views import management_view
 from .views import generar_pdf_recomendaciones
 from .views import recomendar_cultivo_view
 from .views import graficar_datos
-from .tasks import iniciar_scheduler
+#from .tasks import iniciar_scheduler
 from django.contrib.auth import views as auth_views
 from .views import (
     VariedadListView,
@@ -16,7 +16,7 @@ from .views import (
 from rest_framework.routers import DefaultRouter
 from .views import CondicionesCultivoViewSet
 
-iniciar_scheduler()
+# iniciar_scheduler()
 
 router = DefaultRouter()
 router.register(r'condiciones-cultivo', CondicionesCultivoViewSet)
