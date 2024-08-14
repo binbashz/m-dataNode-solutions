@@ -4508,6 +4508,7 @@ color: #1a1919be;
   font-weight: 500;  
 }
 
+
 /* Notificacion */
 .barra-lateral {
   display: flex;
@@ -4517,7 +4518,6 @@ color: #1a1919be;
 
 .notification-wrapper {
   position: relative;
-  cursor: pointer;
   margin: 10px 0;
   display: flex;
   justify-content: flex-end;
@@ -4525,7 +4525,6 @@ color: #1a1919be;
 }
 
 .notification-toggle {
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4566,6 +4565,15 @@ color: #1a1919be;
   border-bottom: none;
 }
 
+.notification-item.leido {
+  opacity: 0.5;
+}
+
+.navegacion {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
 /* Media query para pantallas pequeñas (móviles) */
 @media (max-width: 768px) {
   .notification-wrapper {
@@ -4592,16 +4600,6 @@ color: #1a1919be;
       cursor: pointer; 
   }
 }
-
-
-
-.navegacion {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-
-
 
 
 /* footer */

@@ -1136,6 +1136,13 @@ def visualizacion_graficos(request):
 
 
 #vista para dashboard 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import JsonResponse
+from .models import GastoOperativo, Venta, Pedido, Variedad, Product, Stock, Notificacion, Cliente, Miembro
+from .forms import GastoOperativoForm, VentaForm, PedidoForm
+
 @login_required
 def dashboard(request):
     # Formularios
@@ -1219,25 +1226,12 @@ def lista_pedidos(request):
     return render(request, 'core/dashboard.html', {'pedidos': pedidos})
 
 @login_required
-def actualizar_estado_pedido(request, pedido_id):
-    if request.method == 'POST':
-        pedido = get_object_or_404(Pedido, id=pedido_id)
-        nuevo_estado = request.POST.get('estado')
-        if nuevo_estado in dict(Pedido.ESTADO_CHOICES):
-            pedido.estado = nuevo_estado
-            pedido.save()
-            messages.success(request, f'Estado del pedido actualizado a {pedido.get_estado_display()}.')
-        else:
-            messages.error(request, 'Estado no válido.')
-    return redirect('dashboard')
-
-
 def obtener_notificaciones(request):
-    notificaciones = Notificacion.objects.filter(usuario=request.user).order_by('-fecha')
+    notificaciones = Notificacion.objects.filter(usuario=request.user).order_by('-fecha_creacion')
     data = [{
         'id': n.id,
         'mensaje': n.mensaje,
-        'fecha': n.fecha.isoformat(),
+        'fecha': n.fecha_creacion.isoformat(),
         'leido': n.leido,
     } for n in notificaciones]
     return JsonResponse(data, safe=False)
@@ -1248,17 +1242,9 @@ def marcar_leida(request, notificacion_id):
         notificacion = get_object_or_404(Notificacion, id=notificacion_id, usuario=request.user)
         notificacion.leido = True
         notificacion.save()
+        print(f'Notificación {notificacion_id} marcada como leída')  
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
-
-@login_required
-def borrar_pedido(request, pedido_id):
-    pedido = get_object_or_404(Pedido, id=pedido_id)
-    if request.method == 'POST':
-        pedido.delete()
-        messages.success(request, 'Pedido eliminado correctamente.')
-    return redirect('dashboard')
-
 
 
 #Notifiacion pedido 
@@ -1272,11 +1258,38 @@ def listar_notificaciones(request):
     for notificacion in notificaciones:
         notificacion.leido = True
         notificacion.save()
-        pedido = notificacion.pedido  # Si Notificacion tiene un campo 'pedido'
+        pedido = notificacion.pedido  
         pedido.notificado = True
         pedido.save()
     
-    return render(request, 'notificaciones.html', {'notificaciones': notificaciones})
+    return render(request, '.html', {'notificaciones': notificaciones})
+
+@login_required
+def actualizar_estado_pedido(request, pedido_id):
+    if request.method == 'POST':
+        pedido = get_object_or_404(Pedido, id=pedido_id)
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado in dict(Pedido.ESTADO_CHOICES):
+            pedido.estado = nuevo_estado
+            pedido.save()
+            messages.success(request, f'Estado del pedido actualizado a {pedido.get_estado_display()}.')
+            # Eliminar notificaciones relacionadas si el pedido se completa o cancela
+            if nuevo_estado in ['completado', 'cancelado']:
+                Notificacion.objects.filter(pedido=pedido).delete()
+        else:
+            messages.error(request, 'Estado no válido.')
+    return redirect('dashboard')
+
+
+@login_required
+def borrar_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    if request.method == 'POST':
+        pedido.delete()
+        messages.success(request, 'Pedido eliminado correctamente.')
+    return redirect('dashboard')
+
+
 
 @login_required
 def lista_gastos(request):
