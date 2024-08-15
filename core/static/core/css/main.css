@@ -3334,7 +3334,7 @@ hr.no-space {
 }
 
 .btn8.btn8:hover {
-  background: linear-gradient(135deg, rgb(163, 250, 137) 0%, rgba(7, 104, 47, 0.9) 16%, rgb(113, 245, 163) 100%);
+  background: linear-gradient(135deg, rgba(122, 184, 103, 0.76) 0%, rgba(7, 104, 47, 0.9) 16%, rgb(113, 245, 163) 100%);
   transition: background 2.5s ease;
 }
 .star-checkbox {
@@ -3382,11 +3382,13 @@ hr.no-space {
   --blur: 30px;
   --bg: #ebd780c4;
   --color: #060c06;
+  --border-color-soft: rgba(255, 0, 0, 0.322); 
+  
   color: var(--color);
   cursor: pointer;
   position: relative;
   border-radius: 20px 12px 31px;
-  border: 1px;
+  border: 1px solid var(--border-color-soft); 
   isolation: isolate;
   display: inline-grid;
   place-content: center;
@@ -3409,22 +3411,23 @@ hr.no-space {
   touch-action: manipulation;
   vertical-align: top;
   white-space: nowrap;
+  box-shadow: 0 0 8px var(--border-color-soft); 
 }
-
 
 .btncode:hover {
   border-color: #277e04;
 }
 
 .btncode:active {
-  border-color: #ca6a6a;
+  border-color: #ca6a6a7e;
   outline: 0;
 }
 
 .btncode:focus {
-  border-color: #ff2600;
+  border-color: #ff2600a1;
   outline: 0;
 }
+
 
  
 
@@ -3943,7 +3946,7 @@ hr.no-space {
 .btn8 {
   align-items: center;
   appearance: none;
-  background-color: #4dbb7d;
+  background-color: #51b87d;
   border: 1px solid #50c72b;
   border-radius: 20px 12px 31px;
   margin-bottom: 0.2rem;
@@ -3983,7 +3986,7 @@ hr.no-space {
 }
 
 .btn8:hover {
-  border-color: #2bd439;
+  border-color: #33ac3d;
 }
 
 .btn8:focus:not(:active) {
@@ -4045,6 +4048,127 @@ hr.no-space {
 
   .cuota-item {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* estilo nav programar analisis */
+.panel-flujo {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.panel-flujo h3 {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.accordion-button-green {
+  background-color: rgba(62, 126, 100, 0.527); 
+  color: #1b7e58; 
+}
+
+.accordion-button-green:not(.collapsed) {
+  background-color: rgba(32, 110, 80, 0.4);
+  color: #fff; 
+}
+
+
+.panel-step {
+  margin-bottom: 20px;
+}
+
+
+.customfor2 {
+  background: linear-gradient(to right, rgba(5, 134, 85, 0.5), rgba(71, 196, 98, 0.5), rgba(166, 214, 110, 0.637));
+
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.accordion-button {
+  background: linear-gradient(to right, rgba(5, 134, 16, 0.5), rgba(75, 161, 82, 0.418), rgba(129, 213, 129, 0.5));
+  color: white;
+  font-weight: bold;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #45a049;
+}
+
+.accordion-body {
+  background-color: #f4f4f4;
+}
+
+.btn-success {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.btn-success:hover {
+  background-color: #45a049;
+  border-color: #45a049;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.messages {
+  list-style-type: none;
+  padding: 0;
+}
+
+.messages li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.messages .success {
+  border-color: #d4edda;
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.messages .error {
+  border-color: #f8d7da;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .customfor2 {
+      padding: 10px;
   }
 }
 

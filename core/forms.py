@@ -131,9 +131,9 @@ class AnalisisCostosForm(forms.ModelForm):
             'costo_agua', 'costo_manobra', 'produccion_gramos', 'presupuesto'
         ]
         widgets = {
-            'costo_semilla': forms.NumberInput(attrs={'placeholder': '  Costo de Semilla'}),
-            'costo_sustrato': forms.NumberInput(attrs={'placeholder': ' Tierra, Compost, Fibra'}),
-            'costo_energia': forms.NumberInput(attrs={'placeholder': ' Costo de Energía'}),
+            'costo_semilla': forms.NumberInput(attrs={'placeholder': '  Costo de Semilla. Ingrese solo valores numericos'}),
+            'costo_sustrato': forms.NumberInput(attrs={'placeholder': ' Tierra, Compost, Fibra. ej; 3400'}),
+            'costo_energia': forms.NumberInput(attrs={'placeholder': ' ej; 4577'}),
             'costo_agua': forms.NumberInput(attrs={'placeholder': ' Costo de Agua'}),
             'costo_manobra': forms.NumberInput(attrs={'placeholder': ' Costo Mano de Obra'}),
             'produccion_gramos': forms.NumberInput(attrs={'placeholder': ' Gramos Producidos'}),

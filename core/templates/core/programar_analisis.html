@@ -2,10 +2,68 @@
 
 {% block content %}
 <div class="customfor2">
-    <div class="row mt-2">
-        <div class="col-md-8 offset-md-2">
-            <input type="button" class="btn-prev" value="↩" onClick="javascript:history.go(-1);">
-            <br>
+    <!-- Panel de Flujo -->
+    <div class="container mt-4">
+        <div class="accordion" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button accordion-button-green collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <i class="fas fa-inbox"></i>  &nbsp; Recepción de Muestra
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        1. Registra una nueva muestra en <a href="{% url 'recepcion_muestra' %}">Recepción de Muestra</a>.
+                        <br>
+                        2. {% if muestra_id %}Serás redirigido a <a href="{% url 'programar_analisis' muestra_id %}">Programar Análisis</a>.{% else %}Por favor, selecciona una muestra para programar el análisis.{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                    <button class="accordion-button accordion-button-green collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        <i class="fas fa-calendar-check"></i> &nbsp; Programar Análisis
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        1. Programa el análisis para la muestra en <a href="{% url 'programar_analisis' %}">Programar Análisis</a>.
+                        <br>
+                        2. Después de programar, serás redirigido a <a href="{% url 'registro_resultados' %}">Registro de Resultados</a>.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                    <button class="accordion-button accordion-button-green collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        <i class="fas fa-clipboard-check"></i>  &nbsp; Registro de Resultados
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        1. Registra los resultados del análisis en <a href="{% url 'registro_resultados' %}">Registro de Resultados</a>.
+                        <br>
+                        2. Después de registrar los resultados, puedes ser redirigido a <a href="{% url 'ver_informes' %}">Ver Informes</a> para ver un resumen.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFour">
+                    <button class="accordion-button accordion-button-green collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        <i class="fas fa-file-alt"></i>  &nbsp; Ver Informes
+                    </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        1. Visualiza todos los análisis registrados en <a href="{% url 'ver_informes' %}">Ver Informes</a>.
+                        <br>
+                        2. No hay redirección (es el final del flujo).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
             <h1>Programar Análisis</h1>
 
             {% if messages %}
@@ -16,8 +74,8 @@
             </ul>
             {% endif %}
 
-            {% if muestra %}
-            <p>Programando análisis para la muestra: <strong>{{ muestra.codigo }}</strong></p>
+            {% if muestra_id %}
+            <p>Programando análisis para la muestra: <strong>{{ muestra_id }}</strong></p>
             {% endif %}
 
             <form method="post" novalidate>
@@ -63,7 +121,7 @@
                 {% for muestra in muestras_pendientes %}
                 <li>
                     {{ muestra.codigo }}
-                    <a href="{% url 'programar_analisis' muestra.id %}" class="btn btn-sm btn-primary">Programar</a>
+                    <a href="{% url 'programar_analisis' %}" class="btn btn-sm btn-primary">Programar</a>
                 </li>
                 {% endfor %}
             </ul>
@@ -72,13 +130,13 @@
             {% endif %}
         </div>
     </div>
-</div>
 
-<script>
-document.querySelector('form').addEventListener('submit', function(e) {
-    var submitButton = this.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    submitButton.innerHTML = 'Procesando...';
-});
-</script>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        var submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Procesando...';
+    });
+    </script>
+</div>
 {% endblock %}

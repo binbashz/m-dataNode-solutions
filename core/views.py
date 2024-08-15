@@ -729,28 +729,21 @@ def recepcion_muestra(request):
     if request.method == 'POST':
         form = MuestraForm(request.POST)
         if form.is_valid():
-            tipo_texto = form.cleaned_data.get('tipo')
-            if tipo_texto:
-                tipo_analisis, created = TipoAnalisis.objects.get_or_create(nombre=tipo_texto)
-            else:
-                tipo_analisis = None
-            muestra = form.save(commit=False)
-            muestra.tipo_analisis = tipo_analisis
-            muestra.save()
+            muestra = form.save()
             messages.success(request, f'Muestra {muestra.codigo} registrada exitosamente.')
-            return redirect('programar_analisis', muestra.id)
+            return redirect('programar_analisis', muestra_id=muestra.id)
     else:
         form = MuestraForm()
-    return render(request, 'core/recepcion_muestra.html', {'form': form})
 
+    return render(request, 'core/recepcion_muestra.html', {'form': form})
 
 @login_required
 def programar_analisis(request, muestra_id=None):
     muestras_pendientes = Muestra.objects.filter(analisisprogramado__isnull=True)
+    
     if request.method == 'POST':
         form = AnalisisProgramadoForm(request.POST)
         if form.is_valid():
-            # Guarda el análisis programado asociado a la muestra_id
             analisis_programado = form.save(commit=False)
             if muestra_id is not None:
                 analisis_programado.muestra_id = muestra_id
@@ -761,8 +754,11 @@ def programar_analisis(request, muestra_id=None):
     else:
         form = AnalisisProgramadoForm()
     
-    # Pasa muestra_id al contexto del renderizado
-    return render(request, 'core/programar_analisis.html', {'form': form, 'muestras_pendientes': muestras_pendientes, 'muestra_id': muestra_id})
+    return render(request, 'core/programar_analisis.html', {
+        'form': form,
+        'muestras_pendientes': muestras_pendientes,
+        'muestra_id': muestra_id
+    })
 
 @login_required
 def registro_resultados(request):
@@ -1500,8 +1496,6 @@ def detalle_miembro(request, miembro_id):
         'form': form
     })
 
-
-
 @login_required
 def historial_cuotas_todos_miembros(request):
     # Obtener todos los miembros
@@ -1519,8 +1513,7 @@ def historial_cuotas_todos_miembros(request):
         })
 
     return render(request, 'core/historial_cuotas_todos_miembros.html', {'todas_las_cuotas': todas_las_cuotas})
-
-    
+  
 @login_required
 def reporte_cuotas(request):
     cuotas_pendientes = Cuota.objects.filter(pagado=False).order_by('fecha_pago')
@@ -1539,7 +1532,6 @@ def editar_miembro(request, miembro_id):
         form = MiembroForm(instance=miembro)
     return render(request, 'core/editar_miembro.html', {'form': form, 'miembro': miembro})
 
-
 @login_required
 def eliminar_miembro(request, miembro_id):
     miembro = get_object_or_404(Miembro, id=miembro_id)
@@ -1549,7 +1541,6 @@ def eliminar_miembro(request, miembro_id):
         messages.success(request, f'Miembro "{nombre_miembro}" eliminado exitosamente.')
         return redirect('lista_miembros')
     return redirect('lista_miembros')
-
 
 # cuotas 
 @login_required
@@ -1592,9 +1583,7 @@ def historial_pagos(request, miembro_id):
     pagos = Pago.objects.filter(miembro_id=miembro_id)
     return render(request, 'core/historial_pagos.html', {'pagos': pagos})
 
-
 #CSV database plants
-
 @login_required
 def plant_list(request):
     query = request.GET.get('q')
