@@ -7,8 +7,15 @@ from django.conf import settings
 class Command(BaseCommand):
     help = 'Import cannabis data from CSV file'
 
+    def add_arguments(self, parser):
+        parser.add_argument('file_path', type=str)
+
     def handle(self, *args, **kwargs):
-        file_path = os.path.join(settings.BASE_DIR, 'core', 'data', 'cannabis.csv')
+        file_path = kwargs['file_path']
+        if not os.path.exists(file_path):
+            self.stdout.write(self.style.ERROR(f'File not found: {file_path}'))
+            return
+
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:

@@ -317,7 +317,7 @@ body {
   position: fixed;
   width: 50px;
   height: 50px;
-  font-size: 30px;
+  font-size: 26px;
   display: none;
   justify-content: center;
   align-items: center;
@@ -385,7 +385,7 @@ body {
 }
 
 .nombre-pagina .nombre {
-  font-size: 1.5rem; 
+  font-size: 1.4rem; 
   font-weight: 600;
   color: #058655; 
 }
@@ -403,7 +403,7 @@ body {
 .barra-lateral span{
   width: 100px;
   white-space: nowrap;
-  font-size: 18px;
+  font-size: 15px;
   text-align: left;
   opacity: 1;
   transition: opacity 0.5s ease,width 0.5s ease;
@@ -424,7 +424,7 @@ body {
 }
 .barra-lateral .nombre-pagina ion-icon{
   min-width: 50px;
-  font-size: 40px;
+  font-size: 35px;
   cursor: pointer;
 }
 .barra-lateral .nombre-pagina span{
@@ -448,7 +448,7 @@ body {
 }
 .barra-lateral .boton ion-icon{
   min-width: 50px;
-  font-size: 25px;
+  font-size: 21px;
 }
 
 /*--------------> Menu Navegación*/
@@ -487,7 +487,7 @@ body {
 }
 .barra-lateral .navegacion ion-icon{
   min-width: 50px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 /*-----------------> Linea*/
@@ -550,10 +550,10 @@ body {
   font-weight: 600;
 }
 .barra-lateral .usuario .email{
-  font-size: 13px;
+  font-size: 11px;
 }
 .barra-lateral .usuario ion-icon{
-  font-size: 20px;
+  font-size: 18px;
 }
 
 
@@ -647,7 +647,7 @@ nav ul li a span {
   border-radius: 30px;
   margin-left: 10px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 13px;
   visibility: hidden;
   opacity: 0;
   transition: 0.2s all ease;
