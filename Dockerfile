@@ -24,8 +24,7 @@ COPY . /app/
 ENV DJANGO_SETTINGS_MODULE=proyecto.settings
 ENV PYTHONUNBUFFERED=1
 
-# Recolección de archivos estáticos
-RUN python manage.py collectstatic --noinput --clear
+
 
 # Comando para correr la aplicación con Gunicorn
 CMD ["gunicorn", "proyecto.wsgi:application", "--bind", "0.0.0.0:8000"]
