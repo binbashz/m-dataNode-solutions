@@ -11,6 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # Secret key
+
 SECRET_KEY = config('SECRET_KEY')
 
 CSRF_TRUSTED_ORIGINS = [

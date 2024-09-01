@@ -14,6 +14,7 @@ services:
       PGHOST: ${PGHOST}
       PGPORT: ${PGPORT}
       TZ: America/Montevideo
+      SECRET_KEY: ${SECRET_KEY}
     command: gunicorn proyecto.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120
 
   nginx:
