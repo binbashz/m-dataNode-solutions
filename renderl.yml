@@ -1,0 +1,23 @@
+databases:
+  - name: cannatech_db
+    plan: free
+    databaseName: cannatech
+    user: cannatech
+
+services:
+  - type: web
+    plan: free
+    name: cannatech
+    env: docker
+    dockerfilePath: Dockerfile
+    buildCommand: "./build.sh"
+    startCommand: "docker-compose up"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cannatech_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: "3"
