@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Recolección de archivos estáticos
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput --clear
 
 # Comando para correr la aplicación con Gunicorn
-CMD gunicorn cannaTech.wsgi:application --bind 0.0.0.0:$PORT
+CMD ["gunicorn", "proyecto.wsgi:application", "--bind", "0.0.0.0:8000"]

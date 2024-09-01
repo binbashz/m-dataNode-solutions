@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+      - ./staticfiles:/app/staticfiles
+      - ./media:/app/media 
+    ports:
+      - "8000:8000"
+    environment:
+      PGDATABASE: ${PGDATABASE}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      TZ: America/Montevideo
+    command: gunicorn proyecto.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120
+
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - ./staticfiles:/app/staticfiles
+      - ./media:/app/media
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:

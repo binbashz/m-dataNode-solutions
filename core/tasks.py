@@ -3,38 +3,65 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore
 from .models import Pedido, Notificacion
 from datetime import timedelta
+from django.db.models import Q
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Configura el scheduler para usar la zona horaria de Django
-scheduler = BackgroundScheduler(timezone=timezone.get_current_timezone())
+scheduler = BackgroundScheduler({
+    'apscheduler.executors.default': {
+        'class': 'apscheduler.executors.pool:ThreadPoolExecutor',
+        'max_workers': '20'
+    },
+    'apscheduler.job_defaults.coalesce': 'false',
+    'apscheduler.job_defaults.max_instances': '3',
+    'apscheduler.timezone': 'UTC',
+})
 scheduler.add_jobstore(DjangoJobStore(), "default")
 
 def check_pedidos():
-    hoy = timezone.now().date()
-    manana = hoy + timedelta(days=1)
-    
-    # Pedidos que vencen mañana
-    pedidos_manana = Pedido.objects.filter(fecha_entrega=manana, estado='pendiente')
-    for pedido in pedidos_manana:
-        Notificacion.objects.get_or_create(
-            usuario=pedido.usuario,
-            pedido=pedido,
-            defaults={'mensaje': f"Tu pedido {pedido.id} está programado para ser entregado mañana."}
+    logger.info("Iniciando check_pedidos")
+    start_time = timezone.now()
+    try:
+        hoy = timezone.now().date()
+        manana = hoy + timedelta(days=1)
+        
+        # Combina las consultas para reducir el número de operaciones de base de datos
+        pedidos = Pedido.objects.filter(
+            Q(fecha_entrega=hoy) | Q(fecha_entrega=manana),
+            estado='pendiente'
         )
+        
+        for pedido in pedidos:
+            mensaje = f"Tu pedido {pedido.id} está programado para ser entregado {'hoy' if pedido.fecha_entrega == hoy else 'mañana'}."
+            Notificacion.objects.get_or_create(
+                usuario=pedido.usuario,
+                pedido=pedido,
+                defaults={'mensaje': mensaje}
+            )
 
-    # Pedidos que vencen hoy
-    pedidos_hoy = Pedido.objects.filter(fecha_entrega=hoy, estado='pendiente')
-    for pedido in pedidos_hoy:
-        Notificacion.objects.get_or_create(
-            usuario=pedido.usuario,
-            pedido=pedido,
-            defaults={'mensaje': f"Tu pedido {pedido.id} debe ser entregado hoy."}
-        )
-
-    # Eliminar notificaciones de pedidos completados o cancelados
-    Notificacion.objects.filter(pedido__estado__in=['completado', 'cancelado']).delete()
+        # Eliminar notificaciones de pedidos completados o cancelados
+        Notificacion.objects.filter(pedido__estado__in=['completado', 'cancelado']).delete()
+        
+        logger.info("check_pedidos completado exitosamente")
+    except Exception as e:
+        logger.error(f"Error en check_pedidos: {str(e)}")
+    finally:
+        end_time = timezone.now()
+        logger.info(f"Tiempo de ejecución de check_pedidos: {end_time - start_time}")
 
 def iniciar_scheduler():
-    # Programa la primera ejecución de check_pedidos para que ocurra 5 minutos después de iniciar el scheduler
-    scheduler.add_job(check_pedidos, 'interval', minutes=5, next_run_time=timezone.now() + timedelta(minutes=1), name='check_pedidos', jobstore='default')
-    scheduler.start()
-    print("Scheduler iniciado. Tareas programadas en ejecución.")
+    if not scheduler.running:
+        scheduler.add_job(
+            check_pedidos, 
+            'interval', 
+            minutes=5, 
+            id='check_pedidos',
+            replace_existing=True,
+            misfire_grace_time=300  # 5 minutos de gracia
+        )
+        scheduler.start()
+        logger.info("Scheduler iniciado. Tareas programadas en ejecución.")
+    else:
+        logger.info("El scheduler ya está en ejecución.")

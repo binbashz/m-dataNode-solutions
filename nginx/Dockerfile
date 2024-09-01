@@ -3,3 +3,6 @@ FROM nginx:latest
 
 # Copia el archivo de configuración de Nginx al contenedor
 COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Exponer el puerto 80
+EXPOSE 80

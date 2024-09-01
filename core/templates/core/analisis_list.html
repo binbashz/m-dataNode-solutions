@@ -26,7 +26,7 @@
                 <div class="card-front">
                     <figure>
                         <div class="img-bg"></div>
-                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Análisis">
+                        <img src="{% static 'images/default-analysis.jpg' %}" alt="Análisis">
                         <figcaption>{{ analisis.tipo_analisis }}</figcaption>
                     </figure>
                     <ul class="mi-lista">
@@ -37,7 +37,7 @@
                 <div class="card-back">
                     <figure>
                         <div class="img-bg"></div>
-                        <img src="{% static 'core/images/default-analysis.jpg' %}" alt="Análisis">
+                        <img src="{% static 'images/default-analysis.jpg' %}" alt="Análisis">
                     </figure>
                     <a href="{% url 'analisis_detail' variedad.pk analisis.pk %}" class="btn btn-primary analisis-detail-btn">Ver Detalles</a>
 
