@@ -20,8 +20,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia el código del proyecto en el contenedor
 COPY . /app/
 
+# Establece las variables de entorno (importante para Django)
+ENV DJANGO_SETTINGS_MODULE=proyecto.settings
+ENV PYTHONUNBUFFERED=1
+
 # Recolección de archivos estáticos
 RUN python manage.py collectstatic --noinput --clear
 
 # Comando para correr la aplicación con Gunicorn
 CMD ["gunicorn", "proyecto.wsgi:application", "--bind", "0.0.0.0:8000"]
+
