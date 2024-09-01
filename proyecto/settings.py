@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
 
 # http://127.0.0.1:8000/ en navegador
 
-DEBUG = config('DEBUG', default=True, cast=bool)  #  DEBUG estar en False para producción
+DEBUG = config('DEBUG', default=False, cast=bool)  #  DEBUG estar en False para producción
 
 # Security settings for production
 SECURE_SSL_REDIRECT = not DEBUG
@@ -64,6 +64,7 @@ DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d', '%d-%m-%Y')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

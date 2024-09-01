@@ -1,5 +1,7 @@
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 from .views import management_view
 from .views import generar_pdf_recomendaciones
 from .views import recomendar_cultivo_view
@@ -144,5 +146,9 @@ urlpatterns = [
     path('error/404/', views.error_404, name='error_404'),
     path('error/500/', views.error_500, name='error_500'),
     
+    ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-]
